@@ -1,0 +1,200 @@
+# The number of commands to remember in the command history
+# default 500
+HISTSIZE=500000
+# The  maximum  number of lines contained in the history file
+# default to HISTSIZE
+HISTFILESIZE=1000000
+HISTTIMEFORMAT="[%F %T %z]: "
+
+shopt -s histappend
+shopt -s checkwinsize
+
+# to debug
+# printenv
+
+export LC_TIME="ru_RU.utf8"
+
+#BROWSER=google-chrome-stable:elinks
+export EDITOR=vim
+
+OS=$(grep -Po "(?<=^ID=)'?\w+" /etc/os-release | tr -d "'")
+export PATH="$PATH:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$HOME/common/bash/$OS/bin:$HOME/common/bash/bin:$HOME/go/bin:$HOME/.symfony/bin:$HOME/.cargo/bin:$HOME/git-repos/own/bash/bash-scripts/$OS/bin:$HOME/git-repos/own/bash/bash-scripts/bin"
+unset OS
+
+for sh in /etc/bash/bashrc.d/*; do
+	[[ -r ${sh} ]] && source "${sh}"
+done
+unset sh
+
+if [[ -r "/home/$USER/.config/kitty/kitty.conf" ]]; then
+	export THEME=$(grep -A1 'BEGIN_KITTY_THEME' "/home/$USER/.config/kitty/kitty.conf" | tail -n1 | grep -oP '\w+' | tr '[:upper:]' '[:lower:]' | tr -d '\n')
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+xterm-color | *-256color | fbterm)
+	color_prompt=yes
+	export HSTR_CONFIG=hicolor
+	;;
+esac
+
+if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+else
+	color_prompt=
+fi
+
+if [ -f ~/.bash_aliases ]; then
+	. ~/.bash_aliases
+fi
+
+if [ "$USER" != "root" ]; then
+	if [ -f /usr/share/git/git-prompt.sh ]; then
+		source /usr/share/git/git-prompt.sh
+	fi
+	if [ -z "$VSCODE_INJECTION" ]; then
+		# "$TERM" != "fbterm" && -z "$FBTERM_BACKGROUND_IMAGE"
+		if [[ -z "$DISPLAY" || -n "$VIMRUNTIME" ]]; then
+			PROMPT_COMMAND='exit_code=$?; exit_char="${exit_code}  "; exit_char=${exit_char:0:3}; branch=$(__git_ps1 " %b");'
+		else
+			PROMPT_COMMAND='exit_code=$?; exit_char=$([[ $exit_code -eq 0 ]] && echo -n "✅   " || echo -n "❌${exit_code}   "); exit_char=${exit_char:0:4}; branch=$(__git_ps1 " %b");'
+		fi
+	else
+		PROMPT_COMMAND='branch=$(__git_ps1 " %b");'
+	fi
+	PROMPT_COMMAND="${PROMPT_COMMAND} history -a; history -n;"
+	if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+		debian_chroot=$(cat /etc/debian_chroot)
+	fi
+	case "$TERM" in
+	screen-256color | tmux-256color)
+		PS1='${exit_char} ${debian_chroot:+($debian_chroot )}\$ '
+		;;
+	screen* | tmux*)
+		PS1='${exit_char} ${debian_chroot:+($debian_chroot )}\$ '
+		;;
+	*)
+		if [ "$color_prompt" = yes ]; then
+			export GIT_PS1_SHOWCOLORHINTS=1
+
+			if [[ -z "$DISPLAY" && -z "$VIMRUNTIME" && -z "$TMUX" ]]; then
+				PS1='${exit_char} [\A|$(free -h | head -n2 | tail -n1 | tr -s " " | cut -d " " -f7)'
+				if [[ -n $(ls /sys/class/power_supply) ]]; then
+					PS1+='|$(battery)'
+				fi
+				PS1+='|$(yd-status)] ${debian_chroot:+($debian_chroot)} \[\033[01;34m\]\w\[\033[00m\]${branch}\n\$ '
+			else
+				if [[ "$TERM" = "xterm-kitty" ]]; then
+					alias ranger="ranger --cmd='set preview_images_method kitty'"
+				fi
+				if [[ -n "$VIMRUNTIME" ]]; then
+					PS1='${exit_char} ${debian_chroot:+("$debian_chroot ")}\$ '
+				else
+					PS1='${exit_char} ${debian_chroot:+("$debian_chroot ")}\[\033[01;34m\]\w\[\033[00m\]${branch} \$ '
+				fi
+			fi
+		else
+			PS1='${exit_char} ${debian_chroot:+($debian_chroot)}\u@\h:\w${branch} \$ '
+		fi
+		;;
+	esac
+
+	if [[ -f composer.json ]]; then
+		need=$(grep --perl-regexp --only-matching '(?<="php": "(\^|~))\d+\.\d+' composer.json)
+		if [ -z "$need" ]; then
+			echo "Cannot find PHP version in composer.json"
+		fi
+
+		# lookbehind to exclude `php-fpm8.0`
+		version=$(ls /usr/bin/php* | grep --perl-regexp --only-matching "(?<=php)$need" | tail -n1)
+
+		if [ -z "$version" ]; then
+			major=$(echo "$need" | cut -d '.' -f1)
+			# minor=$(echo "$need" | cut -d '.' -f2)
+			version=$(ls /usr/bin/php* | grep --perl-regexp --only-matching "$major\.\d+" | tail -n1)
+		fi
+
+		if [ -n "$version" ]; then
+			alias php="php$version"
+			alias artisan="php$version artisan"
+		else
+			echo "empty PHP version for composer.json: '$need' -> '$version'"
+		fi
+	fi
+fi
+
+unset color_prompt
+
+start() {
+	if [[ ! $(command -v figlet) ]]; then
+		figlet() {
+			cat
+		}
+	fi
+	if [[ ! $(command -v fortune) ]]; then
+		fortune() {
+			echo "Fortune"
+		}
+	fi
+
+	local number
+	case $(tty) in
+	/dev/tty*)
+		TTY=$(tty)
+		export TTY
+		function row() {
+			# quotes important
+			printf "%-20s %-20s %-20s %-20s\n" "$@"
+		}
+		if [ -z "$1" ]; then
+			local wallpapers_dir="$HOME/storage/media/wallpapers"
+			WALLPAPER="$wallpapers_dir/$(ls $wallpapers_dir | sort -R | tail -1)"
+			export WALLPAPER
+			while :; do
+				echo
+				echo
+				neofetch --backend w3m --size 500px
+				echo
+
+				# -W wide (space between letters)
+				# -c center
+				figlet -c "Welcome, $USER"
+
+				echo
+				fortune
+				echo
+
+				row "0: startx i3" "1: startx dwm" "2: startx kitty" "3: startx gvim"
+				row "4: hyprland"
+				row "5: tty" "6: fbterm-bi" "7: fbterm-bi tmux" "8: fbsc"
+				read -ep "select starter: " number
+				[[ $number =~ ^[[:digit:]]+$ ]] || continue
+				((((number = (10#$number)) <= 8) && number >= 0)) || continue
+				break
+			done
+		else
+			number="$1"
+		fi
+		fb() {
+			fbterm-bi "$WALLPAPER" "$@" &> /tmp/fbterm-bi
+		}
+		case $number in
+		0) exec startx ;;
+		1) startx ~/.xinitrc-dwm ;;
+		2) startx ~/.xinitrc-kitty ;;
+		3) startx ~/.xinitrc-gvim ;;
+		4) exec Hyprland ;;
+		5) ;;
+		6) fb ;;
+		7) fb tmux ;;
+		8) fbsc ;;
+		esac
+		;;
+	esac
+}
+
+# should be latest action
+start

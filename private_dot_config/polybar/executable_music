@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# @see https://github.com/polybar/polybar/wiki/Module:-script
+# @see https://askubuntu.com/a/575708/834409
+
+print_title() {
+	playerctl metadata --format '{{emoji(status)}} {{title}} — {{artist}} | {{album}} {{duration(position)}}/{{duration(mpris:length)}}'
+}
+
+pause() {
+    playerctl play-pause
+    print_title
+}
+
+next() {
+    playerctl next
+    print_title
+}
+
+trap "pause" CONT
+trap "next" USR1
+# trap "" USR2
+
+while true; do
+    print_title
+
+    sleep 1 &
+    sleep_pid=$!
+    wait
+done

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+if pgrep -f -x "polybar i3" >/dev/null; then
+    pkill -f -x "polybar i3"
+    pkill -f -x "polybar i3-mode"
+    pkill -f -x "polybar mini"
+    pkill -f -x "polybar sound"
+    pkill -f -x "polybar music-bar"
+    pkill -f -x "polybar music-trigger-bar"
+    pkill -f -x "polybar process-bar"
+    pkill -f -x "polybar process-trigger-bar"
+
+    if [[ "$1" != "off" ]]; then
+        pkill -f -x "polybar off-bar"
+    fi
+
+    pkill -f -x "polybar battery"
+    pkill -f -x "polybar heat"
+    pkill -f -x "polybar memory"
+
+    for m in $(polybar -m | grep -i 'HDMI' | cut -d ":" -f1); do
+        pkill -f -x "polybar i3-hdmi"
+    done
+else
+    pkill -f -x "polybar top"
+
+    polybar i3 &
+    polybar mini &
+    polybar sound &
+
+    for m in $(polybar -m | grep -i 'HDMI' | cut -d ":" -f1); do
+        MONITOR=$m polybar i3-hdmi &
+    done
+
+    disown
+fi

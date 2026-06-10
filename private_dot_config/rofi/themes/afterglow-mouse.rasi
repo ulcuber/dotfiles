@@ -1,0 +1,123 @@
+/**
+ * Afterglow theme for mouse
+ *
+ * User: ulcuber
+ * Copyright: Victor
+ */
+
+* {
+    background: #20202088;
+    background-alt: #303030CC;
+    foreground: #D0D0D0;
+    primary: #7e8d5088;
+    secondary: #8ABEB788;
+    alert: #A5424288;
+    disabled: #707880;
+
+    border: 0;
+    padding: 0;
+    background-color: transparent;
+    text-color: @foreground;
+    font: "Comic Neue Light 18";
+}
+window {
+    background-color: @background;
+    location: north west;
+    anchor: north west;
+    width: 100%;
+    margin: 34px 1%;
+}
+mainbox {
+    //
+}
+message {
+    padding: 0.1em;
+    border: 1px dash 0px dash ;
+    border-color: @disabled;
+}
+textbox normal {
+    padding: 0.1em;
+}
+listview {
+    // fixed-height: 1;
+    padding: 0.1em;
+    reverse: false;
+    columns: 5;
+    lines: 5;
+}
+element {
+    padding: 0.5em;
+    border-radius: 1em;
+    highlight: bold;
+    orientation: vertical;
+    children: [ element-icon, element-text ];
+}
+element-icon {
+    size: 5em;
+}
+element-text {
+    text-color: inherit;
+    text-align: center;
+}
+element-text, element-icon {
+   horizontal-align: 0.5;
+}
+element normal.normal {
+    //
+}
+element normal.urgent {
+    text-color: @alert;
+}
+element normal.active {
+    text-color: @secondary;
+}
+element selected.normal {
+    background-color: @primary;
+}
+element selected.urgent {
+    background-color: @alert;
+    text-color: @disabled;
+}
+element selected.active {
+    background-color: @secondary;
+}
+element alternate.normal {
+    //
+}
+element alternate.urgent {
+    text-color: @alert;
+}
+element alternate.active {
+    text-color: @secondary;
+}
+scrollbar {
+    //
+}
+inputbar {
+    padding: 0.5em 1em;
+    foreground-color: @foreground;
+    background-color: @background-alt;
+    index: 0;
+}
+inputbar normal {
+    //
+}
+prompt {
+    text-color: @disabled;
+    margin: 0 0.5em 0 0;
+}
+mode-switcher {
+    padding: 0.5em 1em;
+    background-color: @background;
+    index: 10;
+}
+button selected {
+    text-color: @primary;
+}
+error-message {
+    padding: 1em;
+    background-color: @alert;
+}
+element, element-text, element-icon, button {
+    cursor: pointer;
+}

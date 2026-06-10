@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if pgrep -f -x "polybar music-bar" >/dev/null; then
+    pkill -f -x "polybar music-bar"
+    if ! pgrep -f -x "polybar music-trigger-bar" >/dev/null; then
+        polybar music-trigger-bar &
+        disown
+    fi
+else
+    pkill -f -x "polybar music-trigger-bar"
+    polybar music-bar &
+    disown
+fi

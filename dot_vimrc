@@ -1,0 +1,960 @@
+" General settings
+filetype plugin indent on " use the file type plugins
+syntax on                 " Syntax highlighting
+" Syntax * syn match ErrorMsg '\%120v.\+'
+" " Enable markdown code block syntax highlighting
+let g:markdown_fenced_languages = [
+  \ 'php',
+  \ 'html',
+  \ 'css',
+  \ 'sql',
+  \ 'json'
+  \ ]
+
+highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
+highlight JumpLine guibg=yellow ctermbg=yellow gui=bold
+
+let g:loaded_matchparen = 1
+
+if has('gui_running')
+    " hide menu bar
+    set guioptions -=m
+    " hide tool bar
+    set guioptions -=T
+    " set guifont=Ulcuber\ 22
+    " set guifont=Quinze\ 25
+    " set guifont=Paper\ Scratch\ 18
+    " set guifont=Iosevka\ Term\ Light\ 18
+    set guifont=Do\ Thin\ 24
+
+    " Zoom in (Increase font size)
+    nnoremap <silent> <C-=> :execute "set guifont=" . escape(substitute(&guifont, '\d\+', '\=submatch(0)+1', 'g'), ' ')<CR>
+    " Zoom out (Decrease font size)
+    nnoremap <silent> <C-S-+> :execute "set guifont=" . escape(substitute(&guifont, '\d\+', '\=submatch(0)-1', 'g'), ' ')<CR>
+
+    xnoremap <C-S-c> "+y
+    noremap! <C-S-v> <C-r>+
+    tmap <C-S-v> <C-W>"+
+endif
+
+set number             " Line numbers
+set cursorline
+set autoindent
+set smartindent
+set nowrap
+set noswapfile
+set colorcolumn=120
+
+set autoread
+" Triger `autoread` when files changes on disk
+" https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
+" https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
+    autocmd FocusGained,BufEnter,CursorHold,CursorHoldI *
+            \ if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+
+" Notification after file change
+" https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+autocmd FileChangedShellPost *
+  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+
+set switchbuf+=newtab
+
+" set splitright
+" set splitbelow
+
+" Replaced by vim-xkbswitch
+" set keymap=russian-jcukenwin
+
+" set tabstop=1
+" set shiftwidth=1
+set list    " visible whitespace
+"set listchars=tab:←\ →,leadmultispace:•••●
+set listchars=tab:→\ \ ,leadmultispace:···•
+set fillchars+=vert:│
+
+autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0
+autocmd FileType asm set noexpandtab shiftwidth=8 softtabstop=0 syntax=nasm
+
+autocmd BufRead,BufNewFile **/templates/*.html set ft=htmldjango
+
+" Keymap
+nnoremap <SPACE> <Nop>
+let g:mapleader = "\<Space>"
+
+" buffer (new) + go tag + buffer + to tab
+" go to tag in new tab
+"nnoremap <silent><C-k><C-g> <C-w><C-]><C-w>T
+
+if $DISPLAY != ""
+    " set mouse=a
+endif
+
+function! SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
+
+nnoremap <silent><C-j> :move+<CR>
+nnoremap <silent><C-k> :move-2<CR>
+noremap <ScrollWheelUp> <C-Y>
+noremap <ScrollWheelDown> <C-E>
+
+nnoremap <silent><Leader>z :set wrap!<CR>
+
+" tabs
+nnoremap <silent><S-J> :tabprev<CR>
+nnoremap <silent><C-S-J> :-tabmove<CR>
+nnoremap <silent><S-K> :tabnext<CR>
+nnoremap <silent><C-S-K> :+tabmove<CR>
+"nnoremap <silent><> :tabclose<CR>
+"nnoremap <silent><> :tabnew<CR>
+nnoremap <Leader>1 1gt
+nnoremap <Leader>2 2gt
+nnoremap <Leader>3 3gt
+nnoremap <Leader>4 4gt
+nnoremap <Leader>5 5gt
+nnoremap <Leader>6 6gt
+nnoremap <Leader>7 7gt
+nnoremap <Leader>8 8gt
+nnoremap <Leader>9 9gt
+nnoremap <Leader>0 :tablast<CR>
+nnoremap <leader>gl :execute 'tabnew storage/logs/laravel-' . strftime('%Y-%m-%d') . '.log'<CR>
+
+" save
+nnoremap <Leader>sq :call SafeSaveAndClose()<CR>:q<CR>
+nnoremap <Leader>sc :call SafeSaveAndClose()<CR>
+nnoremap <Leader>w :w<CR>
+nnoremap <Leader>q :q<CR>
+
+nmap <Leader>jd i<C-R>=strftime("[%Y-%m-%d %H:%M]: ")<CR><Esc>
+
+if has('terminal')
+autocmd TerminalOpen * setlocal nonu nowrap
+autocmd TerminalOpen * nnoremap <buffer> p :call term_sendkeys(bufnr(''), @")<CR>
+
+set termwinscroll=100000
+
+nnoremap <silent> <C-`> :below term<CR>
+nnoremap <silent> <Leader>` :term<CR><C-w>T
+nnoremap <silent> <Leader>gg :term++close gitui<CR><C-w>T
+nnoremap <Leader>tt :term<CR><C-w>T
+nnoremap <Leader>tr :tab term %<CR>
+nnoremap <Leader>ti :term ./artisan tinker<CR><C-w>T
+nnoremap <Leader>tp :term psysh<CR><C-w>T
+nnoremap <Leader>tl :term ./artisan test --no-coverage %<CR><C-w>T
+vnoremap <Leader>tl "1y:execute 'term ./artisan test --no-coverage --filter ' . shellescape(trim(@1)) . ' ' . expand('%')<CR><C-w>T
+nnoremap <Leader>tu :term php ./vendor/bin/phpunit --no-coverage %<CR><C-w>T
+vnoremap <Leader>tu "1y:execute 'term php ./vendor/bin/phpunit --no-coverage --filter ' . shellescape(trim(@1)) . ' ' . expand('%')<CR><C-w>T
+nnoremap <Leader>ty :term phpdbg ./vendor/bin/phpunit --no-coverage %<CR><C-w>T
+vnoremap <Leader>ty "1y:execute 'term phpdbg ./vendor/bin/phpunit --no-coverage --filter ' . shellescape(trim(@1)) . ' ' . expand('%')<CR><C-w>T
+nnoremap <Leader>td :term php-xdebug ./artisan test --no-coverage %<CR><C-w>T
+vnoremap <Leader>td "1y:execute 'term php-xdebug ./artisan test --no-coverage --filter ' . shellescape(trim(@1)) . ' ' . expand('%')<CR><C-w>T
+" tnoremap <silent><C-`>
+endif
+
+" registers
+nnoremap <silent> <Leader>x "+dd
+nnoremap <Leader>a "ayy:let @+ .= @a<CR>
+vnoremap <Leader>a "ay:let @+ .= @a<CR>
+
+if $TERMUX__PREFIX !=# ""
+  noremap <silent> <Leader>c :.w! ~/.cache/termux_clip<CR>
+  noremap <silent> <Leader>v :r ~/.cache/termux_clip<CR>
+  noremap <silent> <Leader>V :-r ~/.cache/termux_clip<CR>
+else
+  nnoremap <silent> <Leader>c "+yy
+  vnoremap <silent> <Leader>c "+y
+  nnoremap <silent> <Leader>v "+p
+  vnoremap <silent> <Leader>v "+p
+  nnoremap <silent> <Leader>V "+P
+  vnoremap <silent> <Leader>V "+P
+endif
+
+nnoremap <Leader>d :let @+ = ''<CR>
+vnoremap <silent> / "1y:let @"=@0<CR>/\V<C-R>=escape(@1, '/\')<CR><CR>
+nnoremap <Leader>yl :let @+ = expand('%') . ':' . line('.')<CR>
+nnoremap <Leader>yf :let @+ = expand('%')<CR>
+
+" macro
+nnoremap <Leader>m @q
+
+nnoremap <Leader>jj :source ~/.vimrc<CR>
+
+" Commands
+command Compact set listchars=tab:→\ ,leadmultispace:···•
+            \ | set tabstop=1
+            \ | set shiftwidth=1
+
+" Download vim-plug if missing
+if empty(glob("~/.vim/autoload/plug.vim"))
+    silent! execute '!curl --create-dirs -fsSLo ~/.vim/autoload/plug.vim https://raw.github.com/junegunn/vim-plug/master/plug.vim'
+    autocmd VimEnter * silent! PlugInstall
+endif
+" Plugins Init
+" see: https://github.com/junegunn/vim-plug
+call plug#begin()
+" used from package manager
+" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf'
+" , { 'on': ['Files', 'FZF', 'GFiles', 'BLines', 'Rg', 'History', 'BTags', 'Windows', 'Commands'] }
+Plug 'junegunn/fzf.vim'
+", { 'on': ['Files', 'FZF', 'GFiles', 'BLines', 'Rg', 'History', 'BTags', 'Windows', 'Commands'] }
+Plug 'junegunn/vim-github-dashboard', { 'on': ['GHDashboard', 'GHActivity'] }
+Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
+
+" Detect unwanted whitespace at the end of lines.
+Plug 'inkarkat/vim-ShowTrailingWhitespace'
+" dependencies
+Plug 'inkarkat/vim-ingo-library'
+
+" colors color names and codes
+" Plug 'chrisbra/Colorizer'
+" Asynchronous Lint Engine. Used without Language Server as lightweight linter
+" and formatter/fixer
+Plug 'dense-analysis/ale'
+" Conquer of Completion. NodeJS extension/LSP host
+Plug 'neoclide/coc.nvim', { 'on': [], 'branch': 'release' }
+" .editorconfig support
+Plug 'editorconfig/editorconfig-vim'
+" Motion through CamelCaseWords and underscore_notation
+Plug 'vim-scripts/camelcasemotion'
+", { 'on': ['CamelCaseMotion_b', 'CamelCaseMotion_e', 'CamelCaseMotion_w'] }
+" automatic keyboard layout switching in insert mode
+Plug 'lyokha/vim-xkbswitch'
+" Execute a :command and show the output in a temporary buffer
+Plug 'AndrewRadev/bufferize.vim'
+
+" remote dev
+" async synchronisation of remote files and local files using rsync
+Plug 'kenn7/vim-arsync'
+
+" vim-arsync depedencies
+" normalize async job control api
+Plug 'prabirshrestha/async.vim'
+
+
+" themes
+" Plug 'tomasiser/vim-code-dark', { 'on': [] }
+Plug 'tomasiser/vim-code-dark'
+" Plug 'Mofiqul/vscode.nvim'
+Plug 'rakr/vim-one'
+
+" uses the sign column to indicate added, modified and removed lines in a file
+" that is managed by a version control system
+" instead of vim-gitgutter
+Plug 'mhinz/vim-signify'
+
+" The fancy start screen and sessions
+Plug 'mhinz/vim-startify'
+
+" A Git wrapper so awesome, it should be illegal
+" :Git commands
+Plug 'tpope/vim-fugitive'
+" Delete/change/add parentheses/quotes/XML-tags
+Plug 'tpope/vim-surround'
+
+" Comment stuff out
+" Plug 'tpope/vim-commentary', { 'on': ['Commentary'] }
+Plug 'tomtom/tcomment_vim'
+
+" Status lines
+" Plug 'vim-airline/vim-airline'
+" Plug 'edkolev/tmuxline.vim'
+" Plug 'powerline/powerline'
+Plug 'itchyny/lightline.vim'
+" Plug'tiagovla/scope.nvim'
+
+" NOTE: startify conflict
+" 📡 Blazing fast minimap / scrollbar for vim, powered by code-minimap written in Rust.
+" Plug 'wfxr/minimap.vim', { 'on': ['Minimap'] }
+
+" Languages plugins
+" Plug 'vim-vdebug/vdebug', { 'for': 'php' }
+Plug 'posva/vim-vue', { 'for': 'vue' }
+Plug 'ledger/vim-ledger', { 'for': 'ldg' }
+Plug 'kmonad/kmonad-vim', { 'for': 'kbd' }
+Plug 'mpyatishev/vim-sqlformat', { 'for': 'sql' }
+Plug 'overleaf/vim-env-syntax', { 'for': 'shell' }
+Plug 'aklt/plantuml-syntax', { 'for': 'puml' }
+Plug 'jwalton512/vim-blade', { 'for': 'blade' }
+Plug 'vim-scripts/django.vim', { 'for': 'html' }
+
+" NERDTree plugins
+Plug 'preservim/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
+Plug 'ryanoasis/vim-devicons', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
+Plug '~/common/vim/vim-nerdtree-fzf', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
+
+" measure
+Plug 'dstein64/vim-startuptime', { 'on': 'StartupTime' }
+" Plug 'ActivityWatch/aw-watcher-vim'
+
+Plug 'wolandark/vim-piper'
+call plug#end()
+
+" Plugins Settings
+
+" junegunn/fzf
+let g:fzf_buffers_jump = 1
+
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val, "lnum": 1 }'))
+  copen
+  cc
+endfunction
+
+let g:fzf_action = {
+    \ 'ctrl-q': function('s:build_quickfix_list'),
+    \ 'Enter': 'tab split',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit' }
+
+" if resets cursor position
+" see: https://github.com/junegunn/fzf.vim/issues/1164#issuecomment-739469093
+
+" let g:fzf_layout = { 'window': { 'width': 1.0, 'height': 1.0, 'xoffset': 0.0, 'yoffset': 0.0 } }
+
+let g:fzf_layout = { 'window': '-tabnew' }
+autocmd! FileType fzf
+autocmd  FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode noruler
+let g:fzf_history_dir = '~/.cache/vim/fzf-history'
+
+" junegunn/fzf.vim
+" Initialize configuration dictionary
+let g:fzf_vim = {}
+let g:fzf_vim.preview_window = ['up,50%,border-none', 'ctrl-/']
+
+function! OpenFileWithFzf(input, ...)
+  let opts = a:0 > 0 ? a:1 : {}
+  let use_git = get(opts, 'use_git', 0)
+  let input = trim(a:input)
+
+  " Match: file.php:45 or file.php(45)
+  let match = matchlist(input, '^\(.*[^:)]\)[:(]\(\d\+\)[):]\?$')
+
+  if !empty(match) && !empty(match[1]) && !empty(match[2])
+    let filename = match[1]
+    let line_num = match[2]
+  else
+    let filename = input
+    let line_num = ''
+  endif
+
+  let processed_query = ProcessInputForFzf(filename)
+
+  if use_git
+    call fzf#vim#gitfiles('', {
+          \ 'options': ['--query', processed_query],
+          \ 'sink': { path -> s:HandleFileOpen(line_num, path) }
+          \ })
+  else
+    call fzf#vim#files('', {
+          \ 'options': ['--query', processed_query],
+          \ 'sink': { path -> s:HandleFileOpen(line_num, path) }
+          \ })
+  endif
+endfunction
+
+function! ProcessInputForFzf(input)
+  let input = a:input
+
+  " PHP use statements
+  if input =~ '^\s*use\s\+\S\+;\s*$'
+    return substitute(input,
+          \ '^\s*use\s\+\(\S\+\);\s*$',
+          \ '\=join(split(submatch(1), "\\"), "/").".php"',
+          \ '')
+
+  " Laravel view calls
+  elseif input =~ 'view.*[''"]\S\+[''"]'
+    return substitute(input,
+          \ '^.*view.*[''"]\(\S\+\)[''"].*$',
+          \ '\=substitute(submatch(1), "\\\.", "/", "g").".blade.php"',
+          \ '')
+
+  " PHP namespace paths
+  elseif input =~ '\\'
+    return substitute(input, '(\\)*', '/', 'g') . '.php'
+
+  " Raw text - convert path separators for better fuzzy matching
+  else
+    return substitute(input, '/\|\\', ' ', 'g')
+  endif
+endfunction
+
+function! s:HandleFileOpen(line_num, selected)
+  execute 'tabnew ' . fnameescape(a:selected)
+  if !empty(a:line_num)
+    execute a:line_num
+    normal! zz
+
+    let s:jump_highlight_id = matchadd('JumpLine', '\%'.line('.').'l')
+  endif
+endfunction
+
+function! ProcessStackTraceAndOpenFiles() range
+    let lines = getline(a:firstline, a:lastline)
+
+    for i in range(len(lines) - 1, 0, -1)
+        let line = lines[i]
+        if (line =~# 'app/' || line =~# 'tests/') && line !~# 'Middleware'
+            let input = matchstr(line, '\(app/\|tests/\).*$')
+
+            if !empty(input)
+                " Match: file.php:45 or file.php(45)
+                let match = matchlist(input, '^\(.*[^:)]\)[:(]\(\d\+\)[):]\?$')
+
+                if !empty(match) && !empty(match[1]) && !empty(match[2])
+                  let filename = match[1]
+                  let line_num = match[2]
+                else
+                  let filename = input
+                  let line_num = ''
+                endif
+                call s:HandleFileOpen(line_num, filename)
+            endif
+        endif
+    endfor
+endfunction
+
+command! -range OpenStacktrace <line1>,<line2>call ProcessStackTraceAndOpenFiles()
+
+nnoremap <silent> <Leader>o :Files<CR>
+" vnoremap <silent> <Leader>o "1y:call fzf#vim#files('', {'options': ['-q', trim(@1)]})<CR>
+vnoremap <silent> <Leader>o "1y:call OpenFileWithFzf(@1)<CR>
+nnoremap <silent> <Leader>go :call OpenFileWithFzf(getline('.'))<CR>
+" nnoremap <silent> <Leader>[ :call fzf#vim#files('', {'options': ['-q', trim(@+)]})<CR>
+nnoremap <silent> <Leader>[ :call OpenFileWithFzf(@+)<CR>
+nnoremap <silent> <Leader>p :GFiles<CR>
+nnoremap <silent> <Leader><Space> :GFiles<CR>
+" vnoremap <silent> <Leader><Space> "1y:call fzf#vim#gitfiles('', {'options': ['-q', trim(@1)]})<CR>
+vnoremap <silent> <Leader><Space> "1y:call OpenFileWithFzf(@1, { 'use_git': 1 })<CR>
+nnoremap <silent> <Leader>gp :call OpenFileWithFzf(getline('.'), { 'use_git': 1 })<CR>
+nnoremap <silent> <Leader>gf :GFiles?<CR>
+nnoremap <silent> <Leader>f :BLines<CR>
+vnoremap <silent> <Leader>f "1y:call fzf#vim#buffer_lines(trim(@1), {'options': ['--no-sort']})<CR>
+nnoremap <silent> <Leader>F :Rg<CR>
+vnoremap <silent> <Leader>F "1y:call fzf#vim#grep(
+      \ 'rg --column --line-number --no-heading --color=always --fixed-strings -- ' . shellescape(trim(@1)),
+      \ 1,
+      \ fzf#vim#with_preview())<CR>
+vnoremap <silent> <Leader>] :call fzf#vim#grep(
+      \ 'rg --column --line-number --no-heading --color=always --fixed-strings -- ' . shellescape(trim(@+)),
+      \ 1,
+      \ fzf#vim#with_preview())<CR>
+nnoremap <silent> <Leader>r :History<CR>
+nnoremap <silent> <Leader>R :BTags<CR>
+nnoremap <silent> <Leader>i :Windows<CR>
+nnoremap <silent> <Leader>I :Buffers<CR>
+nnoremap <silent> <Leader>P :Commands<CR>
+
+command! -nargs=+ SearchInside call s:SearchInside(<f-args>)
+
+function! s:SearchInside(dir, ...)
+  let search_text = join(a:000, ' ')
+  call fzf#vim#grep(
+    \ 'rg --column --line-number --no-heading --color=always --no-ignore --hidden --fixed-strings -- ' . shellescape(search_text) . ' ' . a:dir,
+    \ 1,
+    \ fzf#vim#with_preview())
+endfunction
+
+nnoremap <silent> <Leader>jF "1y:SearchInside vendor<CR>
+vnoremap <silent> <Leader>jF "1y:SearchInside vendor <C-r>1<CR>
+
+" preservim/nerdtree
+let NERDTreeMinimalUI=1
+
+nnoremap <C-\> :NERDTreeToggle<CR>
+nnoremap <C-S-\> :NERDTreeFind<CR>
+nnoremap <Leader>b :NERDTreeToggle<CR>
+nnoremap <Leader>B :NERDTreeFind<CR>
+
+" chrisbra/Colorizer
+let g:colorizer_auto_color=1
+
+" vim-scripts/camelcasemotion
+nnoremap <M-b> <Plug>CamelCaseMotion_b
+nnoremap <M-h> <Plug>CamelCaseMotion_b
+nnoremap <M-e> <Plug>CamelCaseMotion_e
+nnoremap <M-w> <Plug>CamelCaseMotion_w
+nnoremap <M-l> <Plug>CamelCaseMotion_w
+
+vnoremap <M-b> <Plug>CamelCaseMotion_b
+vnoremap <M-h> <Plug>CamelCaseMotion_b
+vnoremap <M-e> <Plug>CamelCaseMotion_e
+vnoremap <M-w> <Plug>CamelCaseMotion_w
+vnoremap <M-l> <Plug>CamelCaseMotion_w
+
+" lyokha/vim-xkbswitch
+if $DISPLAY == ""
+    let g:XkbSwitchEnabled = 0
+else
+    let g:XkbSwitchEnabled = 1
+    let g:XkbSwitchIMappings = ['ru']
+endif
+
+" tomasiser/vim-code-dark
+let g:codedark_modern=1
+if has('gui_running')
+    let g:codedark_italics=1
+else
+    let g:codedark_transparent=0
+endif
+
+" Mofiqul/vscode.nvim
+let g:vscode_transparency = 1
+if $DISPLAY != ""
+    let g:vscode_italic_comment = 1
+endif
+" colorscheme vscode
+
+" rakr/vim-one
+let g:one_allow_italics = 1
+
+" vim-airline/vim-airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline_highlighting_cache = 1
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+
+" edkolev/tmuxline.vim
+if $DISPLAY == ""
+    let g:tmuxline_powerline_separators = 0
+endif
+let g:tmuxline_preset = {
+    \'a'    : '#S',
+    \'b'    : '#(echo $TTY | cut -d / -f1,2 --complement)',
+    \'c'    : '',
+    \'win'  : '#I #W',
+    \'cwin' : '#I #W',
+    \'x'    : '',
+    \'y'    : '#(yd-status) #[fg=colour008]#(free -h | head -n2 | tail -n1 | tr -s " " | cut -d " " -f3)#[fg=default] #(free -h | head -n2 | tail -n1 | tr -s " " | cut -d " " -f7) #(~/yadisk/lang/bash/bin/battery-real-percent)',
+    \'z'    : '#[fg=default,bright]%a %F %H:%M'}
+
+
+" tpope/vim-commentary
+" nnoremap <Leader>/ :Commentary<CR>
+
+" dense-analysis/ale
+" Disable LSP features in ALE (offloaded to CoC)
+let g:ale_disable_lsp = 1
+let g:ale_completion_enabled = 0
+" https://vi.stackexchange.com/a/41596/44883
+let g:ale_virtualtext_cursor = 1
+" let g:ale_lint_on_text_changed = 'never'
+let g:ale_virtualtext_delay = 400
+
+" standards
+" let g:ale_php_phpcs_standard = 'psr12'
+"  NOTE: using /tmp to prevent interference with make lint
+let g:ale_cpp_cppcheck_options = '-q -j8 --enable=all --inconclusive --check-level=exhaustive --cppcheck-build-dir=/tmp --suppress="*:include/*" --suppress=missingIncludeSystem --suppress=missingInclude --suppress=unusedFunction'
+let g:ale_cpp_cc_options = '-std=gnu++23'
+let g:ale_python_auto_virtualenv = 1
+let g:ale_linters_explicit = 1
+" python uses coc
+let g:ale_linters = {
+    \ 'php': ['php', 'phpcs'],
+    \ 'c': ['cppcheck'],
+    \ 'cpp': ['cppcheck'],
+    \ 'javascript': ['eslint'],
+    \ 'typescript': ['eslint'],
+    \ 'vue': ['eslint'],
+    \ 'markdown': ['remark-lint'],
+\ }
+let g:ale_fixers = {
+    \ 'json': ['jq'],
+    \ 'php': ['pint'],
+    \ 'javascript': ['eslint'],
+    \ 'typescript': ['eslint'],
+    \ 'vue': ['eslint'],
+    \ 'sh': ['shfmt'],
+    \ 'bash': ['shfmt'],
+    \ 'c': ['astyle', 'clang-format'],
+    \ 'cpp': ['astyle', 'clang-format'],
+    \ 'python': ['ruff'],
+    \ 'markdown': ['remark-lint'],
+    \ 'html': ['html-beautify'],
+    \ 'htmldjango': ['html-beautify'],
+\ }
+" nnoremap <silent><M-CR> :ALEGoToDefinition<CR>
+nnoremap <Leader>l :ALEFix<CR>
+nnoremap <silent><Leader>N :ALEPrevious<CR>
+nnoremap <silent><Leader>n :ALENext<CR>
+
+" neoclide/coc.nvim
+autocmd User coc.nvim_initialized call remove(g:plugs, 'ale')
+" let g:coc_start_at_startup = 0
+"let g:coc_global_extensions = [
+            "\ '@yaegassy/coc-volar',
+            "\ '@yaegassy/coc-volar-tools',
+            "\ 'coc-eslint',
+            "\ '@yaegassy/coc-intelephense'
+            "\ 'coc-blade']
+
+function! LoadCoc()
+  call plug#load('coc.nvim')
+  call coc#rpc#start_server()
+endfunction
+
+nnoremap <silent> <C-Space> :call LoadCoc()<CR>
+inoremap <silent><expr> <C-Space> coc#refresh()
+inoremap <silent><expr> <Tab> exists("*coc#pum#visible") && coc#pum#visible() ? coc#_select_confirm() : "\<Tab>"
+nnoremap <silent><C-CR> :call CocAction('jumpDefinition', 'tabe')<CR>
+nnoremap <silent><Leader>k :call CocAction('format')<CR>
+nnoremap <Leader>jl :CocCommand editor.action.formatDocument<CR>
+nnoremap gi <Plug>(coc-implementation)
+nnoremap gr <Plug>(coc-references)
+nnoremap gu :call CocAction('jumpUsed')<CR>
+nnoremap <leader>. <Plug>(coc-codeaction-cursor)
+vnoremap <leader>. <Plug>(coc-codeaction-selected)
+
+" mhinz/vim-startify
+let g:startify_fortune_use_unicode = 1
+let g:startify_session_sort = 1
+let g:startify_session_autoload = 1
+let g:startify_session_persistence = 1
+let g:startify_change_to_dir = 0
+let g:startify_change_to_vcs_root = 1
+let g:startify_custom_header = 'startify#center(startify#fortune#boxed())'
+let g:startify_lists = [
+          \ { 'type': 'sessions',  'header': ['   Sessions']       },
+          \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+          \ { 'type': 'files',     'header': ['   MRU']            },
+          \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+          \ { 'type': 'commands',  'header': ['   Commands']       },
+          \ ]
+autocmd User Startified setlocal cursorline
+let NERDTreeHijackNetrw = 0
+
+let g:github_dashboard = { 'username': $GITHUB_USER, 'password': $GITHUB_ACCESS_TOKEN }
+
+
+" itchyny/lightline.vim
+function! CocCurrentFunction()
+    return get(b:, 'coc_current_function', '')
+endfunction
+
+" without lightline.enable.statusline
+set statusline+=%{CocCurrentFunction()}
+
+" with lightline.enable.statusline
+" set laststatus=2
+" set noshowmode
+
+let g:lightline = {}
+let g:lightline.enable = {
+    \ 'statusline': 0,
+    \ 'tabline': 1
+    \ }
+let g:lightline.colorscheme = 'one'
+let g:lightline.active = {
+    \ 'left': [ [ 'mode', 'paste' ],
+    \           [ 'currentfunction', 'readonly', 'filename', 'modified' ] ],
+    \ 'right': [ [ 'lineinfo' ],
+    \            [ 'percent' ],
+    \            [ 'fileformat', 'fileencoding', 'filetype' ] ],
+    \ }
+let g:lightline.inactive = {
+    \ 'left': [ [ 'filename' ] ],
+    \ 'right': [ [ 'lineinfo' ],
+    \            [ 'percent' ] ] }
+let g:lightline.tabline = {
+    \ 'left': [ ['tabs'] ],
+    \ 'right': [ ['tabcount'] ],
+    \ }
+let g:lightline.tab = {
+    \ 'active': [ 'tabnum', 'filename', 'modified' ],
+    \ 'inactive': [ 'filename', 'modified' ] }
+let g:lightline.subseparator = { 'left': '', 'right': '' }
+let g:lightline.component = {
+    \ 'tabcount': '%{tabpagenr("$")}',
+    \ }
+let g:lightline.component_function = {
+    \ 'cocstatus': 'coc#status',
+    \ 'currentfunction': 'CocCurrentFunction'
+    \ }
+
+" wfxr/minimap.vim
+let g:minimap_width = 2
+let g:minimap_auto_start = 0
+let g:minimap_auto_start_win_enter = 0
+let g:minimap_block_filetypes = ['fugitive', 'nerdtree', 'tagbar', 'fzf']
+let g:minimap_highlight_search = 1
+let g:minimap_git_colors = 1
+
+" augroup AutoHideUI
+"     autocmd!
+"     autocmd VimResized * call s:AutoToggleUI()
+" augroup END
+
+function! s:AutoToggleUI()
+    let min_width = 120  " Minimum width to show minimap and line numbers
+
+    " Check if current buffer is a terminal window
+    let is_terminal = &buftype == 'terminal'
+
+    if winwidth(0) >= min_width
+        if !exists('g:minimap_loaded') || g:minimap_loaded == 0
+            if exists(':Minimap') == 2
+                Minimap
+                let g:minimap_loaded = 1
+            endif
+        endif
+
+        if !is_terminal
+            set number
+        endif
+    else
+        if exists('g:minimap_loaded') && g:minimap_loaded == 1
+            if exists(':MinimapClose') == 2
+                MinimapClose
+                let g:minimap_loaded = 0
+            endif
+        endif
+
+        if !is_terminal
+            set nonumber
+        endif
+    endif
+endfunction
+
+" vim-vdebug/vdebug
+if !exists('g:vdebug_options')
+    let g:vdebug_options = {}
+endif
+let g:vdebug_options.port = 9003
+" let g:vdebug_options.layout = 'horizontal'
+let g:vdebug_options.layout = 'compact'
+" let g:vdebug_options.layout = 'tabs'
+let g:vdebug_options.watch_window_style = 'compact'
+let g:vdebug_options.break_on_open = 0
+let g:vdebug_options.breakpoint_window = 0
+let g:vdebug_options.stack_window = 0
+let g:vdebug_options.on_close = 'detach'
+" let g:vdebug_options.ide_key = 'vdebug'
+
+let g:vdebug_options.debug_file = '/tmp/vdebug.log'
+let g:vdebug_options.debug_file_level = 2
+let g:vdebug_options.debug_window_level = 2
+
+" wolandark/vim-piper
+let g:piper_bin = '~/common/python/voice-control/venv/bin/piper'
+let g:piper_voice = '~/storage/ai/models/en_US-john-medium.onnx'
+let g:php_tts_bin = 'php ~/common/php/php-tts/php-tts.php'
+nnoremap <Leader>e :call SmartSpeakLine()<CR>
+
+function! SmartSpeakLine()
+    let current_ft = &filetype
+
+    if current_ft == 'php' || current_ft == 'php.*'
+        call SpeakPHPCode()
+    elseif current_ft == 'python' || current_ft == 'python.*'
+        " Could add Python-specific handling here
+        call SpeakCurrentLine()
+    elseif current_ft == 'javascript' || current_ft == 'typescript' || current_ft == 'js' || current_ft == 'ts'
+        " Could add JS/TS handling here
+        call SpeakCurrentLine()
+    else
+        " Default for other filetypes
+        call SpeakCurrentLine()
+    endif
+endfunction
+
+function! SpeakPHPCode()
+    normal! "ayy
+    let line_text = join(split(@a, "\n"), " ")
+    let escaped_line = shellescape(line_text)
+
+    let command = 'echo '. escaped_line .' | '. g:php_tts_bin .' --model='. g:piper_voice .' | aplay -r 22050 -f S16_LE -t raw - 2>/dev/null &'
+
+    echo command
+    call system(command)
+    set lazyredraw
+    redraw!
+endfunction
+
+function! AskDeepSeek(prompt)
+    let api_url = "https://api.deepseek.com/v1/chat/completions"
+    if ! exists('$DEEPSEEK_API_TOKEN')
+        return 'Missing $DEEPSEEK_API_TOKEN'
+    endif
+
+    let api_key = $DEEPSEEK_API_TOKEN
+    if empty(api_key)
+        return '$DEEPSEEK_API_TOKEN is empty'
+    endif
+
+    let payload = json_encode({
+        \ "model": "deepseek-chat",
+        \ "messages": [{"role": "user", "content": a:prompt}],
+        \ "max_tokens": 100
+        \ })
+
+    let cmd = 'curl -s -X POST ' . api_url .
+        \ ' -H "Content-Type: application/json"' .
+        \ ' -H "Authorization: Bearer ' . api_key . '"' .
+        \ ' -d ' . shellescape(payload)
+    let response = system(cmd)
+
+    let json_response = {}
+    try
+        let json_response = json_decode(response)
+    catch
+        return response
+    endtry
+
+    if has_key(json_response, 'choices') && len(json_response.choices) > 0
+        let ai_response = json_response.choices[0].message.content
+        return ai_response
+    endif
+
+    return response
+endfunction
+
+" Define a command to use the function
+command! -nargs=1 DeepSeek call AskDeepSeek(<q-args>)
+
+function! StartChat()
+    tabnew
+    enew
+
+    setlocal buftype=nofile
+    setlocal bufhidden=hide
+    setlocal noswapfile
+    setlocal filetype=text
+    setlocal nonumber
+    setlocal norelativenumber
+    setlocal nowrap
+    setlocal nolist
+    setlocal textwidth=0
+    setlocal nocursorline
+    setlocal nocursorcolumn
+    file [Chat Log]
+    let g:chat_log_buf = bufnr('%')
+    call setbufline(g:chat_log_buf, 1, 'Messages')
+
+    execute 'resize ' . float2nr(&lines * 0.8)
+
+    below new
+    setlocal buftype=nofile
+    setlocal bufhidden=hide
+    setlocal noswapfile
+    setlocal filetype=text
+    setlocal nonumber
+    setlocal norelativenumber
+    setlocal nowrap
+    setlocal nolist
+    setlocal textwidth=0
+    setlocal nocursorline
+    setlocal nocursorcolumn
+    file [Chat Input]
+    let g:chat_input_buf = bufnr('%')
+
+    execute 'resize ' . float2nr(&lines * 0.2)
+
+    nnoremap <buffer> <CR> :call SendMessageFromInput()<CR>
+
+    wincmd j
+endfunction
+
+function! SendMessageFromInput()
+    let message = join(getbufline(g:chat_input_buf, 1, '$'), "\n")
+    if empty(message)
+        return
+    endif
+
+    let user = empty('$USER') ? 'You' : $USER
+    call SendMessage(user, message)
+
+    call deletebufline(g:chat_input_buf, 1, '$')
+
+    let answer = AskDeepSeek(message)
+    call SendMessage('DeepSeek', answer)
+endfunction
+
+function! SendMessage(username, message)
+    let timestamp = strftime('%H:%M:%S')
+
+    let formatted_message = '[' . timestamp . '] ' . a:username . ": " . a:message
+    call appendbufline(g:chat_log_buf, '$', split(formatted_message, "\n"))
+
+    let log_win = bufwinnr(g:chat_log_buf)
+    if log_win != -1
+        execute log_win . 'wincmd w'
+        normal! G
+        wincmd p
+    endif
+endfunction
+
+command! Chat call StartChat()
+
+" after line config
+augroup colorset
+    autocmd!
+    autocmd ColorScheme one
+        \ highlight ShowTrailingWhitespace ctermbg=red guibg=red
+        \ | highlight JumpLine guibg=yellow ctermbg=yellow gui=bold
+        \ | highlight Normal ctermbg=none
+        \ | highlight TabLineSel ctermfg=Green ctermbg=LightGreen
+        \ | if has('gui_running') | set background=light | endif
+        \ | call lightline#disable() | call lightline#enable()
+        \ | call one#highlight('Comment', '707070', '', g:one_allow_italics == 1 && 'italic' || '')
+        \ | call one#highlight('vimLineComment', '707070', '', g:one_allow_italics == 1 && 'italic' || '')
+    autocmd ColorScheme codedark
+        \ highlight ShowTrailingWhitespace ctermbg=red guibg=red
+        \ | highlight JumpLine guibg=yellow ctermbg=yellow gui=bold
+        \ | highlight DiffText ctermbg=black
+        \ | highlight CursorLine ctermbg=none gui=underline cterm=underline
+        \ | if has('gui_running') | set background=dark | endif
+        \ | call lightline#disable() | call lightline#enable()
+augroup END
+
+function! SafeSaveAndClose()
+    if exists(':MinimapClose')
+        noautocmd bufdo if bufname('%') !=# '-MINIMAP-' | execute 'MinimapClose' | endif
+    endif
+
+    wall
+    SClose
+endfunction
+
+" Post plugins settings
+
+if $THEME == "dark"
+    if has('gui_running') | set background=dark | endif
+    colorscheme codedark
+else
+    if has('gui_running') | set background=light | endif
+    colorscheme one
+endif
+
+" status line
+" set cmdheight=1
+" Insert, Replace or Visual mode on the last line
+" set noshowcmd
+"	  last		Last line of the screen (default).
+"	  		used for input after `:`, `/`, `?`
+"	  statusline	Status line of the current window.
+"	  		shows mode, filename, line number, col, scroll percent
+"	  tabline	First line of the screen if 'showtabline' is enabled.
+set showcmdloc="last"
+
+"		0: never (line num,col in last line)
+"		1: (default) only if there are at least two windows
+"		2: (modern) always
+set laststatus=0
+
+" tabs
+set tabpagemax=100
+
+"		0: never
+"		1: (default) only if there are at least two tab pages
+"		2: always
+" set showtabline=2
+" set tabline=%t\ %M
+
+" AWStart

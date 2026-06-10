@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if pgrep -f "config/polybar/toggle" >/dev/null; then
+    pkill -f "config/polybar/toggle"
+fi
+
+~/.config/polybar/toggle & disown

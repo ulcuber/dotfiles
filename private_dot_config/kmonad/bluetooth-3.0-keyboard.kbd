@@ -1,0 +1,132 @@
+(defcfg
+  input  (device-file "/dev/input/by-name/bluetooth-3.0-keyboard")
+  output (uinput-sink "KMonad BT")
+  cmp-seq rmet
+  cmp-seq-delay 5
+  fallthrough true
+  allow-cmd true
+)
+
+(defsrc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lalt lmet           spc
+)
+
+(defalias
+  nml  (layer-switch normal)
+  ;; layer active when holding key
+  sym  (layer-toggle symbols)
+  smm  (layer-toggle symbols-mirror)
+  num  (layer-toggle numbers)
+  emp  (layer-switch empty)
+  pmr  (layer-switch mirror)
+  pnm  (layer-switch numbers)
+  pom  (layer-switch oh-numbers)
+  nav  (layer-toggle navigation)
+  pnv  (layer-switch navigation)
+  fn   (layer-switch functional)
+  crm  (layer-switch chrome-debug)
+  wrd  (around-next (layer-toggle words))
+  ar   (tap-macro - >)
+  th   (tap-macro $ t h i s - >)
+  are  (tap-macro spc = > spc)
+  eqq  (tap-macro = ")
+  eq   (tap-macro spc = spc)
+  add  (tap-macro spc + spc)
+  sub  (tap-macro spc - spc)
+  mul  (tap-macro spc * spc)
+  div  (tap-macro spc / spc)
+  ces  (tap-next esc lctl)
+  tlt  (tap-next @wrd @sym)
+  mlt  (tap-next @wrd @smm)
+
+  mcf  (tap-macro f u n c t i o n)
+  mcr  (tap-macro r e t u r n)
+  mcq  (tap-macro q u e r y)
+  mcp  (tap-macro p u b l i c)
+  mcv  (tap-macro v a l u e)
+  mcn  (tap-macro n a m e)
+  mcc  (tap-macro c l a s s)
+  rnu  (cmd-button "echo $USER > /tmp/kmonad")
+)
+
+(deflayer normal
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @ces a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet @tlt          spc
+)
+(deflayer mirror
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  p    o    i    u    y    t    r    e    w    q    [    ]    \
+  @ces ;    l    k    j    h    g    f    d    s    a    '    ret
+  lsft /    .    ,    m    n    b    v    c    x    z    rsft
+  lctl lmet @mlt          spc
+)
+(deflayer symbols
+  grv  @crm 2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  @pnv @pom @eq  @fn  @th  y    `    ^    %    +    [    ]    \
+  caps !    @    =    $    del  bspc \_   *   \(    \)   &    print
+  lsft @emp #    @eqq @are b    @pnm -    rmet @ar  \    rsft
+  lctl lmet lalt           ralt
+)
+(deflayer symbols-mirror
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  @pnv @pom @eq  @fn  @th  y    `    ^    %    +    [    ]    \
+  caps !    @    =    $    del  bspc \_   *   \(    \)   &    print
+  lsft @emp #    @eqq @are b    @pnm -    rmet @ar  \    rsft
+  lctl lmet lalt           ralt
+)
+(deflayer numbers
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    @eq  r    t    y    u    ^    %    @add [    ]    \
+  @nml 1    2    3    4    5    6    7    8    9    0    -    ret
+  lsft z    x    c    v    @mul n    @sub ,    .    @div rsft
+  lctl lmet @sym           spc
+)
+(deflayer oh-numbers
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  6    7    8    9    0    y    u    ^    %    @add [    ]    \
+  @nml 1    2    3    4    5    6    7    8    9    0    -    ret
+  lsft z    x    bspc v    @mul n    @sub ,    .    @div rsft
+  lctl lmet @sym           spc
+)
+(deflayer functional
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @nml f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  lsft z    x    c    v    b    n    -    ,    .    /    rsft
+  lctl lmet lalt           spc
+)
+(deflayer navigation
+  grv  1    2       3     4     5      6      7    8    9     0    -    =    bspc
+  tab  q    C-right esc   r     t      y      C-z  @nml o     pgup [    ]    \
+  @nml a    s       d     home  g      left   down up   right end  '    ret
+  lsft z    del     C-ins S-ins C-left pgdn   m    ,    .     C-f  rsft
+  lctl lmet lalt           spc
+)
+(deflayer words
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  @mcq w    e    @mcr t    y    u    i    o    @mcp [    ]    \
+  @nml a    s    d    @mcf g    h    j    k    l    ;    '    ret
+  lsft z    @pmr @mcc @mcv b    @mcn m    ,    .    /    rsft
+  lctl @num lalt          @nav
+)
+(deflayer empty
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @nml a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt          spc 
+)
+(deflayer chrome-debug
+  grv  1    2    3    4    5    6    7    8     9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i     o    p    [    ]    \
+  @nml a    s    d    f    g    h    f11  S-F11 f9   ;    '    f8
+  lsft z    x    c    v    b    n    -    ,     .    /    rsft
+  lctl lmet lalt           f10
+)

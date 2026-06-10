@@ -1,0 +1,100 @@
+alias h='offset=$((LINES / 2 - 2)); for ((n=0; n < offset; n++)); do echo; done && figlet -w $COLUMNS -c -f big "If you gaze long enough into an abyss, the abyss will gaze back into you." && sleep 10 && video2ascii'
+
+# Laravel
+alias tinker="./artisan tinker"
+alias key="./artisan key:generate"
+alias laravel_new="composer create-project laravel/laravel"
+alias rl="./artisan route:list -vvv > ../r.txt 2>&1 ; code ../r.txt"
+alias mm="./artisan make:migration"
+alias m="./artisan migrate -vvv"
+alias rb="./artisan migrate:rollback --step=1 -vvv"
+alias mfs="./artisan migrate:fresh --seed"
+alias log='vim ./storage/logs/laravel-$(date +%F).log'
+alias tl='tail -n 200 ./storage/logs/laravel-$(date +%F).log | grep -A 200 -e "\[$(date +%F)" > ../tl.log 2>&1 ; code ../tl.log'
+alias pu="vendor/bin/phpunit"
+alias pint="vendor/bin/pint"
+sail() {
+	if [ -f sail ]; then
+		sh sail "$@"
+	else
+		sh vendor/bin/sail "$@"
+	fi
+}
+
+# Yii
+alias yii="php yii"
+alias gii="php yii gii"
+alias yii_new="composer create-project --prefer-dist yiisoft/yii2-app-basic"
+
+# ls
+alias ls='ls --color=auto --group-directories-first'
+alias ll='ls -alhF --group-directories-first'
+alias l='ls -lhF --group-directories-first'
+alias e='exa -lF --icons --group-directories-first'
+alias ee='exa -laF --icons --group-directories-first'
+alias eee='exa -laFT --icons --group-directories-first -L2'
+
+# cd
+alias ..="cd .."
+alias g='cd $(find . -maxdepth 1 -type d -not -path "*/.*" | fzf)'
+alias i='cd $(find . -maxdepth 1 -type d | fzf)'
+alias f='cd $(fd -d 1 -t d | fzf)'
+alias u='cd ~/common/vhosts && cd $(fd -d 1 -t d | fzf)'
+
+# web
+alias ci="php /usr/local/bin/composer install"
+alias composer7.4="php7.4 /usr/local/bin/composer"
+alias composer8.0="php8.0 /usr/local/bin/composer"
+alias composer8.2="php8.2 /usr/local/bin/composer"
+
+# xorg
+alias x='startx'
+
+# hard
+alias num="setxkbmap -option 'numpad:microsoft'"
+alias gov_performance="echo performance | sudo tee /sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_governor"
+alias gov_powersave="echo powersave | sudo tee /sys/devices/system/cpu/cpu[0-9]*/cpufreq/scaling_governor"
+alias pref_power="echo power | sudo tee /sys/devices/system/cpu/cpu[0-9]*/cpufreq/energy_performance_preference"
+
+# env
+alias less="less --use-color"
+alias bc="bc -q"
+
+# monitor
+alias du_='du -t 10M -d 3 -h $HOME/ | sort -hr | less'
+alias du-all="sudo du -t 10M -d 3 -h / | sort -hr | less"
+alias consumer="ps -Ao comm --sort=-pcpu --no-headers | head -n 1"
+
+# trans
+alias t="trans en:ru"
+alias tt="trans ru:en"
+
+# copy-paste
+alias xc="xclip -selection clipboard"
+alias xv="xclip -selection clipboard -o"
+
+# ssh
+alias hosts="grep '^Host' ~/.ssh/config | cut -d ' ' -f2"
+
+# deploy
+alias _dep="git checkout main && git push && git push --tags && git checkout develop && git push"
+
+# rc
+alias mouse="sudo rc-service gpm start"
+alias mouse-off="sudo rc-service gpm stop"
+
+# weather
+alias forecast="curl -fsS --compressed 'wttr.in/ulyanovsk?n&Q'"
+alias forecast_viz="curl -fsS --compressed 'wttr.in/ulyanovsk?format=v2'"
+alias weather="curl -fsS --compressed 'wttr.in/ulyanovsk?0&Q'"
+alias wthr="curl -fsS --compressed 'wttr.in/ulyanovsk?format=%t+(%f)+%x%c%C+(%p)+%h+%w+%P+%m%M\n'"
+alias moon="curl -fsS --compressed 'wttr.in/moon'"
+alias wttr="weather"
+
+# lang
+alias r="LANG=ru_RU.utf8; export LANG; uim-fep"
+alias а="LANG=en_US.utf8; export LANG; uim-fep"
+
+# forks
+alias neofetch="~/forks/neofetch/neofetch"
+alias w3mimgdisplay="~/forks/w3m/w3mimgdisplay"

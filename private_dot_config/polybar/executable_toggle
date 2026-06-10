@@ -1,0 +1,32 @@
+#!/bin/bash
+
+declare -a scripts=(
+    "~/git-repo/own/bash/bash-scripts/bin/battery-real-percent monitor"
+    "~/git-repo/own/bash/bash-scripts/bin/cpu-temp"
+    "~/git-repo/own/bash/bash-scripts/bin/mem-free"
+)
+declare -a bars=(
+    "battery"
+    "heat"
+    "memory"
+)
+
+arraylength=${#scripts[@]}
+
+while [[ $(pgrep -x xinit) ]]; do
+    for ((i = 0; i < arraylength; i++)); do
+        script=${scripts[$i]}
+        bar=${bars[$i]}
+        if [[ -n "$(bash $script)" || -n "$1" ]]; then
+            if ! pgrep -f -x "polybar $bar" >/dev/null; then
+                polybar "$bar" & disown
+            fi
+        else
+            if pgrep -f -x "polybar $bar" >/dev/null; then
+                pkill -f -x "polybar $bar"
+            fi
+        fi
+    done
+    wait || exit
+    sleep 10
+done

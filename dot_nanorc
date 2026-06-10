@@ -1,0 +1,13 @@
+set autoindent
+set tabsize 4
+#set mouse
+#set nohelp
+set softwrap
+set speller "aspell -x -c"
+#set linenumbers
+set multibuffer
+#set guidestripe 120
+#set stripecolor ""
+
+#bind ctrl+pgup pervbuff main
+#bind ctrl+pgdown nextbuff main

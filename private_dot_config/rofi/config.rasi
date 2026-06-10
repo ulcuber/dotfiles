@@ -1,0 +1,5 @@
+@theme "~/.config/rofi/themes/afterglow-keys.rasi"
+
+configuration {
+//  run-command: ""
+}

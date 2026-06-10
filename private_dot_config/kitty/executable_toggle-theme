@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [[ -n "$1" ]]; then
+	THEME="$1"
+else
+	HOUR=$(date +%-H)
+	if [[ "$HOUR" > 7 && "$HOUR" < 18 ]]; then
+		THEME=light
+	else
+		THEME=dark
+	fi
+fi
+
+kitten themes --reload-in=all "$THEME"

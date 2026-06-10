@@ -1,0 +1,108 @@
+(defcfg
+  input  (device-file "/dev/input/by-path/platform-i8042-serio-0-event-kbd")
+  output (uinput-sink "KMonad output")
+  cmp-seq rmet
+  cmp-seq-delay 5
+  fallthrough true
+  allow-cmd false
+)
+
+(defsrc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt
+)
+
+(defalias
+  nml  (layer-switch normal)
+  ;; layer active when holding key
+  sym  (layer-toggle symbols)
+  num  (layer-toggle numbers)
+  emp  (layer-toggle empty)
+  pnm  (layer-switch numbers)
+  pom  (layer-switch oh-numbers)
+  nav  (layer-toggle navigation)
+  pnv  (layer-switch navigation)
+  fn   (layer-switch functional)
+  wrd  (around-next (layer-toggle words))
+  ar   (tap-macro - >)
+  th   (tap-macro $ t h i s - >)
+  are  (tap-macro spc = > spc)
+  eqq  (tap-macro = ")
+  eq   (tap-macro spc = spc)
+  add  (tap-macro spc + spc)
+  sub  (tap-macro spc - spc)
+  mul  (tap-macro spc * spc)
+  div  (tap-macro spc / spc)
+  ces  (tap-next esc lctl)
+  tlt  (tap-next @wrd @sym)
+
+  mcf  (tap-macro f u n c t i o n)
+  mcr  (tap-macro r e t u r n)
+  mcq  (tap-macro q u e r y)
+  mcp  (tap-macro p u b l i c)
+  mcv  (tap-macro v a l u e)
+  mcn  (tap-macro n a m e)
+  mcc  (tap-macro c l a s s)
+
+  rnu  (cmd-button "echo $USER > /tmp/kmonad")
+)
+
+(deflayer normal
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @ces a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet @tlt          spc             ralt
+)
+(deflayer symbols
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  @pnv @pom @eq  @fn  @th  y    `    ^    %    +    [    ]    \
+  caps !    @    =    $    del  bspc \_   *   \(    \)   &    print
+  lsft z    #    @eqq @are b    @pnm -    rmet @ar  \    rsft
+  lctl lmet lalt           ralt           ralt
+)
+(deflayer numbers
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    @eq  r    t    y    u    ^    %    @add [    ]    \
+  @nml 1    2    3    4    5    6    7    8    9    0    -    ret
+  lsft z    x    c    v    @mul n    @sub ,    .    @div rsft
+  lctl lmet @sym           spc            ralt
+)
+(deflayer oh-numbers
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  6    7    8    9    0    y    u    ^    %    @add [    ]    \
+  @nml 1    2    3    4    5    6    7    8    9    0    -    ret
+  lsft @eq  @add @sub @div @mul n    @sub ,    .    @div rsft
+  lctl lmet @sym           spc            ralt
+)
+(deflayer functional
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @nml f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  lsft z    x    c    v    b    n    -    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt
+)
+(deflayer navigation
+  grv  1    2       3    4    5      6      7    8    9     0    -    =    bspc
+  tab  q    C-right esc  r    t      y      C-z  @nml o     pgup [    ]    \
+  @nml a    s       d    home g      left   down up   right end  '    ret
+  lsft z    del     c    v    C-left pgdn   m    ,    .     C-f  rsft
+  lctl lmet lalt           spc                   ralt
+)
+(deflayer words
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  @mcq w    e    @mcr t    y    u    i    o    @mcp [    ]    \
+  @nml a    s    d    @mcf g    h    j    k    l    ;    '    ret
+  lsft z    x    @mcc @mcv b    @mcn m    ,    .    /    rsft
+  lctl @num lalt          @nav            ralt
+)
+(deflayer empty
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @nml a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt          spc             ralt
+)

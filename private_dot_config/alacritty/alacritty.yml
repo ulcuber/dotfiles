@@ -1,0 +1,14 @@
+scrolling:
+  history: 10000
+window:
+  opacity: 0.8
+  decorations: None
+#  startup_mode: Fullscreen
+cursor:
+  style:
+    shape: Beam
+font:
+  normal:
+    family: Iosevka Term Thin
+    style: Regular
+  size: 16

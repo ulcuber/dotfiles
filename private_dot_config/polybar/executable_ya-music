@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# @see https://github.com/polybar/polybar/wiki/Module:-script
+# @see https://askubuntu.com/a/575708/834409
+
+if [[ "$1" == "select" ]]; then
+    id=$(xdotool selectwindow)
+else
+    id=$(xdotool getwindowfocus)
+fi
+
+prev=""
+sleep_pid=0
+
+print_title() {
+    title=$(xdotool getwindowname "$id")
+    if [[ "$?" -ne "0" ]]; then
+        pkill -f -x 'polybar music-bar'
+        exit
+    fi
+    title=$(echo "$title" | sed -e 's/ - Google Chrome//' -e 's/ - VLC media player//' -e 's/.mp3//' -e 's/ — Mozilla Firefox//')
+
+    if [[ -z "$title" ]]; then
+        exit
+    fi
+
+    if [[ "$title" != "$prev" ]]; then
+        prev="$title"
+
+        echo "$title"
+    fi
+}
+
+key() {
+    local prev_id
+
+    prev_id=$(xdotool getwindowfocus)
+
+    [[ "$id" != "$prev_id" ]] && xdotool windowactivate --sync "$id"
+    xdotool key --window "$id" "$1"
+    [[ "$id" != "$prev_id" ]] && xdotool windowactivate --sync "$prev_id"
+
+    if [[ "$sleep_pid" != "0" ]]; then
+        # wait for new title
+        sleep 0.5
+        kill "$sleep_pid"
+    fi
+}
+
+pause() {
+    key "space"
+}
+
+next() {
+    key "l"
+}
+
+focus() {
+    if [[ -z "$back_id" ]]; then
+        back_id=$(xdotool getwindowfocus)
+        if [[ "$back_id" != "$id" ]]; then
+            xdotool windowactivate --sync "$id"
+        else
+            back_id=
+        fi
+    else
+        xdotool windowactivate --sync "$back_id"
+        if [[ "$?" -ne "0" ]]; then
+            xdotool windowactivate --sync "$id"
+        fi
+        back_id=
+    fi
+}
+
+trap "pause" CONT
+trap "next" USR1
+trap "focus" USR2
+
+while true; do
+    print_title
+
+    sleep 10 &
+    sleep_pid=$!
+    wait
+done

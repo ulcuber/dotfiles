@@ -1,0 +1,11 @@
+#!/bin/bash
+
+killall -q polybar
+killall -q picom
+
+while pgrep -x "polybar|picom" >/dev/null; do
+  sleep 0.1
+done
+
+i3-msg restart
+

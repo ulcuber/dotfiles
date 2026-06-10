@@ -1,0 +1,16 @@
+[cursor.style]
+shape = "Beam"
+
+[font]
+size = 16
+
+[font.normal]
+family = "Iosevka Term Thin"
+style = "Regular"
+
+[scrolling]
+history = 10000
+
+[window]
+decorations = "None"
+opacity = 0.8
