@@ -85,7 +85,7 @@ if [ "$USER" != "root" ]; then
 				if [[ -n $(ls /sys/class/power_supply) ]]; then
 					PS1+='|$(battery)'
 				fi
-				PS1+='|$(yd-status)] ${debian_chroot:+($debian_chroot)} \[\033[01;34m\]\w\[\033[00m\]${branch}\n\$ '
+				PS1+='] ${debian_chroot:+($debian_chroot)} \[\033[01;34m\]\w\[\033[00m\]${branch}\n\$ '
 			else
 				if [[ "$TERM" = "xterm-kitty" ]]; then
 					alias ranger="ranger --cmd='set preview_images_method kitty'"
