@@ -1,15 +1,16 @@
 #!/bin/bash
 
+base_dir="/home/$USER/git-repos/own/bash/bash-scripts/bin"
+
 declare -a scripts=(
-    "~/git-repo/own/bash/bash-scripts/bin/battery-real-percent monitor"
-    "~/git-repo/own/bash/bin-scripts/cpu-temp"
-    "~/git-repo/own/bash/bin-scripts/mem-free"
+    "$base_dir/battery-real-percent monitor"
+    "$base_dir/cpu-temp"
+    "$base_dir/mem-free"
 )
 declare -a bars=(
     "battery"
     "heat"
     "memory"
-    "yadisk"
 )
 
 PREVIOUS_DISPLAY=${DISPLAY}
