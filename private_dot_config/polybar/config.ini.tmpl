@@ -525,7 +525,7 @@ click-left = "pkill -f -x 'polybar battery'"
 
 [module/cpu-temp-mini]
 type = custom/script
-exec = bash ~/git-repos/own/bash/bash-scripts/bin/cpu-temp
+exec = bash -c '~/git-repos/own/bash/bash-scripts/bin/cpu-temp {{ .temperature_sensor }}'
 interval = 3
 click-left = "pkill -f -x 'polybar heat'"
 
