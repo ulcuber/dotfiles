@@ -42,11 +42,11 @@ bindsym $mod+Shift+q kill
 bindsym --release $mod+q exec xkill
 
 # launch applications from $PATH, with option to launch in terminal.
-bindsym $mod+d exec --no-startup-id ~/git-repos/cpp/xkb-switch/build/xkb-switch -s us && rofi -show run -run-command "i3-msg exec '{cmd}'"
-bindsym XF86Search exec --no-startup-id ~/git-repos/cpp/xkb-switch/build/xkb-switch -s us && rofi -show drun
+bindsym $mod+d exec --no-startup-id xkb-switch -s us && rofi -show run -run-command "i3-msg exec '{cmd}'"
+bindsym XF86Search exec --no-startup-id xkb-switch -s us && rofi -show drun
 # launch applications based on desktop files.
 # It tries to be compliant to the XDG standard.
-bindsym $mod+r exec ~/git-repos/cpp/xkb-switch/build/xkb-switch -s us && rofi -show drun
+bindsym $mod+r exec xkb-switch -s us && rofi -show drun
 
 bindsym $mod+g mode "go"
 mode "go" {
@@ -54,9 +54,9 @@ mode "go" {
 	bindsym Escape mode "default"
 
 	# Switch between windows on an EWMH compatible window manager.
-	bindsym g exec ~/git-repos/cpp/xkb-switch/build/xkb-switch -s us && rofi -show window, mode "default"
-	bindsym $mod+g exec ~/git-repos/cpp/xkb-switch/build/xkb-switch -s us && rofi -show window, mode "default"
-	bindsym f exec ~/git-repos/cpp/xkb-switch/build/xkb-switch -s us && rofi -show filebrowser, mode "default"
+	bindsym g exec xkb-switch -s us && rofi -show window, mode "default"
+	bindsym $mod+g exec xkb-switch -s us && rofi -show window, mode "default"
+	bindsym f exec xkb-switch -s us && rofi -show filebrowser, mode "default"
 
 	bindsym m exec --no-startup-id "i3-input -P 'Move window to workspace:'  -F 'move container to workspace \\"%s\\"; workspace \\"%s\\"'", mode "default"
 	bindsym c exec --no-startup-id "i3-input -P 'Create workspace:' -F 'workspace \\"%s\\"'", mode "default"
