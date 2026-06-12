@@ -1,0 +1,24 @@
+#!/sbin/openrc-run
+
+USER=victor
+
+rc_need="bluetooth"
+supervisor="supervise-daemon"
+
+command_user="${USER}"
+
+command="/home/${USER}/.local/bin/kmonad"
+command_args="/home/${USER}/.config/kmonad/kbw-6nx.0-keyboard.kbd"
+pidfile="/run/kmonad-kbw-6nx.0-keyboard.pid"
+output_log="/var/log/${USER}/kmonad-kbw-6nx.0-keyboard.log"
+error_log="/var/log/${USER}/kmonad-kbw-6nx.0-keyboard.err"
+
+start_pre() {
+    max_wait=5
+    while [ ! -e "/dev/input/by-name/kbw-6nx.0-keyboard" ] && [ $max_wait -gt 0 ]; do
+        sleep 0.5
+        max_wait=$((max_wait - 1))
+    done
+    [ -e "/dev/input/by-name/kbw-6nx.0-keyboard" ] || return 1
+    sleep 1
+}

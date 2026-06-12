@@ -1,0 +1,12 @@
+#!/sbin/openrc-run
+
+USER=victor
+
+command_user="${USER}"
+
+command="/home/${USER}/.local/bin/kmonad"
+command_args="/home/${USER}/.config/kmonad/native.kbd"
+command_background="true"
+pidfile="/run/kmonad.pid"
+output_log="/var/log/${USER}/kmonad.log"
+error_log="/var/log/${USER}/kmonad.err"

@@ -1,0 +1,5 @@
+SUBSYSTEM=="input", ATTRS{name}=="KBW-6N*", SYMLINK+="input/by-name/kbw-6nx.0-keyboard"
+
+SUBSYSTEM=="input", ACTION=="add", ATTRS{name}=="KBW-6N*", RUN+="/sbin/rc-service kmonad-kbw-6nx.0-keyboard start"
+
+SUBSYSTEM=="input", ACTION=="remove", ATTRS{name}=="KBW-6N*", RUN+="/sbin/rc-service kmonad-kbw-6nx.0-keyboard stop"

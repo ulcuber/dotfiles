@@ -1,0 +1,5 @@
+SUBSYSTEM=="input", ATTRS{name}=="Bluetooth 3.0 Keyboard", SYMLINK+="input/by-name/bluetooth-3.0-keyboard"
+
+SUBSYSTEM=="input", ACTION=="add", ATTRS{name}=="Bluetooth 3.0 Keyboard", RUN+="/sbin/rc-service kmonad-bluetooth-3.0-keyboard start"
+
+SUBSYSTEM=="input", ACTION=="remove", ATTRS{name}=="Bluetooth 3.0 Keyboard", RUN+="/sbin/rc-service kmonad-bluetooth-3.0-keyboard stop"

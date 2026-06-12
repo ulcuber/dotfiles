@@ -1,0 +1,42 @@
+[mysqld]
+innodb_print_all_deadlocks=ON
+
+tmp_table_size=512M
+max_heap_table_size=512M
+
+read_buffer_size=4M 
+sort_buffer_size=4M 
+join_buffer_size=4M
+
+innodb_buffer_pool_size=1G
+innodb_buffer_pool_chunk_size=128M
+innodb_buffer_pool_instances=8
+
+innodb_log_buffer_size=64M
+
+innodb_file_per_table=ON
+innodb_redo_log_capacity=1G
+
+# Connection optimization for parallel processes
+max_connections=200
+max_user_connections=200
+back_log=500
+thread_cache_size=100
+
+table_definition_cache=4000
+table_open_cache=8000
+open_files_limit=65536
+innodb_open_files=65536
+
+performance_schema=0
+max_allowed_packet=256M
+
+# risky
+# Flush logs to disk once per second (not every transaction (1))
+# expected impact 200-300%
+innodb_flush_log_at_trx_commit=0
+# expected impact 10-25%
+innodb_doublewrite=OFF
+# 0 OS decides when to flush (FASTEST)
+# expected impact 50-100%
+sync_binlog=0
