@@ -150,7 +150,7 @@ start() {
 			printf "%-20s %-20s %-20s %-20s\n" "$@"
 		}
 		if [ -z "$1" ]; then
-			local wallpapers_dir="$HOME/storage/media/wallpapers"
+			local wallpapers_dir="$HOME/storage/Pictures/wallpapers"
 			WALLPAPER="$wallpapers_dir/$(ls $wallpapers_dir | sort -R | tail -1)"
 			export WALLPAPER
 			while :; do

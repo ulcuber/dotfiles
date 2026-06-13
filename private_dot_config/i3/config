@@ -410,15 +410,15 @@ bindsym XF86AudioNext exec playerctl next
 bindsym $mod+Escape exec --no-startup-id "i3lock --screen 1 --blur 1 --clock --force-clock --date-str='%A, %F' --indicator --beep --time-color='#f5f5f5' --date-color='#d0d0d0' --layout-color='#e5b566' --ring-color='#7e8d50' --inside-color='#202020' --ringwrong-color='#ac4142' --verif-color='#7dd5cf' --keylayout 0 --ignore-empty-password --radius=200 --bar-indicator --bar-color='#202020'"
 
 # save fullscreen screenshot
-bindsym $mod+Print exec "cd ~/storage/screenshots && scrot -f '%F_%H-%M-%S_screenshot.png'"
+bindsym $mod+Print exec "cd ~/storage/Pictures/screenshots && scrot -f '%F_%H-%M-%S_screenshot.png'"
 # select (-s) screenshot on freezed (-f) screen to clipboard
-bindsym --release Print exec "cd ~/storage/screenshots && scrot -s -f -e 'xclip -selection clipboard -target image/png -in $f && rm $f' -f '%F_%H-%M-%S_screenshot.png'"
-bindsym --release Shift+Print exec "cd ~/storage/screenshots && scrot -s -f -e 'xclip -selection clipboard -target image/png -in $f' -f '%F_%H-%M-%S_screenshot.png'"
+bindsym --release Print exec "cd ~/storage/Pictures/screenshots && scrot -s -f -e 'xclip -selection clipboard -target image/png -in $f && rm $f' -f '%F_%H-%M-%S_screenshot.png'"
+bindsym --release Shift+Print exec "cd ~/storage/Pictures/screenshots && scrot -s -f -e 'xclip -selection clipboard -target image/png -in $f' -f '%F_%H-%M-%S_screenshot.png'"
 
-bindsym --release $mod+i exec "cd ~/storage/screenshots && scrot -s -f -e 'xclip -selection clipboard -target image/png -in $f && rm $f' -f '%F_%H-%M-%S_screenshot.png'"
-bindsym --release $mod+$alt+i exec "cd ~/storage/screenshots && scrot -f -e 'xclip -selection clipboard -target image/png -in $f && rm $f' -f '%F_%H-%M-%S_screenshot.png'"
-bindsym --release $mod+Shift+i exec "cd ~/storage/screenshots && scrot -s -f -e 'xclip -selection clipboard -target image/png -in $f' -f '%F_%H-%M-%S_screenshot.png'"
-bindsym --release $mod+$alt+Shift+i exec "cd ~/storage/screenshots && scrot -f -e 'xclip -selection clipboard -target image/png -in $f' -f '%F_%H-%M-%S_screenshot.png'"
+bindsym --release $mod+i exec "cd ~/storage/Pictures/screenshots && scrot -s -f -e 'xclip -selection clipboard -target image/png -in $f && rm $f' -f '%F_%H-%M-%S_screenshot.png'"
+bindsym --release $mod+$alt+i exec "cd ~/storage/Pictures/screenshots && scrot -f -e 'xclip -selection clipboard -target image/png -in $f && rm $f' -f '%F_%H-%M-%S_screenshot.png'"
+bindsym --release $mod+Shift+i exec "cd ~/storage/Pictures/screenshots && scrot -s -f -e 'xclip -selection clipboard -target image/png -in $f' -f '%F_%H-%M-%S_screenshot.png'"
+bindsym --release $mod+$alt+Shift+i exec "cd ~/storage/Pictures/screenshots && scrot -f -e 'xclip -selection clipboard -target image/png -in $f' -f '%F_%H-%M-%S_screenshot.png'"
 
 exec_always i3-background
 
