@@ -260,7 +260,7 @@ mode "open" {
 	bindsym Return mode "default"
 
 	# qwerty
-	bindsym w exec google-chrome-stable, mode "default"
+	bindsym w exec $BROWSER, mode "default"
 	bindsym e exec kitty intel_power, mode "default"
 	bindsym r exec kitty bash ranger, mode "default"
 
@@ -395,9 +395,9 @@ bindsym $mod+x scratchpad show
 bindsym $mod+Shift+x move scratchpad
 bindsym $mod+s sticky toggle
 
-bindsym XF86WWW exec google-chrome-stable
-bindsym XF86Tools exec google-chrome-stable https://music.yandex.ru
-bindsym XF86Mail exec google-chrome-stable https://mail.yandex.ru
+bindsym XF86WWW exec $BROWSER
+bindsym XF86Tools exec $BROWSER https://music.yandex.ru
+bindsym XF86Mail exec $BROWSER https://mail.yandex.ru
 bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioPause exec playerctl play-pause
