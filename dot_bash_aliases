@@ -96,5 +96,5 @@ alias r="LANG=ru_RU.utf8; export LANG; uim-fep"
 alias а="LANG=en_US.utf8; export LANG; uim-fep"
 
 # forks
-alias neofetch="~/forks/neofetch/neofetch"
-alias w3mimgdisplay="~/forks/w3m/w3mimgdisplay"
+alias neofetch="~/git-repos/forks/neofetch/neofetch"
+alias w3mimgdisplay="~/git-repos/forks/w3m/w3mimgdisplay"
