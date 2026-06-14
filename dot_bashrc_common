@@ -18,7 +18,7 @@ export LC_TIME="ru_RU.utf8"
 export EDITOR=vim
 
 OS=$(grep -Po "(?<=^ID=)'?\w+" /etc/os-release | tr -d "'")
-export PATH="$PATH:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$HOME/common/bash/$OS/bin:$HOME/common/bash/bin:$HOME/go/bin:$HOME/.symfony/bin:$HOME/.cargo/bin:$HOME/git-repos/own/bash/bash-scripts/$OS/bin:$HOME/git-repos/own/bash/bash-scripts/bin"
+export PATH="$PATH:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$HOME/storage/common/bash/$OS/bin:$HOME/storage/common/bash/bin:$HOME/go/bin:$HOME/.symfony/bin:$HOME/.cargo/bin:$HOME/git-repos/own/bash/bash-scripts/$OS/bin:$HOME/git-repos/own/bash/bash-scripts/bin"
 unset OS
 
 for sh in /etc/bash/bashrc.d/*; do
