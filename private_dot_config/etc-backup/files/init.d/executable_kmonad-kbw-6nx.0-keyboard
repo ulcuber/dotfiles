@@ -2,7 +2,7 @@
 
 USER=victor
 
-rc_need="bluetooth"
+rc_need="bluetoothd"
 supervisor="supervise-daemon"
 
 command_user="${USER}"
