@@ -10,6 +10,7 @@ FILES := \
 	init.d/kmonad \
 	init.d/kmonad-bluetooth-3.0-keyboard \
 	init.d/kmonad-kbw-6nx.0-keyboard \
+	init.d/AmneziaVPNd \
 	X11/xorg.conf.d/00-keyboard.conf \
 	X11/xorg.conf.d/40-libinput.conf \
 	mysql/mysql.d/90-user.cnf \
