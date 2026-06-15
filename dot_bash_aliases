@@ -39,7 +39,7 @@ alias ..="cd .."
 alias g='cd $(find . -maxdepth 1 -type d -not -path "*/.*" | fzf)'
 alias i='cd $(find . -maxdepth 1 -type d | fzf)'
 alias f='cd $(fd -d 1 -t d | fzf)'
-alias u='cd ~/common/vhosts && cd $(fd -d 1 -t d | fzf)'
+alias u='cd ~/vhosts && cd $(fd -d 1 -t d | fzf)'
 
 # web
 alias ci="php /usr/local/bin/composer install"
