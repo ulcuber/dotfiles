@@ -6,8 +6,8 @@ pidfile="/run/amnezia-vpn.pid"
 
 depend() {
     # netifrc
-    after net
-    # after NetworkManager
+    # after net
+    after NetworkManager
 }
 
 start() {
