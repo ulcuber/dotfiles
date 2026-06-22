@@ -1,5 +1,5 @@
 #!/bin/bash
 
-~/git-repos/cpp/xkb-switch/build/xkb-switch -s us
+xkb-switch -s us
 
-rofi -show drun -theme ~/.config/rofi/themes/afterglow-mouse.rasi -run-command "i3-msg exec '$@'"
+rofi -show drun -hover-select -theme ~/.config/rofi/themes/afterglow-mouse.rasi -run-command "i3-msg exec '$@'"
