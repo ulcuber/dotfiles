@@ -70,17 +70,13 @@ inherit = bar/base
 
 border-color = #00000000
 
-tray-position = right
-tray-detached = false
-tray-padding = 1
-
 vm-restack = i3
 ; override-redirect = true
 
 enable-ipc = true
 
-modules-left = rofi minify i3
-modules-right = github wlan filesystem cpu cpu_temp ssd_temp memory xkeyboard pulseaudio battery real-battery xbacklight datetime
+modules-left = pulseaudio rofi i3
+modules-right = tray cpu memory xkeyboard real-battery datetime
 
 [bar/time]
 inherit = bar/free
@@ -331,8 +327,8 @@ modules-left = mem-free-mini
 
 [module/rofi]
 type = custom/text
-content= "🔍"
-content-padding = 1
+label = "🔍"
+format-padding = 1
 click-left = "~/.config/polybar/rofi-launcher '{cmd}'"
 click-right = "rofi -show window -theme ~/.config/rofi/themes/afterglow-mouse.rasi -run-command i3-msg exec '{cmd}'"
 
@@ -514,7 +510,7 @@ click-left = pkill -f -x 'polybar process-trigger-bar' && sleep 0.5 && polybar p
 
 [module/real-battery]
 type = custom/script
-exec = echo "($(battery))"
+exec = echo "$(battery)"
 interval = 60
 
 [module/real-battery-mini]
@@ -551,9 +547,11 @@ type = custom/text
 content = 🔒
 click-left = "~/.config/polybar/toggle-mini off; i3-nagbar -t warning -m 'Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
-[module/xbacklight]
-type = internal/xbacklight
+[module/backlight]
+type = internal/backlight
 label = 🔆%percentage%%
+card = {{ .backlight_card }}
+# enable-scroll = true
 
 [module/github]
 type = internal/github
@@ -630,5 +628,10 @@ label =
 type = custom/ipc
 hook-0 = "curl -fsS --compressed 'wttr.in/ulyanovsk?format=%t+(%f)+%x%c%C+(%p)+%h+%w+%P+%m%M\\n'"
 initial = 0
+
+[module/tray]
+type = internal/tray
+tray-size = 100%
+tray-spacing = 2pt
 
 ; vim:ft=dosini
