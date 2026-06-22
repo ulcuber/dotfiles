@@ -3,6 +3,7 @@ BACKUPDIR := $(CURDIR)/files
 
 FILES := \
 	nginx/octane-failover-example.conf \
+	nginx/nuxt-failover-example.conf \
 	udev/rules.d/99-bluetooth-keyboard.rules \
 	udev/rules.d/99-hdmi.rules \
 	udev/rules.d/99-KBW-6NX.0_Keyboard.rules \
