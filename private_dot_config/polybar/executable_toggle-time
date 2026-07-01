@@ -1,7 +1,0 @@
-#!/bin/bash
-
-if pgrep -f -x "polybar time" >/dev/null; then
-    pkill -f -x "polybar time"
-else
-    polybar time & disown
-fi

@@ -21,10 +21,6 @@ if has('gui_running')
     set guioptions -=m
     " hide tool bar
     set guioptions -=T
-    " set guifont=Ulcuber\ 22
-    " set guifont=Quinze\ 25
-    " set guifont=Paper\ Scratch\ 18
-    " set guifont=Iosevka\ Term\ Light\ 18
     set guifont=Do\ Thin\ 24
 
     " Zoom in (Increase font size)
@@ -151,6 +147,8 @@ nnoremap <Leader>ty :term phpdbg ./vendor/bin/phpunit --no-coverage %<CR><C-w>T
 vnoremap <Leader>ty "1y:execute 'term phpdbg ./vendor/bin/phpunit --no-coverage --filter ' . shellescape(trim(@1)) . ' ' . expand('%')<CR><C-w>T
 nnoremap <Leader>td :term php-xdebug ./artisan test --no-coverage %<CR><C-w>T
 vnoremap <Leader>td "1y:execute 'term php-xdebug ./artisan test --no-coverage --filter ' . shellescape(trim(@1)) . ' ' . expand('%')<CR><C-w>T
+nnoremap <Leader>tg :exe "tab term glow " . escape(expand('%'), ' ')<CR>
+nnoremap <Leader>tm :term make<CR><C-w>T
 " tnoremap <silent><C-`>
 endif
 
@@ -210,7 +208,7 @@ Plug 'inkarkat/vim-ShowTrailingWhitespace'
 Plug 'inkarkat/vim-ingo-library'
 
 " colors color names and codes
-" Plug 'chrisbra/Colorizer'
+Plug 'chrisbra/Colorizer', { 'on': ['ColorHighlight'] }
 " Asynchronous Lint Engine. Used without Language Server as lightweight linter
 " and formatter/fixer
 Plug 'dense-analysis/ale'
@@ -280,6 +278,8 @@ Plug 'overleaf/vim-env-syntax', { 'for': 'shell' }
 Plug 'aklt/plantuml-syntax', { 'for': 'puml' }
 Plug 'jwalton512/vim-blade', { 'for': 'blade' }
 Plug 'vim-scripts/django.vim', { 'for': 'html' }
+Plug 'rust-lang/rust.vim', { 'for': 'rust' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && bun install && bun update && cd _static && curl -LO https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js' }
 
 " NERDTree plugins
 Plug 'preservim/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeFind'] }
@@ -323,9 +323,12 @@ autocmd  FileType fzf set laststatus=0 noshowmode noruler
 let g:fzf_history_dir = '~/.cache/vim/fzf-history'
 
 " junegunn/fzf.vim
-" Initialize configuration dictionary
 let g:fzf_vim = {}
 let g:fzf_vim.preview_window = ['up,50%,border-none', 'ctrl-/']
+
+" overrides. See ~/.vim/plugged/fzf.vim/plugin/fzf.vim
+" fix searching in file names
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case -- ".fzf#shellescape(<q-args>), fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}), <bang>0)
 
 function! OpenFileWithFzf(input, ...)
   let opts = a:0 > 0 ? a:1 : {}
@@ -473,7 +476,10 @@ nnoremap <Leader>b :NERDTreeToggle<CR>
 nnoremap <Leader>B :NERDTreeFind<CR>
 
 " chrisbra/Colorizer
-let g:colorizer_auto_color=1
+let g:colorizer_auto_color = 0
+let g:colorizer_x11_names = 1
+let g:colorizer_disable_bufleave = 1
+nnoremap <silent> <Leader>jh :ColorHighlight<CR>
 
 " vim-scripts/camelcasemotion
 nnoremap <M-b> <Plug>CamelCaseMotion_b
@@ -532,7 +538,6 @@ let g:tmuxline_preset = {
     \'win'  : '#I #W',
     \'cwin' : '#I #W',
     \'x'    : '',
-    \'y'    : '#(yd-status) #[fg=colour008]#(free -h | head -n2 | tail -n1 | tr -s " " | cut -d " " -f3)#[fg=default] #(free -h | head -n2 | tail -n1 | tr -s " " | cut -d " " -f7) #(~/yadisk/lang/bash/bin/battery-real-percent)',
     \'z'    : '#[fg=default,bright]%a %F %H:%M'}
 
 
@@ -560,6 +565,7 @@ let g:ale_linters = {
     \ 'php': ['php', 'phpcs'],
     \ 'c': ['cppcheck'],
     \ 'cpp': ['cppcheck'],
+    \ 'rust': ['cargo'],
     \ 'javascript': ['eslint'],
     \ 'typescript': ['eslint'],
     \ 'vue': ['eslint'],
@@ -575,6 +581,7 @@ let g:ale_fixers = {
     \ 'bash': ['shfmt'],
     \ 'c': ['astyle', 'clang-format'],
     \ 'cpp': ['astyle', 'clang-format'],
+    \ 'rust': ['rustfmt'],
     \ 'python': ['ruff'],
     \ 'markdown': ['remark-lint'],
     \ 'html': ['html-beautify'],
@@ -922,15 +929,24 @@ function! SafeSaveAndClose()
     SClose
 endfunction
 
-" Post plugins settings
+function! ApplyColorScheme()
+    let scheme = trim(system('gsettings get org.gnome.desktop.interface color-scheme'))
 
-if $THEME == "dark"
-    if has('gui_running') | set background=dark | endif
-    colorscheme codedark
-else
-    if has('gui_running') | set background=light | endif
-    colorscheme one
-endif
+    if scheme ==# "'prefer-dark'"
+        if has('gui_running')
+            set background=dark
+        endif
+        colorscheme codedark
+    else
+        if has('gui_running')
+            set background=light
+        endif
+        colorscheme one
+    endif
+endfunction
+autocmd VimEnter * call ApplyColorScheme()
+
+" Post plugins settings
 
 " status line
 " set cmdheight=1

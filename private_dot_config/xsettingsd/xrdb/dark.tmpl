@@ -1,0 +1,90 @@
+! vim: set filetype=xdefaults :
+! reload via `xrdb -merge ~/.Xresources`
+! check via `xrdb -query`
+*faceName: ComicShannsMono Nerd Font
+*faceSize: 26
+*reportFonts: true
+*renderFont: true
+Xcursor.theme: Chameleon-Pearl Large
+Xcursor.size: {{ .cursor_size }}
+
+Xft.dpi: {{ .dpi }}
+Xft.hintstyle:  hintfull
+Xft.antialias: 1
+Xft.rgba: vbgr
+Xft.dark: 1
+
+! NOTE: macro replaced everywhere
+! theme specific colors
+#define COLOR_SATURATED_PINK  #ff6b9c
+#define COLOR_PINK            #ff7b9c
+#define COLOR_LIGHT_PINK      #ffb8d0
+#define COLOR_VERY_LIGHT_PINK #ffd4e8
+#define COLOR_GOLD            #e8c97a
+#define COLOR_LIGHT_GOLD      #f5d98a
+#define COLOR_LAVENDER        #c7b9ff
+#define COLOR_LIGHT_LAVENDER  #d4c8ff
+
+#define COLOR_FG #f5ebf0
+#define COLOR_BG #5a3d5c
+#define COLOR_BG_ALT #7a5d7c
+
+#define COLOR_BG_ARGB #aa5a3d5c
+#define COLOR_BG_ALT_ARGB #dd7a5d7c
+
+! ── Normal Colors ──
+#define COLOR_BLACK   #4a3a4a
+#define COLOR_RED     COLOR_PINK
+#define COLOR_GREEN   COLOR_GOLD
+#define COLOR_YELLOW  COLOR_GOLD
+#define COLOR_BLUE    COLOR_LIGHT_PINK
+#define COLOR_MAGENTA COLOR_LAVENDER
+#define COLOR_CYAN    COLOR_SATURATED_PINK
+#define COLOR_WHITE   #000000
+
+! ── Bright Colors ──
+#define COLOR_BRIGHT_BLACK   #7a5d7c
+#define COLOR_BRIGHT_RED     #ff6b8a
+#define COLOR_BRIGHT_GREEN   COLOR_LIGHT_GOLD
+#define COLOR_BRIGHT_YELLOW  COLOR_LIGHT_GOLD
+#define COLOR_BRIGHT_BLUE    COLOR_VERY_LIGHT_PINK
+#define COLOR_BRIGHT_MAGENTA COLOR_LIGHT_LAVENDER
+#define COLOR_BRIGHT_CYAN    COLOR_VERY_LIGHT_PINK
+#define COLOR_BRIGHT_WHITE   COLOR_WHITE
+
+*.foreground:           COLOR_FG
+*.background:           COLOR_BG
+*.selection_foreground: COLOR_BG
+*.selection_background: COLOR_FG
+
+*.background_argb:       COLOR_BG_ARGB
+*.background_alt_argb:   COLOR_BG_ALT_ARGB
+*.background_empty_argb: #00000000
+
+*.cursor:      COLOR_PINK
+*.cursorColor: COLOR_PINK
+
+! ── Formatting Colors ──
+*.colorBD: COLOR_GOLD           !bold
+*.colorUL: COLOR_SATURATED_PINK !underline
+*.colorIT: COLOR_LIGHT_LAVENDER !italic
+
+! ── Normal Colors ──
+*.color0:  COLOR_BLACK
+*.color1:  COLOR_RED
+*.color2:  COLOR_GREEN
+*.color3:  COLOR_YELLOW
+*.color4:  COLOR_BLUE
+*.color5:  COLOR_MAGENTA
+*.color6:  COLOR_CYAN
+*.color7:  COLOR_WHITE
+
+! ── Bright Colors ──
+*.color8:  COLOR_BRIGHT_BLACK
+*.color9:  COLOR_BRIGHT_RED
+*.color10: COLOR_BRIGHT_GREEN
+*.color11: COLOR_BRIGHT_YELLOW
+*.color12: COLOR_BRIGHT_BLUE
+*.color13: COLOR_BRIGHT_MAGENTA
+*.color14: COLOR_BRIGHT_CYAN
+*.color15: COLOR_BRIGHT_WHITE

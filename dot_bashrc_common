@@ -26,10 +26,6 @@ for sh in /etc/bash/bashrc.d/*; do
 done
 unset sh
 
-if [[ -r "/home/$USER/.config/kitty/kitty.conf" ]]; then
-	export THEME=$(grep -A1 'BEGIN_KITTY_THEME' "/home/$USER/.config/kitty/kitty.conf" | tail -n1 | grep -oP '\w+' | tr '[:upper:]' '[:lower:]' | tr -d '\n')
-fi
-
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
 xterm-color | *-256color | fbterm)
@@ -60,7 +56,7 @@ if [ "$USER" != "root" ]; then
 		if [[ -z "$DISPLAY" || -n "$VIMRUNTIME" ]]; then
 			PROMPT_COMMAND='exit_code=$?; exit_char="${exit_code}  "; exit_char=${exit_char:0:3}; branch=$(__git_ps1 " %b");'
 		else
-			PROMPT_COMMAND='exit_code=$?; exit_char=$([[ $exit_code -eq 0 ]] && echo -n "✅   " || echo -n "❌${exit_code}   "); exit_char=${exit_char:0:4}; branch=$(__git_ps1 " %b");'
+			PROMPT_COMMAND='exit_code=$?; exit_char=$([[ $exit_code -eq 0 ]] && echo -n "🌸   " || echo -n "💔${exit_code}   "); exit_char=${exit_char:0:4}; branch=$(__git_ps1 " %b");'
 		fi
 	else
 		PROMPT_COMMAND='branch=$(__git_ps1 " %b");'

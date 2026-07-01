@@ -8,7 +8,7 @@ xkb-switch -s us
 
 query=$(rofi -dmenu \
     -p "🔍 Google: " \
-    -theme-str 'window {width: 70%; height: 2em;}' \
+    -theme-str 'window {width: 50%; height: 6em;}' \
     -hide-scrollbar)
 
 if [ -n "$query" ]; then

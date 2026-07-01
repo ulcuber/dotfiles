@@ -1,11 +1,11 @@
 #!/bin/bash
 
-base_dir="/home/$USER/git-repos/own/bash/bash-scripts/bin"
+base_dir="$(dirname "${BASH_SOURCE[0]}")"
 
 declare -a scripts=(
-    "$base_dir/battery-real-percent monitor"
-    "$base_dir/cpu-temp"
-    "$base_dir/mem-free"
+    "$base_dir/indicator-battery-real-percent monitor"
+    "$base_dir/indicator-cpu-temp"
+    "$base_dir/indicator-mem-free"
 )
 declare -a bars=(
     "battery"

@@ -1,5 +1,0 @@
-#!/bin/bash
-
-xkb-switch -s us
-
-rofi -show drun -hover-select -theme ~/.config/rofi/themes/afterglow-mouse.rasi -run-command "i3-msg exec '$@'"

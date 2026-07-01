@@ -1,15 +1,9 @@
 #!/bin/bash
 
-# -f full -x exact
 if pgrep -f -x "polybar top" >/dev/null; then
-    # -q quiet if not killed
-    pkill -f -x "polybar top"
+    pkill polybar
 else
-    pkill -f -x "polybar i3"
-    pkill -f -x "polybar mini"
-    pkill -f -x "polybar notifications"
-    pkill -f -x "polybar time"
-    pkill -f -x "polybar sound"
+    pkill polybar
 
     polybar top & disown
 fi

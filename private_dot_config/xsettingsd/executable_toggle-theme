@@ -1,0 +1,26 @@
+#!/bin/bash
+
+if [[ -n "$1" ]]; then
+	THEME="$1"
+else
+	HOUR=$(date +%-H)
+	if [[ "$HOUR" > 7 && "$HOUR" < 18 ]]; then
+		THEME=light
+	else
+		THEME=dark
+	fi
+fi
+
+ln -sf "/home/$USER/.config/xsettingsd/themes/$THEME" ~/.xsettingsd
+killall -HUP xsettingsd
+
+ln -sf "/home/$USER/.config/xsettingsd/xrdb/$THEME" ~/.Xresources
+xrdb -merge ~/.Xresources
+
+gsettings set org.gnome.desktop.interface color-scheme "prefer-$THEME"
+
+cd ~/.config/rofi
+ln -sf "$THEME.rasi" current.rasi
+
+pkill polybar
+~/.config/polybar/toggle-free

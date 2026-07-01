@@ -97,4 +97,3 @@ alias а="LANG=en_US.utf8; export LANG; uim-fep"
 
 # forks
 alias neofetch="~/git-repos/forks/neofetch/neofetch"
-alias w3mimgdisplay="~/git-repos/forks/w3m/w3mimgdisplay"

@@ -16,321 +16,194 @@
 ;
 ;==========================================================
 
-
 [settings]
 screenchange-reload = true
 pseudo-transparency = false
 
 [colors]
-# Alpha=CC + Raisin Black
-background = #CC202020
-background-alt = ${xrdb:selection_background}
+background = ${xrdb:background_argb}
+background-alt = ${xrdb:background_alt_argb}
+background-empty = ${xrdb:background_empty_argb}
 foreground = ${xrdb:foreground}
-primary = ${xrdb:color2}
-secondary = ${xrdb:color6}
-alert = ${xrdb:color1}
+primary = ${xrdb:color1}
+secondary = ${xrdb:color4}
+urgent = ${xrdb:color9}
 disabled = ${xrdb:selection_background}
+border = ${xrdb:color7}
 
+; -------- Abstract Bars -------- ;
 [bar/base]
 monitor = ${env:MONITOR:}
-
 width = 100%
 height = 20pt
-
-; border-left-size = 4pt
-; border-right-size = 4pt
-; border-bottom-size = 4pt
-
-radius = 18
-radius-top-left = 0.0
-radius-top-right = 0.0
-
-; dpi = 96
-
+line-size = 1pt
+module-margin = 1
+border-size = 0
+border-color = ${colors.border}
 background = ${colors.background}
 foreground = ${colors.foreground}
-
-line-size = 4pt
-
-module-margin = 1
-
+label-empty-background = ${colors.background-empty}
 separator = |
 separator-foreground = ${colors.disabled}
-
-font-0 = Iosevka Term:style=Regular
+font-0 = "ComicShannsMono Nerd Font:size=14;3"
 font-1 = Noto Color Emoji:scale=8
-
 cursor-click = pointer
 cursor-scroll = ns-resize
 
-; enable-ipc = true
-
-[bar/top]
-inherit = bar/base
-
-border-color = #00000000
-
-vm-restack = i3
-; override-redirect = true
-
-enable-ipc = true
-
-modules-left = pulseaudio rofi i3
-modules-right = tray cpu memory xkeyboard real-battery datetime
-
-[bar/time]
-inherit = bar/free
-
-offset-x = 50%:+260pt
-width = 360pt
-
-radius-top-left = 0
-radius-top-right = 0
-radius-bottom-left = 18
-radius-bottom-right = 18
-
-modules-center = date time-utc time-moscow
-
 [bar/free]
-inherit = bar/base
-
-font-0 = Iosevka Term:style=Regular:14;1
-
 override-redirect = true
-height = 14pt
-line-size = 1pt
-border = 0
-
-[bar/i3]
-inherit = bar/free
-
-width = 200pt
-# minus half of width
-offset-x = 50%:-100pt
-height = 14pt
-
-radius-top-left = 0
-radius-top-right = 0
-radius-bottom-left = 18
-radius-bottom-right = 18
-
-modules-left = output
-modules-center = i3
-modules-right = rofi
-
-[bar/i3-hdmi]
-inherit = bar/free
-
-width = 300pt
-offset-x = 100%:-300pt
-
 height = 24pt
-
-line-size = 6pt
-
-radius-top-left = 0
-radius-top-right = 0
-radius-bottom-left = 18
-radius-bottom-right = 0
-
-modules-left = output
-modules-center = i3
-
-[bar/i3-mode]
-inherit = bar/free
-
-offset-x = 50%:-420pt
-width = 230pt
-
-radius-top-left = 0
-radius-top-right = 0
-radius-bottom-left = 18
-radius-bottom-right = 18
-
-modules-center = i3-mode
-
-[bar/mini]
-inherit = bar/free
-
-#font-0 = Press Start 2P:style=Bold:size=14;4
-font-0 = Iosevka Term:style=Bold:size=22;4
-
-width = 62pt
-height = 24pt
-offset-x = 100%:-62pt
-radius-bottom-right = 0.0
-
-modules-right = time
-
-[bar/off-bar]
-inherit = bar/free
-
-width = 18pt
-height = 20pt
-
-radius-bottom-right = 14
-
-modules-left = off
-
-[bar/sound]
-inherit = bar/free
-
-#font-0 = Noto Sans Mono:style=Regular:8;1
-font-0 = Iosevka Term Heavy:style=Bold:size=14;1
-font-1 = Noto Color Emoji:scale=9
-
-# offset-x = 2pt
-# offset-y = 2pt
-height = 24pt
-width = 40pt
-
-#background = #CCFFFFFF
-label-empty-background = #00FFFFFF
-foreground = ${colors.primary}
-separator =
-
-#radius-top-left = 8
-#radius-top-right = 8
-#radius-bottom-left = 8
-#radius-bottom-right = 8
-
-radius-top-left = 0
-radius-top-right = 0
-radius-bottom-left = 0
-radius-bottom-right = 18
-
-modules-left = pulseaudio
-
-[bar/battery]
-inherit = bar/free
-
-font-0 = Iosevka Term Heavy:style=Regular:14;1
-font-1 = Noto Color Emoji:scale=8;4
-
-offset-y = 98.5%
-
-width = 50pt
-height = 1.6%
 line-size = 0
-
-radius-top-left = 0
-radius-top-right = 18
-radius-bottom-left = 0
-radius-bottom-right = 0
-
-label-empty-background = #00FFFFFF
+border-size = 0
+border-color = ${colors.border}
+background = ${colors.background}
+foreground = ${colors.foreground}
+label-empty-background = ${colors.background-empty}
+radius = 14
+radius-top-left = 0.0
+radius-top-right = 0.0
 separator =
-
-modules-left = real-battery-mini
+font-0 = "ComicShannsMono Nerd Font:style=Bold:size=16;4"
+font-1 = "Noto Color Emoji:scale=7;3"
 
 [bar/indicator]
 override-redirect = true
-
-#font-0 = Press Start 2P:style=Bold:size=16;4
-font-0 = Iosevka Term Thin:style=Bold:size=20;4
+width = 100pt
+offset-x = 100%:-100pt
+height = 28pt
+background = ${colors.background}
+padding = 0
+line-size = 0
+separator =
+radius-top-left = 14
+radius-top-right = 0
+radius-bottom-left = 14
+radius-bottom-right = 0
+font-0 = "ComicShannsMono Nerd Font:size=16;3"
 font-1 = Noto Color Emoji:scale=5;4
 
-background = ${colors.background}
+; -------- Bars -------- ;
+[bar/top]
+inherit = bar/base
+vm-restack = i3
+enable-ipc = true
+modules-left = pulseaudio rofi i3
+modules-right = tray wlan cpu memory xkeyboard battery datetime
 
-padding = 0
-separator =
-
-offset-x = 100%:-120pt
-
-width = 120pt
-height = 28pt
-line-size = 0
-
-radius-top-left = 18
-radius-top-right = 0
-radius-bottom-left = 18
-radius-bottom-right = 0
-
-[bar/music-trigger-bar]
-inherit = bar/indicator
-
-width = 2%
-offset-x = 98%
-offset-y = 17%
-
-radius-top-left = 18
-radius-top-right = 0
-radius-bottom-left = 18
-radius-bottom-right = 0
-
-modules-center = music-trigger
-
-[bar/music-bar]
+[bar/sound]
 inherit = bar/free
+width = 48pt
+foreground = ${colors.primary}
+label-empty-background = ${colors.background-empty}
+border-right-size = 3pt
+border-bottom-size = 3pt
+radius-bottom-left = 0
+modules-center = pulseaudio
 
-font-0 = Iosevka Term:style=Bold:size=12;1
+[bar/i3]
+inherit = bar/free
+width = 300pt
+# minus half of width
+offset-x = 50%:-150pt
+line-size = 3pt
+border-left-size = 3pt
+border-right-size = 3pt
+border-bottom-size = 3pt
+modules-left = output
+modules-center = i3
+
+[bar/i3-hdmi]
+inherit = bar/i3
+width = 300pt
+offset-x = 100%:-300pt
+line-size = 6pt
+radius-bottom-right = 0
+
+[bar/datetime]
+inherit = bar/free
+width = 360pt
+offset-x = 50%:+260pt
+border-left-size = 3pt
+border-right-size = 3pt
+border-bottom-size = 3pt
+label-empty-background = ${colors.background-empty}
+separator = " "
+modules-center = date time-utc time-moscow
+
+[bar/time]
+inherit = bar/free
+width = 72pt
+offset-x = 100%:-70pt
+border-left-size = 3pt
+border-bottom-size = 3pt
+radius-bottom-right = 0.0
+label-empty-background = ${colors.background-empty}
+separator =
+font-0 = "ComicShannsMono Nerd Font:style=Bold:size=22;6"
+modules-center = time
+
+[bar/battery]
+inherit = bar/free
+width = 50pt
+height = 24pt
+offset-y = 100%:-24pt
+label-empty-background = ${colors.background-empty}
+line-size = 0
+border-right-size = 3pt
+border-top-size = 3pt
+radius-top-right = 14
+radius-bottom-left = 0
+radius-bottom-right = 0
+modules-center = battery-indicator
+
+[bar/music]
+inherit = bar/free
+width = 60%
+offset-x = 35%
+height = 24pt
+offset-y = 100%:-24pt
+line-size = 0
+padding = 0
+radius-top-left = 14
+radius-top-right = 14
+radius-bottom-left = 0
+radius-bottom-right = 0
+font-0 = "ComicShannsMono Nerd Font:size=14;3"
 font-1 = Noto Color Emoji:style=Bold:scale=7;2
 font-2 = Noto Sans CJK JP:style=Bold:size=12;1
 font-3 = Wuncon Siji:size=12;1
-
-line-size = 0
-padding = 0
-
-width = 60%
-offset-x = 35%
-offset-y = 100%:-12pt
-
-radius-top-left = 18
-radius-top-right = 18
-radius-bottom-left = 0
-radius-bottom-right = 0
-
 modules-center = music
-
-[bar/process-trigger-bar]
-inherit = bar/indicator
-
-width = 2%
-offset-x = 98%
-offset-y = 21%
-
-radius-top-left = 18
-radius-top-right = 0
-radius-bottom-left = 18
-radius-bottom-right = 0
-
-modules-center = process-trigger
-
-[bar/process-bar]
-inherit = bar/indicator
-
-font-0 = Iosevka Term Thin:style=Bold:size=14;4
-font-1 = Noto Color Emoji:scale=5;4
-font-2 = Noto Sans CJK JP:style=Bold:size=14;4
-font-3 = Wuncon Siji:size=14;4
-
-width = 25%
-offset-x = 75%
-offset-y = 21%
-
-radius-top-left = 18
-radius-top-right = 0
-radius-bottom-left = 18
-radius-bottom-right = 0
-
-modules-center = process
 
 [bar/heat]
 inherit = bar/indicator
 offset-y = 28%
-modules-left = cpu-temp-mini
+modules-left = cpu-temp-indicator
 
 [bar/memory]
 inherit = bar/indicator
 offset-y = 32%
-modules-left = mem-free-mini
+modules-left = mem-free-indicator
 
+; -------- Abstract Modules -------- ;
+[module/network]
+type = internal/network
+interval = 10
+format-connected = <ramp-signal><label-connected>
+format-disconnected = <label-disconnected>
+label-disconnected = %{F#7e8d50}%ifname%%{F#ac4142} disconnected
+ramp-signal-0 = 😱
+ramp-signal-1 = 😠
+ramp-signal-2 = 😒
+ramp-signal-3 = 😊
+ramp-signal-4 = 😃
+ramp-signal-5 = 👍
+
+; -------- Modules -------- ;
 [module/rofi]
 type = custom/text
 label = "🔍"
 format-padding = 1
-click-left = "~/.config/polybar/rofi-launcher '{cmd}'"
-click-right = "rofi -show window -theme ~/.config/rofi/themes/afterglow-mouse.rasi -run-command i3-msg exec '{cmd}'"
+click-left = "~/.config/rofi/i3-mouse '{cmd}'"
 
 [module/minify]
 type = custom/text
@@ -342,51 +215,22 @@ type = custom/text
 content = "✨"
 click-left = "~/.config/polybar/toggle-top"
 
-[module/xwindow]
-type = internal/xwindow
-label = %title%
-
-[module/filesystem]
-type = internal/fs
-interval = 120
-
-mount-0 = /
-
-label-mounted = %free%
-
-label-unmounted = %mountpoint% not mounted
-label-unmounted-foreground = ${colors.disabled}
-
-label-warn = ! %free%
-
 [module/pulseaudio]
 type = internal/pulseaudio
-
-bar-volume-width = 150
-bar-volume-empty = ░
-bar-volume-fill = █
-bar-volume-indicator = |
-
 format-volume-prefix = "🎵"
 format-volume-prefix-foreground = ${colors.primary}
 format-volume = <label-volume>
-#format-volume = <bar-volume>
 format-volume-foreground = ${colors.primary}
-
-#label-volume = %percentage% (%decibels%)
 label-volume = %percentage%
 label-volume-foreground = ${colors.primary}
-
 label-muted = "🔇"
 label-muted-foreground = ${colors.disabled}
 
 [module/xkeyboard]
 type = internal/xkeyboard
 blacklist-0 = num lock
-
 label-layout = %layout%
 label-layout-foreground = ${colors.primary}
-
 label-indicator-padding = 0
 label-indicator-margin = 0
 label-indicator-foreground = ${colors.background}
@@ -406,23 +250,10 @@ format-prefix = ""
 format-prefix-foreground = ${colors.primary}
 label = %percentage:2%%
 
-[network-base]
-type = internal/network
-interval = 10
-format-connected = <ramp-signal><label-connected>
-format-disconnected = <label-disconnected>
-label-disconnected = %{F#7e8d50}%ifname%%{F#ac4142} disconnected
-ramp-signal-0 = 😱
-ramp-signal-1 = 😠
-ramp-signal-2 = 😒
-ramp-signal-3 = 😊
-ramp-signal-4 = 😃
-ramp-signal-5 = 👍
-
 [module/wlan]
-inherit = network-base
+inherit = module/network
 interface-type = wireless
-label-connected = %signal% %{F#7e8d50}%essid%%{F-} %local_ip%
+label-connected = %signal%
 
 [module/date]
 type = internal/date
@@ -460,23 +291,6 @@ type = custom/script
 exec = TZ=Europe/Moscow date +"MSC: %H:%M"
 interval = 60
 
-[module/battery]
-type = internal/battery
-low-at = 30
-time-format = %H:%M
-format-charging = 🔌<label-charging>
-format-discharging = <ramp-capacity><label-discharging>
-poll-interval = 60
-label-charging = %percentage%%
-label-discharging = %percentage%% %consumption%W
-label-full = %percentage%%
-label-low = %percentage%% %consumption%W
-ramp-capacity-0 = 🔋
-ramp-capacity-1 = 🔋
-ramp-capacity-2 = 🔋
-ramp-capacity-3 = 🔋
-ramp-capacity-4 = 🪫
-
 [module/music]
 type = custom/script
 exec = ~/.config/polybar/music
@@ -484,57 +298,38 @@ tail = true
 format-padding = 1
 click-left = kill -CONT %pid%
 click-right = kill -USR1 %pid%
-click-middle = sleep 0.5 && pkill -f -x 'polybar music-bar' && polybar music-trigger-bar
+click-middle = sleep 0.5 && pkill -f -x 'polybar music'
 double-click-left = kill -USR2 %pid%
 scroll-up = pactl set-sink-volume @DEFAULT_SINK@ +1%
 scroll-down = pactl set-sink-volume @DEFAULT_SINK@ -1%
 
-[module/music-trigger]
-type = custom/text
-content = "🎵"
-click-left = pkill -f -x 'polybar music-trigger-bar' && sleep 0.5 && polybar music-bar
-
-[module/process]
+[module/battery]
 type = custom/script
-exec = watch-process
-tail = true
-format-prefix = "⚙️"
-format-padding = 1
-click-left = sleep 0.5 && kill %pid%
-click-right = pkill -f -x 'polybar process-bar' && polybar process-trigger-bar
-
-[module/process-trigger]
-type = custom/text
-content = "⚙️"
-click-left = pkill -f -x 'polybar process-trigger-bar' && sleep 0.5 && polybar process-bar
-
-[module/real-battery]
-type = custom/script
-exec = echo "$(battery)"
+exec = battery
 interval = 60
 
-[module/real-battery-mini]
+[module/battery-indicator]
 type = custom/script
-exec = bash ~/git-repos/own/bash/bash-scripts/bin/battery-real-percent monitor
+exec = bash -c '~/.config/polybar/indicator-battery-real-percent monitor'
 interval = 60
 click-left = "pkill -f -x 'polybar battery'"
 
-[module/cpu-temp-mini]
+[module/cpu-temp-indicator]
 type = custom/script
-exec = bash -c '~/git-repos/own/bash/bash-scripts/bin/cpu-temp {{ .temperature_sensor }}'
+exec = bash -c '~/.config/polybar/indicator-cpu-temp {{ .temperature_sensor }}'
 interval = 3
 click-left = "pkill -f -x 'polybar heat'"
 
-[module/mem-free-mini]
+[module/mem-free-indicator]
 type = custom/script
-exec = bash ~/git-repos/own/bash/bash-scripts/bin/mem-free
+exec = ~/.config/polybar/indicator-mem-free
 interval = 3
 click-left = "pkill -f -x 'polybar memory'"
 
 [module/output]
 type = custom/script
 exec-if = "[[ $(polybar -m | wc -l) > 1 ]]"
-exec = bash ~/git-repos/own/bash/bash-scripts/bin/i3-output
+exec = ~/.config/polybar/watch-i3-output
 tail = true
 format-padding = 1
 click-left = i3-msg -t command 'focus output left'
@@ -542,92 +337,22 @@ click-right = i3-msg -t command 'focus output right'
 scroll-up = i3-msg -t command 'focus output left'
 scroll-down = i3-msg -t command 'focus output right'
 
-[module/off]
-type = custom/text
-content = 🔒
-click-left = "~/.config/polybar/toggle-mini off; i3-nagbar -t warning -m 'Do you really want to exit i3? This will end your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
-
-[module/backlight]
-type = internal/backlight
-label = 🔆%percentage%%
-card = {{ .backlight_card }}
-# enable-scroll = true
-
-[module/github]
-type = internal/github
-token = ${env:GITHUB_ACCESS_TOKEN}
-user = ${env:GITHUB_USER}
-interval = 300
-label = %{A1:xdg-open https\\://github.com/notifications:}github: %notifications%%{A}
-label-offline = ""
-empty-notifications = false
-
-[module/i3-mode]
-type = internal/i3
-format = m: <label-mode>
-
 [module/i3]
 type = internal/i3
-
 index-sort = true
-
 format = <label-state> <label-mode>
-
 label-focused = %name%
-label-focused-background = ${colors.primary}
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.primary}
 label-focused-padding = 1
-
 label-unfocused = %name%
 label-unfocused-padding = 1
-
 label-visible = %name%
 label-visible-underline = ${colors.secondary}
 label-visible-padding = 1
-
 label-urgent = %name%
-label-urgent-background = ${colors.alert}
+label-urgent-background = ${colors.urgent}
 label-urgent-padding = 1
-
-[module/i3-pinned]
-inherit = module/i3
-
-pin-workspaces = true
-show-urgent = true
-
-# pch_cannonlake
-[module/cpu_temp]
-type = internal/temperature
-thermal-zone = 5
-interval = 5
-label = %temperature-c%
-warn-temperature = 60
-format-warn = <ramp><label-warn>
-ramp-0 = ""
-ramp-1 = !
-ramp-2 = 🔥
-
-# acpitz-acpi-0
-[module/ssd_temp]
-type = internal/temperature
-thermal-zone = 0
-interval = 5
-label = %temperature-c%
-warn-temperature = 60
-format-warn = <ramp><label-warn>
-ramp-0 = ""
-ramp-1 = !
-ramp-2 = 🔥
-
-[module/weather]
-type = custom/script
-exec = "polybar-msg action '#weather_ipc.hook.0'"
-interval = 1000
-label =
-
-[module/weather_ipc]
-type = custom/ipc
-hook-0 = "curl -fsS --compressed 'wttr.in/ulyanovsk?format=%t+(%f)+%x%c%C+(%p)+%h+%w+%P+%m%M\\n'"
-initial = 0
 
 [module/tray]
 type = internal/tray

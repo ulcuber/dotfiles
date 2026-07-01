@@ -1,4 +1,4 @@
-@theme "~/.config/rofi/themes/afterglow-keys.rasi"
+@theme "~/.config/rofi/current.rasi"
 
 configuration {
 //  run-command: ""

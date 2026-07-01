@@ -14,7 +14,8 @@
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-font pango:DejaVu Sans Mono 8
+# font pango:DejaVu Sans Mono 8
+font pango:ComicShannsMono Nerd Font 8
 
 gaps outer 1
 gaps inner 1
@@ -47,13 +48,14 @@ set_from_resource	$color13	color13
 set_from_resource	$color14	color14
 set_from_resource	$color15	color15
 
-# class                 border  backgr.  text        indicator child_border
-client.focused          $color2 $color10 $foreground $color2   $color10
-client.focused_inactive #000000 #8ABEB7  $foreground #484e50   #5f676a
-client.unfocused        #000000 #222222  #888888     #292d2e   #222222
-client.urgent           #2f343a #900000  $foreground #900000   #900000
-client.placeholder      #000000 #0c0c0c  $foreground #000000   #0c0c0c
-client.background       #ffffff
+# ── Window Colors ──
+# class                 border  background  text        indicator   child_border
+client.focused          $color2 $color12    $foreground $color2     $color12
+client.focused_inactive $color8 $color0     $foreground $color8     $color0
+client.unfocused        $color8 $color0     $color8     $color8     $color0
+client.urgent           $color9 $color9     $background $color9     $color9
+client.placeholder      $color8 $color0     $foreground $color8     $color0
+client.background       $color4
 
 # ----------------- vars -----------------
 set $mod Mod4
@@ -242,11 +244,6 @@ bindsym --release $mod+i exec "cd ~/storage/Pictures/screenshots && scrot -f -e 
 bindsym --release $mod+Shift+u exec "cd ~/storage/Pictures/screenshots && scrot -s -f -e 'xclip -selection clipboard -target image/png -in $f' -f '%F_%H-%M-%S_screenshot.png'"
 bindsym --release $mod+u exec "cd ~/storage/Pictures/screenshots && scrot -f -e 'xclip -selection clipboard -target image/png -in $f' -f '%F_%H-%M-%S_screenshot.png'"
 
-bindsym $mod+F1 exec "sleep 0.5 && xdotool getwindowfocus keydown Shift click --repeat 36 --delay 260 1 keyup Shift"
-bindsym $mod+F2 exec "sleep 0.5 && xdotool getwindowfocus keydown Shift click --repeat 36 --delay 150 1 keyup Shift"
-bindsym $mod+F3 exec "sleep 0.5 && xdotool getwindowfocus keydown Shift click --repeat 9 --delay 150 1 keyup Shift"
-bindsym $mod+F4 exec "farm"
-
 # emulate horizontal scroll
 bindsym --whole-window $mod+button4 exec "xdotool click 6"
 bindsym --whole-window $mod+button5 exec "xdotool click 7"
@@ -352,8 +349,6 @@ mode "move" {
 	bindsym Shift+v split h
 
 	bindsym r mode "rotate"
-
-	bindsym colon mode "game"
 }
 
 bindsym $mod+o mode "open"
@@ -390,11 +385,13 @@ mode "open" {
 	# zxcv
 	# bindsym z exec
 	# bindsym x exec
-	bindsym c exec --no-startup-id xkb-switch -s us && $BROWSER https://chat.deepseek.com
+	bindsym c exec --no-startup-id xkb-switch -s us && $BROWSER https://chat.deepseek.com, mode "default"
 	bindsym v exec kitty bash -c 'chezmoi edit ~/.vimrc', mode "default"
+	bindsym Ctrl+v exec snote -s 12 "$(xclip -selection clipboard -o)", mode "default"
 
 	# bindsym b exec
-	# bindsym n exec
+	bindsym n exec --no-startup-id ~/.config/rofi/snote, mode "default"
+	bindsym Shift+n exec --no-startup-id ~/.config/rofi/snote -b, mode "default"
 	bindsym m exec ~/bin/Telegram/Telegram, mode "default"
 }
 
@@ -413,10 +410,10 @@ mode "bars" {
 	bindsym Return mode "default"
 	bindsym Escape mode "default"
 
-	bindsym m exec --no-startup-id polybar music-bar, mode "default"
+	bindsym m exec --no-startup-id polybar music, mode "default"
 	bindsym t exec --no-startup-id ~/.config/polybar/toggle-top, mode "default"
-	bindsym d exec --no-startup-id ~/.config/polybar/toggle-time, mode "default"
-	bindsym s exec --no-startup-id ~/.config/polybar/toggle-mini, mode "default"
+	bindsym d exec --no-startup-id ~/.config/polybar/toggle-datetime, mode "default"
+	bindsym s exec --no-startup-id ~/.config/polybar/toggle-free, mode "default"
 
 	# scale,fill,tile
 	bindsym b exec i3-background
@@ -448,13 +445,6 @@ mode "mouse" {
 	bindsym a exec "xdotool click 3"
 }
 
-mode "game" {
-	bindsym Escape mode "default"
-
-	bindsym l exec "xdotool click 4"
-	bindsym colon exec "xdotool click 5"
-}
-
 bindsym $mod+c mode "change"
 mode "change" {
 	bindsym $mod+c mode "default"
@@ -471,7 +461,9 @@ mode "change" {
 
 	bindsym m exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
 
-	bindsym b exec --no-startup-id video2brightness --dark_threshold=40 --light_threshold=50 --mul=0.9,1.5 -add=10,20, mode "default"
+	bindsym d exec --no-startup-id ~/.config/xsettingsd/toggle-theme dark, mode "default"
+	bindsym l exec --no-startup-id ~/.config/xsettingsd/toggle-theme light, mode "default"
+	bindsym b exec --no-startup-id "video2brightness --dark_threshold=40 --light_threshold=50 --mul=0.9 --add=10", mode "default"
 }
 
 bindsym $mod+v mode "vim"
@@ -479,6 +471,8 @@ mode "vim" {
 	bindsym $mod+v mode "default"
 	bindsym Escape mode "default"
 	bindsym i mode "default"
+
+	bindsym g mode "mc"
 
 	bindsym --release k exec "xdotool key Up"
 	bindsym --release j exec "xdotool key Down"
@@ -493,6 +487,39 @@ mode "vim" {
 	bindsym --release r exec "xdotool key Shift+Right", mode "default"
 }
 
+mode "mc" {
+	bindsym Escape mode "default"
+	# Left mouse is 1, middle is 2, right is 3, wheel up is 4, wheel down is 5
+
+	bindsym --whole-window $mod+button6 exec "xdotool click 4"
+	bindsym --whole-window $mod+button7 exec "xdotool click 5"
+
+	# touchpad helpers
+	bindsym j exec "xdotool click 1"
+	bindsym k exec "xdotool click 3"
+	bindsym l exec "xdotool click 4"
+	bindsym colon exec "xdotool click 5"
+
+	# scroll helpers
+	bindsym x exec "xdotool click 4"
+	bindsym c exec "xdotool click 5"
+
+	# quick access
+	bindsym --release $mod+1 exec "xdotool key 6"
+	bindsym --release $mod+2 exec "xdotool key 7"
+	bindsym --release $mod+3 exec "xdotool key 8"
+	bindsym --release $mod+4 exec "xdotool key 9"
+
+	# commands
+	bindsym --release h mode "default", exec "xdotool key 61 && sleep 0.1 && xdotool type 'home a2' && xdotool key enter && i3-msg 'mode mc'"
+
+	# sell all inv
+	bindsym F1 exec "sleep 0.5 && xdotool getwindowfocus keydown Shift click --repeat 36 --delay 260 1 keyup Shift"
+	bindsym F2 exec "sleep 0.5 && xdotool getwindowfocus keydown Shift click --repeat 36 --delay 150 1 keyup Shift"
+	bindsym F3 exec "sleep 0.5 && xdotool getwindowfocus keydown Shift click --repeat 9 --delay 150 1 keyup Shift"
+	bindsym F4 exec "farm"
+ }
+
 # ----------------- i3 specific autostart ----------------- #
 exec_always i3-background
 
@@ -504,10 +531,10 @@ exec_always --no-startup-id picom -b
 exec_always --no-startup-id xsettingsd
 
 # bar {
-#     position top
-#     mode hide
-#     status_command i3status
-#     modifier $mod
+#	 position top
+#	 mode hide
+#	 status_command i3status
+#	 modifier $mod
 # }
 exec --no-startup-id ~/.config/polybar/watch
 exec_always --no-startup-id "sleep 1 && ~/.config/polybar/toggle-mini"
