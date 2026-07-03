@@ -17,9 +17,7 @@ export LC_TIME="ru_RU.utf8"
 #BROWSER=google-chrome-stable:elinks
 export EDITOR=vim
 
-OS=$(grep -Po "(?<=^ID=)'?\w+" /etc/os-release | tr -d "'")
-export PATH="$PATH:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$HOME/storage/common/bash/$OS/bin:$HOME/storage/common/bash/bin:$HOME/go/bin:$HOME/.symfony/bin:$HOME/.cargo/bin:$HOME/git-repos/own/bash/bash-scripts/$OS/bin:$HOME/git-repos/own/bash/bash-scripts/bin"
-unset OS
+export PATH="$PATH:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$HOME/go/bin:$HOME/.symfony/bin:$HOME/.cargo/bin"
 
 for sh in /etc/bash/bashrc.d/*; do
 	[[ -r ${sh} ]] && source "${sh}"
