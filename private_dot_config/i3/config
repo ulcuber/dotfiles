@@ -416,7 +416,7 @@ mode "bars" {
 	bindsym s exec --no-startup-id ~/.config/polybar/toggle-free, mode "default"
 
 	# scale,fill,tile
-	bindsym b exec i3-background
+	bindsym b exec ~/.config/i3/background
 }
 
 # emulate mouse
@@ -521,7 +521,7 @@ mode "mc" {
  }
 
 # ----------------- i3 specific autostart ----------------- #
-exec_always i3-background
+exec_always ~/.config/i3/background
 
 # transparency, shadows
 # -b background

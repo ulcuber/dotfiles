@@ -1,0 +1,27 @@
+#!/bin/bash
+
+wallpapers_dir="$HOME/storage/Pictures/wallpapers"
+wallpapers_dual="$HOME/storage/Pictures/wallpapers/dual"
+
+# if [[ $RANDOM -ge 16384 ]]; then
+if [[ $RANDOM -ge 1000 ]]; then
+	wallpapers=()
+
+	for i in $(xrandr --listactivemonitors | cut -d ':' -f1 | pcre2grep -o '\d+'); do
+		wallpapers[i]="$wallpapers_dir/$(ls $wallpapers_dir | sort -R | tail -1)"
+	done
+
+	# different random images on all monitors
+	feh --randomize --bg-fill --no-fehbg "${wallpapers[@]}"
+else
+	wallpaper="$wallpapers_dual/$(ls $wallpapers_dual | sort -R | tail -1)"
+
+	# all monitors as one
+	feh --randomize --bg-fill --no-fehbg --no-xinerama "$wallpaper"
+fi
+
+# repeat
+# feh --randomize --bg-fill --no-fehbg "$wallpapers_dir/fredrik-persson-winter3-artstation.jpg"
+
+# one monitor
+# feh --randomize --bg-fill --no-fehbg --xinerama-index 0 "$wallpapers_dir/fredrik-persson-winter3-artstation.jpg"
