@@ -1,0 +1,14 @@
+#!/bin/bash
+
+free_mem=$(free -t | grep 'Mem:' | cut -d ':' -f2 | tr -s '[:space:]' | cut -d ' ' -f7)
+free_mem_human=$(free -h -t | grep 'Mem:' | cut -d ':' -f2 | tr -s '[:space:]' | cut -d ' ' -f7)
+
+free_swap=$(free -t | grep 'Swap:' | cut -d ':' -f2 | tr -s '[:space:]' | cut -d ' ' -f4)
+free_swap_human=$(free -h -t | grep 'Swap:' | cut -d ':' -f2 | tr -s '[:space:]' | cut -d ' ' -f4)
+
+# 512M
+if [[ "${free_mem}" -lt "524288" || ("${free_swap}" -lt "2097152" && "${free_swap}" -ne "0") ]]; then
+    echo "⚠️${free_mem_human}+${free_swap_human}"
+else
+    pkill -f -x 'polybar memory'
+fi

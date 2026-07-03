@@ -1,0 +1,88 @@
+#!/bin/bash
+
+BAT=$(ls -1 /sys/class/power_supply | grep BAT)
+
+: "${power_supply:=$BAT}"
+if [[ ! -d /sys/class/power_supply/$power_supply ]]; then
+    echo "No such power_supply: '$power_supply'"
+    echo "Use one from:"
+    ls /sys/class/power_supply
+    exit
+fi
+
+# get available data
+# A: charge
+[[ -f /sys/class/power_supply/${power_supply}/charge_now ]] && charge_now=$(cat /sys/class/power_supply/${power_supply}/charge_now)
+[[ -f /sys/class/power_supply/$power_supply/charge_full ]] && charge_full=$(cat /sys/class/power_supply/$power_supply/charge_full)
+[[ -f /sys/class/power_supply/${power_supply}/charge_full_design ]] && charge_full_design=$(cat /sys/class/power_supply/${power_supply}/charge_full_design)
+# B: energy
+[[ -f /sys/class/power_supply/${power_supply}/energy_now ]] && energy_now=$(cat /sys/class/power_supply/${power_supply}/energy_now)
+[[ -f /sys/class/power_supply/$power_supply/energy_full ]] && energy_full=$(cat /sys/class/power_supply/$power_supply/energy_full)
+[[ -f /sys/class/power_supply/${power_supply}/energy_full_design ]] && energy_full_design=$(cat /sys/class/power_supply/${power_supply}/energy_full_design)
+# common
+[[ -f /sys/class/power_supply/${power_supply}/voltage_min_design ]] && voltage_min_design=$(cat /sys/class/power_supply/${power_supply}/voltage_min_design)
+
+# calc missing data
+if [[ -n ${energy_now} ]]; then
+    # B: charge from energy
+    charge_now=$((${energy_now} * 1000000 / ${voltage_min_design}))
+    charge_full=$(($energy_full * 1000000 / $voltage_min_design))
+    charge_full_design=$((${energy_full_design} * 1000000 / ${voltage_min_design}))
+fi
+
+charge_full_percent=$(($charge_full * 100 / $charge_full_design))
+charge_now_real_percent=$((${charge_now} * 100 / ${charge_full_design}))
+
+if [[ "$1" == "monitor" ]]; then
+    is_charging=/tmp/is-battery-charging-${USER}
+    is_discharging=/tmp/is-battery-discharging-${USER}
+
+    [[ -f /sys/class/power_supply/$power_supply/status ]] && status=$(cat /sys/class/power_supply/$power_supply/status)
+    # echo "🔋${charge_now_real_percent}%"
+    case ${status} in
+    Discharging)
+        if [[ ${charge_now_real_percent} -eq ${charge_full_percent} ]]; then
+            exit 0
+        fi
+        if [[ -f "${is_charging}" ]]; then
+            rm "${is_charging}"
+        fi
+        if [[ ! -f "${is_discharging}" ]]; then
+            touch "${is_discharging}"
+        fi
+        if [[ ${charge_now_real_percent} -lt 20 ]]; then
+            if [[ "$(cat "${is_discharging}")" != "20" ]]; then
+                echo 20 >"${is_discharging}"
+                xbacklight -set 20
+                notify-send --icon=battery-low -u critical "${status}: ${charge_now_real_percent}%"
+            fi
+        elif [[ ${charge_now_real_percent} -lt 32 ]]; then
+            if [[ "$(cat "${is_discharging}")" != "32" ]]; then
+                echo 20 >"${is_discharging}"
+                xbacklight -set 30
+            fi
+        fi
+        echo "🪫${charge_now_real_percent}%"
+        ;;
+    Charging)
+        if [[ ! -f "${is_charging}" ]]; then
+            touch "${is_charging}"
+            if [[ $(xbacklight -get | cut -d '.' -f1) -lt 40 ]]; then
+                xbacklight -set 50
+            fi
+        fi
+        echo "🔋${charge_now_real_percent}%"
+        ;;
+    Full | Notcharging)
+        if [[ -f "${is_charging}" ]]; then
+            rm "${is_charging}"
+            if [[ $(xbacklight -get | cut -d '.' -f1) -lt 40 ]]; then
+                xbacklight -set 50
+            fi
+        fi
+        ;;
+    esac
+    exit 0
+fi
+
+echo "${charge_now_real_percent}%"

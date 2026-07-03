@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if pgrep -f -x "polybar i3" >/dev/null; then
+    pkill polybar
+else
+    pkill polybar
+
+    polybar sound &
+    polybar i3 &
+    polybar time &
+
+    for m in $(polybar -m | grep -i 'HDMI' | cut -d ":" -f1); do
+        MONITOR=$m polybar i3-hdmi &
+    done
+fi
+
+disown

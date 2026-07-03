@@ -1,0 +1,8 @@
+#!/bin/bash
+
+i3-msg -t get_workspaces | jq --raw-output '.[] | select(.focused).output'
+
+i3-msg -m -t subscribe '["window"]' | jq --raw-output --unbuffered '.container.output' &
+i3-msg -m -t subscribe '["workspace"]' | jq --raw-output --unbuffered '.current.output' &
+
+wait

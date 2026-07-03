@@ -1,0 +1,10 @@
+#!/bin/bash
+
+temp=$(sensors ${1} | grep --perl-regexp --only-matching -e "\d+\.\d+")
+temp_int=$(echo ${temp} | cut -d '.' -f1)
+
+if [[ "${temp_int}" -gt "60" ]]; then
+    echo "🔥${temp}°C"
+else
+    pkill -f -x 'polybar heat'
+fi
