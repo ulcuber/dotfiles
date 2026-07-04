@@ -8,7 +8,8 @@ let g:markdown_fenced_languages = [
   \ 'html',
   \ 'css',
   \ 'sql',
-  \ 'json'
+  \ 'json',
+  \ 'bash'
   \ ]
 
 highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
@@ -553,6 +554,12 @@ let g:ale_virtualtext_cursor = 1
 " let g:ale_lint_on_text_changed = 'never'
 let g:ale_virtualtext_delay = 400
 
+" Too wide
+" if has('gui_running') || $TERM == "xterm-kitty"
+"   let g:ale_sign_error = '❌'
+"   let g:ale_sign_warning = '❗'
+" endif
+
 " standards
 " let g:ale_php_phpcs_standard = 'psr12'
 "  NOTE: using /tmp to prevent interference with make lint
@@ -569,7 +576,7 @@ let g:ale_linters = {
     \ 'javascript': ['eslint'],
     \ 'typescript': ['eslint'],
     \ 'vue': ['eslint'],
-    \ 'markdown': ['remark-lint'],
+    \ 'markdown': ['textlint'],
 \ }
 let g:ale_fixers = {
     \ 'json': ['jq'],
@@ -583,7 +590,7 @@ let g:ale_fixers = {
     \ 'cpp': ['astyle', 'clang-format'],
     \ 'rust': ['rustfmt'],
     \ 'python': ['ruff'],
-    \ 'markdown': ['remark-lint'],
+    \ 'markdown': ['textlint'],
     \ 'html': ['html-beautify'],
     \ 'htmldjango': ['html-beautify'],
 \ }
