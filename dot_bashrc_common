@@ -144,9 +144,6 @@ start() {
 			printf "%-20s %-20s %-20s %-20s\n" "$@"
 		}
 		if [ -z "$1" ]; then
-			local wallpapers_dir="$HOME/storage/Pictures/wallpapers"
-			WALLPAPER="$wallpapers_dir/$(ls $wallpapers_dir | sort -R | tail -1)"
-			export WALLPAPER
 			while :; do
 				echo
 				echo
@@ -172,9 +169,6 @@ start() {
 		else
 			number="$1"
 		fi
-		fb() {
-			fbterm-bi "$WALLPAPER" "$@" &> /tmp/fbterm-bi
-		}
 		case $number in
 		0) exec startx ;;
 		1) startx ~/.xinitrc-dwm ;;
@@ -182,8 +176,8 @@ start() {
 		3) startx ~/.xinitrc-gvim ;;
 		4) exec Hyprland ;;
 		5) ;;
-		6) fb ;;
-		7) fb tmux ;;
+		6) fbterm-bi &> /tmp/fbterm-bi ;;
+		7) fbterm-bi tmux &> /tmp/fbterm-bi ;;
 		8) fbsc ;;
 		esac
 		;;

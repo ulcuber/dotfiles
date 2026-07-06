@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
+
+cp -f --update=all ".fbtermrc-$1" ~/.fbtermrc

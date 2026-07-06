@@ -1,0 +1,32 @@
+#!/bin/bash
+
+cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
+
+xkb-switch -s us
+
+SCHEME=$(gsettings get org.gnome.desktop.interface color-scheme | grep -Po "(?<=prefer-)\w+")
+
+if [[ "$SCHEME" == "dark" ]]; then
+	MOUSE_THEME="$HOME/.config/rofi/theme/dark-mouse.rasi"
+else
+	MOUSE_THEME="$HOME/.config/rofi/theme/mouse.rasi"
+fi
+
+if [ ! -s "$MOUSE_THEME" ]; then
+	MOUSE_THEME="$HOME/.config/rofi/config.rasi"
+fi
+
+function get_value() {
+	if [ -x "$1" ]; then
+		$1
+	elif [ -s "$1" ]; then
+		cat "$1"
+	fi
+}
+
+prompt=$(get_value "theme/prompt")
+placeholder=$(get_value "theme/placeholder_drun")
+
+rofi -display-drun "$prompt" -theme-str "entry {placeholder: \"$placeholder\";}" \
+	-hover-select -theme "$MOUSE_THEME" \
+	-show drun

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
+
+xkb-switch -s us
+
+function get_value() {
+	if [ -x "$1" ]; then
+		$1
+	elif [ -s "$1" ]; then
+		cat "$1"
+	fi
+}
+
+prompt=$(get_value "theme/prompt")
+pango_message=$(get_value "theme/pango_message")
+placeholder=$(get_value "theme/placeholder_workspace")
+
+workspace=$(i3-msg -t get_workspaces | jq -r '.[] | select(.focused==false).name' |\
+	rofi -p "$prompt" -mesg "$pango_message" -theme-str "entry {placeholder: \"$placeholder\";}" \
+	-dmenu)
+
+if [[ -z "$workspace" ]]; then
+    exit 0
+fi
+
+i3-msg workspace "$workspace"

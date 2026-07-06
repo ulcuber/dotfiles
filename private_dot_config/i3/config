@@ -113,12 +113,9 @@ bindsym $mod+Return "exec st"
 bindsym $mod+Shift+q kill
 bindsym --release $mod+q exec xkill
 
-# launch applications from $PATH, with option to launch in terminal.
-bindsym $mod+d exec --no-startup-id xkb-switch -s us && rofi -show run -run-command "i3-msg exec '{cmd}'"
-# launch applications based on desktop files.
-# It tries to be compliant to the XDG standard.
-bindsym $mod+r exec xkb-switch -s us && rofi -show drun
-bindsym XF86Search exec --no-startup-id xkb-switch -s us && rofi -show drun
+bindsym $mod+d exec --no-startup-id ~/.config/rofi/i3-exec run
+bindsym $mod+r exec --no-startup-id ~/.config/rofi/i3-exec drun
+bindsym XF86Search exec --no-startup-id ~/.config/rofi/i3-exec drun
 
 # focus windows
 bindsym $mod+Left focus left
@@ -258,12 +255,12 @@ mode "go" {
 	bindsym Escape mode "default"
 
 	# Switch between windows on an EWMH compatible window manager.
-	bindsym g exec xkb-switch -s us && rofi -show window, mode "default"
-	bindsym $mod+g exec xkb-switch -s us && rofi -show window, mode "default"
-	bindsym f exec xkb-switch -s us && rofi -show filebrowser, mode "default"
+	bindsym g exec --no-startup-id ~/.config/rofi/i3-exec window, mode "default"
+	bindsym $mod+g exec --no-startup-id ~/.config/rofi/i3-exec window, mode "default"
+	bindsym f exec --no-startup-id ~/.config/rofi/i3-exec filebrowser, mode "default"
 
 	bindsym c exec --no-startup-id "i3-input -P 'Create workspace:' -F 'workspace \\"%s\\"'", mode "default"
-	bindsym w exec --no-startup-id "i3-rofi-workspace", mode "default"
+	bindsym w exec --no-startup-id ~/.config/rofi/i3-workspace, mode "default"
 }
 
 # resize window (you can also use the mouse for that)
@@ -372,7 +369,7 @@ mode "open" {
 
 	# asdf
 	# bindsym a exec
-	bindsym s exec --no-startup-id xkb-switch -s us && rofi -show ssh, mode "default"
+	bindsym s exec --no-startup-id ~/.config/rofi/i3-exec ssh, mode "default"
 	# bindsym d exec
 	bindsym f exec firefox-bin, mode "default"
 	bindsym g exec --no-startup-id ~/.config/rofi/google-search, mode "default"
@@ -461,8 +458,8 @@ mode "change" {
 
 	bindsym m exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
 
-	bindsym d exec --no-startup-id ~/.config/xsettingsd/toggle-theme dark, mode "default"
-	bindsym l exec --no-startup-id ~/.config/xsettingsd/toggle-theme light, mode "default"
+	bindsym d exec --no-startup-id ~/.config/xsettingsd/set-color-scheme dark, mode "default"
+	bindsym l exec --no-startup-id ~/.config/xsettingsd/set-color-scheme light, mode "default"
 	bindsym b exec --no-startup-id "video2brightness --dark_threshold=40 --light_threshold=50 --mul=0.9 --add=10", mode "default"
 }
 

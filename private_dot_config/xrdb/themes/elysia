@@ -1,18 +1,3 @@
-! vim: set filetype=xdefaults :
-! reload via `xrdb -merge ~/.Xresources`
-! check via `xrdb -query`
-*faceName: ComicShannsMono Nerd Font
-*faceSize: 26
-*reportFonts: true
-*renderFont: true
-Xcursor.theme: Chameleon-Pearl Large
-Xcursor.size: {{ .cursor_size }}
-
-Xft.dpi: {{ .dpi }}
-Xft.hintstyle:  hintfull
-Xft.antialias: 1
-Xft.rgba: vbgr
-Xft.dark: 1
 
 ! NOTE: macro replaced everywhere
 ! theme specific colors
@@ -25,12 +10,12 @@ Xft.dark: 1
 #define COLOR_LAVENDER        #c7b9ff
 #define COLOR_LIGHT_LAVENDER  #d4c8ff
 
-#define COLOR_FG #f5ebf0
-#define COLOR_BG #5a3d5c
-#define COLOR_BG_ALT #7a5d7c
+#define COLOR_FG #5a3d5c
+#define COLOR_BG #f5ebf0
+#define COLOR_BG_ALT #ffe8f0
 
-#define COLOR_BG_ARGB #aa5a3d5c
-#define COLOR_BG_ALT_ARGB #dd7a5d7c
+#define COLOR_BG_ARGB #ddf5ebf0
+#define COLOR_BG_ALT_ARGB #ddffe8f0
 
 ! ── Normal Colors ──
 #define COLOR_BLACK   #4a3a4a
@@ -40,7 +25,7 @@ Xft.dark: 1
 #define COLOR_BLUE    COLOR_LIGHT_PINK
 #define COLOR_MAGENTA COLOR_LAVENDER
 #define COLOR_CYAN    COLOR_SATURATED_PINK
-#define COLOR_WHITE   #000000
+#define COLOR_WHITE   #ffffff
 
 ! ── Bright Colors ──
 #define COLOR_BRIGHT_BLACK   #7a5d7c
@@ -59,7 +44,7 @@ Xft.dark: 1
 
 *.background_argb:       COLOR_BG_ARGB
 *.background_alt_argb:   COLOR_BG_ALT_ARGB
-*.background_empty_argb: #00000000
+*.background_empty_argb: #00ffffff
 
 *.cursor:      COLOR_PINK
 *.cursorColor: COLOR_PINK

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
+
+cat ".Xresources" "themes/$1" > .Xresources-light
+cat ".Xresources" "themes/$1-dark" > .Xresources-dark

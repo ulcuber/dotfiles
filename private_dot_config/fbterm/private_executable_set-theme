@@ -1,0 +1,6 @@
+#!/bin/bash
+
+cd "$( dirname "${BASH_SOURCE[0]}" )"
+
+cat ".fbtermrc" "themes/$1" > .fbtermrc-light
+cat ".fbtermrc" "themes/$1-dark" > .fbtermrc-dark

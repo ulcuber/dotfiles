@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# $1 is show mode
+# run - launch applications from $PATH, with option to launch in terminal
+# drun - launch applications based on desktop files. It tries to be compliant to the XDG standard
+
+cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
+
+xkb-switch -s us
+
+function get_value() {
+	if [ -x "$1" ]; then
+		$1
+	elif [ -s "$1" ]; then
+		cat "$1"
+	fi
+}
+
+prompt=$(get_value "theme/prompt")
+placeholder=$(get_value "theme/placeholder_$1")
+cmd="i3-msg exec '{cmd}'"
+
+# NOTE: -run-shell-command {terminal} -e {cmd} will be used on Shift+Enter
+rofi -display-"$1" "$prompt" \
+	-theme-str "entry {placeholder: \"$placeholder\";}" \
+	-show "$1" -run-command "$cmd"

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
+
+ln -sf "themes/$1" theme

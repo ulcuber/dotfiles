@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# fbterm-bi: a wrapper script to enable background image with fbterm
+# usage: fbterm-bi fbterm-options
+# uses imagemagick convert and fbi (fbida)
+
+THEME=$(cat ~/.config/xsettingsd/theme)
+
+WALLPAPERS_DIR="$HOME/storage/Pictures/wallpapers/$THEME"
+WALLPAPER=$(find "$WALLPAPERS_DIR" -maxdepth 1 -type f | shuf -n 1)
+
+# adds overlay to provided image
+echo "Converting $WALLPAPER"
+BG_REF=$(grep -oP '(?<=color-background=)\d+' ~/.fbtermrc)
+echo "Using ref: $BG_REF"
+BG=$(grep -oP "(?<=^color-${BG_REF}=)[[:alnum:]]+" ~/.fbtermrc)
+echo "Using color: #$BG"
+magick convert -fill "#$BG" -colorize 80% -quality 100 "$WALLPAPER" /tmp/background
+
+echo "Saving framebuffer"
+(
+	sleep 0.5
+	cat /dev/fb0 >/tmp/fb-background.fbimg
+	sleep 0.5
+	pkill fbi
+) &
+echo -ne "\e[?25l" # hide cursor
+fbi -d /dev/fb0 -t 2 -1 --noverbose --autozoom --fitwidth /tmp/background
+
+wait
+
+# echo "/dev/fb0 saved to /tmp/fb-background.fbimg"
+# sleep 1
+# clear
+
+echo -ne "\e[?25l" # hide cursor
+
+export FBTERM_BACKGROUND_IMAGE=1
+(cat /tmp/fb-background.fbimg >/dev/fb0 &) >/dev/null
+sleep 0.5
+
+fbterm "$@"

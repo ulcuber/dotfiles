@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
+
+ln -sf "themes/$1.conf" no-preference-theme.auto.conf
+ln -sf "themes/$1.conf" light-theme.auto.conf
+ln -sf "themes/$1-dark.conf" dark-theme.auto.conf

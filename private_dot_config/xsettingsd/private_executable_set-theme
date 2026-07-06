@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
+
+ln -sf "themes/$1" .xsettingsd-light
+ln -sf "themes/$1-dark" .xsettingsd-dark
+
+echo "$1" > theme
+
+~/.config/rofi/set-theme "$1"
+~/.config/xrdb/set-theme "$1"
+~/.config/kitty/set-theme "$1"
+~/.config/fbterm/set-theme "$1"

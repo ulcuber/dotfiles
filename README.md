@@ -131,19 +131,22 @@ sudo pacman -S ungoogled-chromium
 # or
 sudo pacman -S chromium
 # other utils
-sudo pacman -S graphviz
+sudo pacman -S graphviz tmux perl-image-exiftool
 # video player
 vlc vlc-plugin-x264 vlc-plugin-ffmpeg
 # video recording
 sudo pacman -S obs-studio
 # video editing
 sudo pacman -S kdenlive
-# langs
-sudo pacman -S jre-openjdk
 # might be too old. Replace
 sudo pacman -S net-tools
 # localization
 sudo pacman -S hunspell-en_us hunspell-ru
+
+# java runtime
+sudo pacman -S jre-openjdk
+# vim COC bash
+sudo pacman -S shellcheck-bin
 ```
 
 ### Power profiles
@@ -195,6 +198,8 @@ cargo install gitui --locked
 ```bash
 sudo pacman -S go
 go install github.com/charmbracelet/glow/v2@latest
+# extra/shfmt. For vim ALE bash
+go install mvdan.cc/sh/v3/cmd/shfmt@latest
 ```
 
 # C/C++
@@ -323,8 +328,15 @@ Then `~/.local/bin/chezmoi apply`
 To run `i3` init theme files
 
 ```bash
-~/.config/xsettingsd/toggle-theme light
+~/.config/xsettingsd/set-theme <name>
+~/.config/xsettingsd/set-color-scheme light
 ```
+
+Note that these are the main scripts that trigger other `theme` and `color-scheme`
+
+For example, `rofi`, `xrdb`, `kitty` have the same scripts that manage their own symlinks
+
+Xsettingsd composes all these scripts
 
 # .bashrc
 
@@ -499,6 +511,15 @@ You may want a workaround for vim ALE:
 ln -sf ~/.nvm/versions/node/v24.16.0/bin/node ~/.local/bin/node
 ```
 
+### Bun globals
+
+```bash
+# for vim COC bash
+bun add -g bash-language-server
+# for vim ALE markdown
+bun add -g textlint textlint-rule-write-good @textlint-rule/textlint-rule-preset-google textlint-rule-terminology textlint-rule-spellcheck-tech-word
+```
+
 ## Vim
 
 With `bun` and `node` you can run `:PlugInstall!`
@@ -538,6 +559,48 @@ sudo pacman -S libx11 libxext libxft fontconfig freetype2
 cd ~/git-repos/c/snote
 make
 make install
+```
+
+## Fbgrab
+
+Portage upstream for `media-gfx/fbgrab`
+
+```bash
+mkdir -p ~/git-repos/c
+git clone git@github.com:GunnarMonell/fbgrab.git ~/git-repos/c/fbgrab
+cd ~/git-repos/c/fbgrab
+make
+sudo make install
+```
+
+## Fbterm
+
+- <https://packages.gentoo.org/packages/app-i18n/fbterm>
+- <https://aur.archlinux.org/packages/fbterm> has patches to <https://salsa.debian.org/debian/fbterm>
+
+Portage upstream for `media-gfx/fbgrab` is too old for Artix. So using its fork
+
+```bash
+mkdir -p ~/git-repos/forks
+git clone git@github.com:ulcuber/fbterm.git ~/git-repos/forks/fbterm
+cd ~/git-repos/forks/fbterm
+autoreconf -vfi
+./configure --prefix=/usr
+make
+sudo make install
+sudo setcap cap_sys_tty_config+ep /usr/bin/fbterm
+```
+
+## Fbida (fbi + ida)
+
+```bash
+sudo pacman -S ninja meson poppler-glib
+
+mkdir -p ~/git-repos/c
+git clone git@gitlab.com:kraxel/fbida.git ~/git-repos/c/fbida
+cd ~/git-repos/c/fbida
+make
+cp build-meson-aspire/fbi ~/.local/bin/
 ```
 
 - Neofetch

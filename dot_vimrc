@@ -554,11 +554,10 @@ let g:ale_virtualtext_cursor = 1
 " let g:ale_lint_on_text_changed = 'never'
 let g:ale_virtualtext_delay = 400
 
-" Too wide
-" if has('gui_running') || $TERM == "xterm-kitty"
-"   let g:ale_sign_error = '❌'
-"   let g:ale_sign_warning = '❗'
-" endif
+if has('gui_running') || $TERM == "xterm-kitty"
+   let g:ale_sign_error = '❌'
+   let g:ale_sign_warning = '⚠  '
+endif
 
 " standards
 " let g:ale_php_phpcs_standard = 'psr12'
@@ -906,26 +905,49 @@ endfunction
 
 command! Chat call StartChat()
 
-" after line config
+function! SetTransparency()
+    if $TERM == "fbterm" || ! has('gui_running') || g:colors_name == "one"
+        hi Normal ctermbg=NONE guibg=NONE
+        hi NonText ctermbg=NONE guibg=NONE
+        hi LineNr ctermbg=NONE guibg=NONE
+        hi SignColumn ctermbg=NONE guibg=NONE
+        hi EndOfBuffer ctermbg=NONE guibg=NONE
+        hi Folded ctermbg=NONE guibg=NONE
+        hi FoldColumn ctermbg=NONE guibg=NONE
+    endif
+endfunction
+
 augroup colorset
     autocmd!
+    autocmd ColorScheme * call SetTransparency()
     autocmd ColorScheme one
-        \ highlight ShowTrailingWhitespace ctermbg=red guibg=red
-        \ | highlight JumpLine guibg=yellow ctermbg=yellow gui=bold
-        \ | highlight Normal ctermbg=none
-        \ | highlight TabLineSel ctermfg=Green ctermbg=LightGreen
-        \ | if has('gui_running') | set background=light | endif
         \ | call lightline#disable() | call lightline#enable()
         \ | call one#highlight('Comment', '707070', '', g:one_allow_italics == 1 && 'italic' || '')
         \ | call one#highlight('vimLineComment', '707070', '', g:one_allow_italics == 1 && 'italic' || '')
+        \ | highlight ShowTrailingWhitespace ctermbg=red guibg=red
+        \ | highlight JumpLine guibg=yellow ctermbg=yellow gui=bold
+        \ | highlight TabLineSel ctermfg=Green ctermbg=LightGreen
+        \ | if has('gui_running') | set background=light | endif
     autocmd ColorScheme codedark
-        \ highlight ShowTrailingWhitespace ctermbg=red guibg=red
+        \ | call lightline#disable() | call lightline#enable()
+        \ | highlight ShowTrailingWhitespace ctermbg=red guibg=red
         \ | highlight JumpLine guibg=yellow ctermbg=yellow gui=bold
         \ | highlight DiffText ctermbg=black
         \ | highlight CursorLine ctermbg=none gui=underline cterm=underline
         \ | if has('gui_running') | set background=dark | endif
-        \ | call lightline#disable() | call lightline#enable()
 augroup END
+
+function! ApplyColorScheme()
+    let scheme = trim(system('gsettings get org.gnome.desktop.interface color-scheme'))
+
+    if scheme ==# "'prefer-dark'"
+        colorscheme codedark
+    else
+        colorscheme one
+    endif
+    call timer_start(500, {-> SetTransparency()})
+endfunction
+autocmd VimEnter * call ApplyColorScheme()
 
 function! SafeSaveAndClose()
     if exists(':MinimapClose')
@@ -935,23 +957,6 @@ function! SafeSaveAndClose()
     wall
     SClose
 endfunction
-
-function! ApplyColorScheme()
-    let scheme = trim(system('gsettings get org.gnome.desktop.interface color-scheme'))
-
-    if scheme ==# "'prefer-dark'"
-        if has('gui_running')
-            set background=dark
-        endif
-        colorscheme codedark
-    else
-        if has('gui_running')
-            set background=light
-        endif
-        colorscheme one
-    endif
-endfunction
-autocmd VimEnter * call ApplyColorScheme()
 
 " Post plugins settings
 

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+xkb-switch -s us
+
+text=$(rofi -dmenu \
+    -p "📝 Note: " \
+    -theme-str 'window {width: 50%; height: 6em;}' \
+    -hide-scrollbar)
+
+if [ -n "$text" ]; then
+    snote "$@" "$text"
+fi

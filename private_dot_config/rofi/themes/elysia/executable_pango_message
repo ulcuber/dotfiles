@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# ── Elysia Color Palette ──
+PINK="#ff7b9c"
+LIGHT_PINK="#ffb8d0"
+GOLD="#e8c97a"
+LAVENDER="#c7b9ff"
+
+# ── Elysia Quotes ──
+quotes=(
+    # ── Inspirational ──
+    "✨ <b>Let's dance together~</b> ✨"
+    "🌸 <span color=\"$PINK\">Beauty is in the eye of the beholder</span> 🌸"
+    "💫 <span color=\"$GOLD\">The Flame-Chasers will always protect you</span> 💫"
+    "<span color=\"$LIGHT_PINK\">☆</span> <b>Follow your heart</b> <span color=\"$LIGHT_PINK\">☆</span>"
+    "✦ <b>A new story begins</b> ✦"
+    "🌙 <span color=\"$LAVENDER\">Even in darkness, I'll find you</span> 🌙"
+    "💖 <span color=\"$PINK\">Elysia's blessing upon you</span> 💖"
+
+    # ── Flame-Chasers / Elysian Realm ──
+    "🌸 <i>Just as flowers never surrender their color to the storm, your resolve will shine brightly</i> 🌸"
+    "🌟 <b>May the stars shine brightly on your path</b> 🌟"
+    "✨ <i>If paradise does not exist, then I will create one myself!</i> ✨"
+    "💫 <b>It ends with Me... and it begins with...</b> 💫"
+    "🌹 <i>I am the female protagonist of this story, isn't it natural for me to save the world I love once?</i> 🌹"
+
+    # ── Playful / Flirty ──
+    "💕 <i>You can look me in the eyes. After all, I've been doing the same all along.</i> 💕"
+    "🌸 <i>Ah, time is so annoying, don't you think? If we weren't short on time, I'd like to say some more memorable things to you.</i> 🌸"
+    "✨ <b>I'm actually very busy, but for you, I'm always available.</b> ✨"
+    "🎀 <i>Hi, miss me yet? I'll answer your call at any time, any place.</i> 🎀"
+
+    # ── Wise / Thoughtful ──
+    "📖 <span color=\"$LAVENDER\">In the story you can find pain, failures, betrayals, departures. But you can also find happiness, joy, warmth, and kindness.</span> 📖"
+    "🌅 <b>Even on the last day, people were still hopeful for a brighter future.</b> 🌅"
+    "💝 <span color=\"$PINK\">Hatred and anger shouldn't be our only legacy. Only those who've experienced the beauty of our age can understand us.</span> 💝"
+
+    # ── About Humanity ──
+    "🌍 <i>Treat everyone sincerely, face everything with passion, follow your heart, never forget your roots.</i> 🌍"
+    "💎 <span color=\"$GOLD\">This is such a wonderful place, isn't it? It brought us together across time and space. How romantic!</span> 💎"
+
+    # ── Short & Sweet ──
+    "🌸 <b>Pristine paradise... Eternal Elysium...</b> 🌸"
+    "✨ <b>My name is... Elysia!</b> ✨"
+    "💖 <b>A new day starts from a sweet encounter.</b> 💖"
+    "🌺 <span color=\"$LIGHT_PINK\">Such a radiant flower shouldn't wither before it blooms.</span> 🌺"
+
+    # ── Meta / Self-Referential ──
+    "🎭 <i>I'll tell you a secret: I prepared 40 different versions of my opening remarks.</i> 🎭"
+    "💕 <b>Don't you think I talk more than the others? That's right, because I put a lot of effort into this.</b> 💕"
+)
+
+# ── Main ──
+idx=$((RANDOM % ${#quotes[@]}))
+echo "${quotes[$idx]}"
