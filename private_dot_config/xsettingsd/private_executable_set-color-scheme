@@ -2,10 +2,14 @@
 
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-ln -sf ".xsettingsd-$1" ~/.xsettingsd
-killall -HUP xsettingsd
+ln -sf "$HOME/.config/xsettingsd/.xsettingsd-$1" ~/.xsettingsd
+if [[ $(command -v xsettingsd) ]]; then
+    killall -HUP xsettingsd
+fi
 
-gsettings set org.gnome.desktop.interface color-scheme "prefer-$1"
+if [[ $(command -v gsettings) ]]; then
+    gsettings set org.gnome.desktop.interface color-scheme "prefer-$1"
+fi
 
 ~/.config/rofi/set-color-scheme "$1"
 ~/.config/xrdb/set-color-scheme "$1"
@@ -15,5 +19,7 @@ gsettings set org.gnome.desktop.interface color-scheme "prefer-$1"
 # enable-ipc = true. May not work
 # polybar-msg cmd restart
 
-pkill polybar
-~/.config/polybar/toggle-free
+if [[ $(command -v polybar) ]]; then
+    pkill polybar
+    ~/.config/polybar/toggle-free
+fi

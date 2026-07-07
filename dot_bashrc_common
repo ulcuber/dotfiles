@@ -125,7 +125,8 @@ unset color_prompt
 start() {
 	if [[ ! $(command -v figlet) ]]; then
 		figlet() {
-			cat
+			shift
+			echo "$@"
 		}
 	fi
 	if [[ ! $(command -v fortune) ]]; then

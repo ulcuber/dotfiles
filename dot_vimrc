@@ -906,7 +906,7 @@ endfunction
 command! Chat call StartChat()
 
 function! SetTransparency()
-    if $TERM == "fbterm" || ! has('gui_running') || g:colors_name == "one"
+    if $TERM == "fbterm" || $TERM == "xterm-kitty" || (has("gui_running") && g:colors_name == "one") || $FBTERM_BACKGROUND_IMAGE == "1"
         hi Normal ctermbg=NONE guibg=NONE
         hi NonText ctermbg=NONE guibg=NONE
         hi LineNr ctermbg=NONE guibg=NONE
@@ -938,9 +938,10 @@ augroup colorset
 augroup END
 
 function! ApplyColorScheme()
-    let scheme = trim(system('gsettings get org.gnome.desktop.interface color-scheme'))
+    let scheme = trim(system('~/.config/xsettingsd/get-color-scheme'))
+    echo scheme
 
-    if scheme ==# "'prefer-dark'"
+    if scheme == "dark"
         colorscheme codedark
     else
         colorscheme one

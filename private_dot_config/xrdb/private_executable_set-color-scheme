@@ -3,4 +3,7 @@
 cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
 
 cp -f --update=all ".Xresources-$1" ~/.Xresources
-xrdb -merge ~/.Xresources
+
+if [[ $(command -v xrdb) ]]; then
+    xrdb -merge ~/.Xresources
+fi

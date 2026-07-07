@@ -1,0 +1,9 @@
+#!/bin/bash
+
+SCHEME=$(gsettings get org.gnome.desktop.interface color-scheme 2>/dev/null | grep -Po "(?<=prefer-)\w+")
+
+if [[ -z $SCHEME ]]; then
+    SCHEME=$(ls -l ~/.xsettingsd | grep -oP '(?<=xsettingsd-)\w+')
+fi
+
+echo -n "$SCHEME"
