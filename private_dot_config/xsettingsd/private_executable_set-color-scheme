@@ -3,23 +3,25 @@
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
 ln -sf "$HOME/.config/xsettingsd/.xsettingsd-$1" ~/.xsettingsd
-if [[ $(command -v xsettingsd) ]]; then
-    killall -HUP xsettingsd
-fi
-
-if [[ $(command -v gsettings) ]]; then
-    gsettings set org.gnome.desktop.interface color-scheme "prefer-$1"
-fi
 
 ~/.config/rofi/set-color-scheme "$1"
 ~/.config/xrdb/set-color-scheme "$1"
 # kitty reacts to gsettings
 ~/.config/fbterm/set-color-scheme "$1"
 
-# enable-ipc = true. May not work
-# polybar-msg cmd restart
+if [[ -n "$DISPLAY" ]]; then
+    if [[ $(command -v xsettingsd) ]]; then
+        killall -HUP xsettingsd
+    fi
 
-if [[ $(command -v polybar) ]]; then
-    pkill polybar
-    ~/.config/polybar/toggle-free
+    if [[ $(command -v gsettings) ]]; then
+        gsettings set org.gnome.desktop.interface color-scheme "prefer-$1"
+    fi
+
+    # enable-ipc = true. May not work
+    # polybar-msg cmd restart
+    if [[ $(command -v polybar) ]]; then
+        pkill polybar
+        ~/.config/polybar/toggle-free
+    fi
 fi
