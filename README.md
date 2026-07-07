@@ -261,6 +261,12 @@ For other Python packages check repository Makefiles. Most of them provide `make
 
 # GRUB
 
+For distinctive multiple kernel from other distros edit `/etc/grub.d/30_os-prober` around `menuentry`:
+
+```bash
+title="${LLABEL} $LKERNEL $onstr"
+```
+
 Edit `/etc/default/grub`
 
 ```bash

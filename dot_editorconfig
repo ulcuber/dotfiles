@@ -9,3 +9,6 @@ trim_trailing_whitespace = true
 
 [.vimrc]
 indent_size = 4
+
+[.bashrc*]
+indent_size = 4

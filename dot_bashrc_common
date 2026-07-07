@@ -20,169 +20,182 @@ export EDITOR=vim
 export PATH="$PATH:$HOME/.config/composer/vendor/bin:$HOME/.local/bin:$HOME/go/bin:$HOME/.symfony/bin:$HOME/.cargo/bin"
 
 for sh in /etc/bash/bashrc.d/*; do
-	[[ -r ${sh} ]] && source "${sh}"
+    [[ -r ${sh} ]] && source "${sh}"
 done
 unset sh
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
 xterm-color | *-256color | fbterm)
-	color_prompt=yes
-	export HSTR_CONFIG=hicolor
-	;;
+    color_prompt=yes
+    export HSTR_CONFIG=hicolor
+    ;;
 esac
 
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-	# We have color support; assume it's compliant with Ecma-48
-	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-	# a case would tend to support setf rather than setaf.)
-	color_prompt=yes
+    # We have color support; assume it's compliant with Ecma-48
+    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+    # a case would tend to support setf rather than setaf.)
+    color_prompt=yes
 else
-	color_prompt=
+    color_prompt=
 fi
 
 if [ -f ~/.bash_aliases ]; then
-	. ~/.bash_aliases
+    . ~/.bash_aliases
+fi
+
+THEME=$(cat "$HOME/.config/xsettingsd/theme")
+if [ -f "$HOME/.config/bash/themes/$THEME/bashrc" ]; then
+    . "$HOME/.config/bash/themes/$THEME/bashrc"
 fi
 
 if [ "$USER" != "root" ]; then
-	if [ -f /usr/share/git/git-prompt.sh ]; then
-		source /usr/share/git/git-prompt.sh
-	fi
-	if [ -z "$VSCODE_INJECTION" ]; then
-		# "$TERM" != "fbterm" && -z "$FBTERM_BACKGROUND_IMAGE"
-		if [[ -z "$DISPLAY" || -n "$VIMRUNTIME" ]]; then
-			PROMPT_COMMAND='exit_code=$?; exit_char="${exit_code}  "; exit_char=${exit_char:0:3}; branch=$(__git_ps1 " %b");'
-		else
-			PROMPT_COMMAND='exit_code=$?; exit_char=$([[ $exit_code -eq 0 ]] && echo -n "🌸   " || echo -n "💔${exit_code}   "); exit_char=${exit_char:0:4}; branch=$(__git_ps1 " %b");'
-		fi
-	else
-		PROMPT_COMMAND='branch=$(__git_ps1 " %b");'
-	fi
-	PROMPT_COMMAND="${PROMPT_COMMAND} history -a; history -n;"
-	if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
-		debian_chroot=$(cat /etc/debian_chroot)
-	fi
-	case "$TERM" in
-	screen-256color | tmux-256color)
-		PS1='${exit_char} ${debian_chroot:+($debian_chroot )}\$ '
-		;;
-	screen* | tmux*)
-		PS1='${exit_char} ${debian_chroot:+($debian_chroot )}\$ '
-		;;
-	*)
-		if [ "$color_prompt" = yes ]; then
-			export GIT_PS1_SHOWCOLORHINTS=1
+    if [ -f /usr/share/git/git-prompt.sh ]; then
+        source /usr/share/git/git-prompt.sh
+    fi
+    if [ -z "$VSCODE_INJECTION" ]; then
+        # "$TERM" != "fbterm" && -z "$FBTERM_BACKGROUND_IMAGE"
+        if [[ -z "$DISPLAY" || -n "$VIMRUNTIME" ]]; then
+            PROMPT_COMMAND='exit_code=$?; exit_char="${exit_code}  "; exit_char=${exit_char:0:3}; branch=$(__git_ps1 " %b");'
+        else
+            if [[ -z "$OK_CHAR" ]]; then
+                OK_CHAR="✅"
+            fi
+            if [[ -z "$FAIL_CHAR" ]]; then
+                FAIL_CHAR="❌"
+            fi
+            PROMPT_COMMAND='exit_code=$?; exit_char=$([[ $exit_code -eq 0 ]] && echo -n "$OK_CHAR   " || echo -n "$FAIL_CHAR${exit_code}   "); exit_char=${exit_char:0:4}; branch=$(__git_ps1 " %b");'
+        fi
+    else
+        PROMPT_COMMAND='branch=$(__git_ps1 " %b");'
+    fi
+    PROMPT_COMMAND="${PROMPT_COMMAND} history -a; history -n;"
+    if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
+        debian_chroot=$(cat /etc/debian_chroot)
+    fi
+    case "$TERM" in
+    screen-256color | tmux-256color)
+        PS1='${exit_char} ${debian_chroot:+$debian_chroot }${CHEZMOI:+chezmoi }\$ '
+        ;;
+    screen* | tmux*)
+        PS1='${exit_char} ${debian_chroot:+$debian_chroot }${CHEZMOI:+chezmoi }\$ '
+        ;;
+    *)
+        if [ "$color_prompt" = yes ]; then
+            export GIT_PS1_SHOWCOLORHINTS=1
 
-			if [[ -z "$DISPLAY" && -z "$VIMRUNTIME" && -z "$TMUX" ]]; then
-				PS1='${exit_char} [\A|$(free -h | head -n2 | tail -n1 | tr -s " " | cut -d " " -f7)'
-				if [[ -n $(ls /sys/class/power_supply) ]]; then
-					PS1+='|$(battery)'
-				fi
-				PS1+='] ${debian_chroot:+($debian_chroot)} \[\033[01;34m\]\w\[\033[00m\]${branch}\n\$ '
-			else
-				if [[ "$TERM" = "xterm-kitty" ]]; then
-					alias ranger="ranger --cmd='set preview_images_method kitty'"
-				fi
-				if [[ -n "$VIMRUNTIME" ]]; then
-					PS1='${exit_char} ${debian_chroot:+("$debian_chroot ")}\$ '
-				else
-					PS1='${exit_char} ${debian_chroot:+("$debian_chroot ")}\[\033[01;34m\]\w\[\033[00m\]${branch} \$ '
-				fi
-			fi
-		else
-			PS1='${exit_char} ${debian_chroot:+($debian_chroot)}\u@\h:\w${branch} \$ '
-		fi
-		;;
-	esac
+            if [[ -z "$DISPLAY" && -z "$VIMRUNTIME" && -z "$TMUX" ]]; then
+                function mem() {
+                    free -h | head -n2 | tail -n1 | tr -s " " | cut -d " " -f7
+                }
+                PS1='${exit_char} [\A|$(mem)'
+                if [[ -n $(ls /sys/class/power_supply) ]]; then
+                    PS1+='|$(battery)'
+                fi
+                PS1+='] ${debian_chroot:+$debian_chroot }${CHEZMOI:+chezmoi } \u@\h \[\033[01;34m\]\w\[\033[00m\]${branch}\n\$ '
+            else
+                if [[ "$TERM" = "xterm-kitty" ]]; then
+                    alias ranger="ranger --cmd='set preview_images_method kitty'"
+                fi
+                if [[ -n "$VIMRUNTIME" ]]; then
+                    PS1='${exit_char} ${debian_chroot:+$debian_chroot }${CHEZMOI:+chezmoi }\$ '
+                else
+                    PS1='${exit_char} ${debian_chroot:+$debian_chroot }${CHEZMOI:+chezmoi }\[\033[01;34m\]\w\[\033[00m\]${branch} \$ '
+                fi
+            fi
+        else
+            PS1='${exit_char} ${debian_chroot:+$debian_chroot }${CHEZMOI:+chezmoi }\u@\h \w${branch} \$ '
+        fi
+        ;;
+    esac
 
-	if [[ -f composer.json ]]; then
-		need=$(grep --perl-regexp --only-matching '(?<="php": "(\^|~))\d+\.\d+' composer.json)
-		if [ -z "$need" ]; then
-			echo "Cannot find PHP version in composer.json"
-		fi
+    if [[ -f composer.json ]]; then
+        need=$(grep --perl-regexp --only-matching '(?<="php": "(\^|~))\d+\.\d+' composer.json)
+        if [ -z "$need" ]; then
+            echo "Cannot find PHP version in composer.json"
+        fi
 
-		# lookbehind to exclude `php-fpm8.0`
-		version=$(ls /usr/bin/php* | grep --perl-regexp --only-matching "(?<=php)$need" | tail -n1)
+        # lookbehind to exclude `php-fpm8.0`
+        version=$(ls /usr/bin/php* | grep --perl-regexp --only-matching "(?<=php)$need" | tail -n1)
 
-		if [ -z "$version" ]; then
-			major=$(echo "$need" | cut -d '.' -f1)
-			# minor=$(echo "$need" | cut -d '.' -f2)
-			version=$(ls /usr/bin/php* | grep --perl-regexp --only-matching "$major\.\d+" | tail -n1)
-		fi
+        if [ -z "$version" ]; then
+            major=$(echo "$need" | cut -d '.' -f1)
+            # minor=$(echo "$need" | cut -d '.' -f2)
+            version=$(ls /usr/bin/php* | grep --perl-regexp --only-matching "$major\.\d+" | tail -n1)
+        fi
 
-		if [ -n "$version" ]; then
-			alias php="php$version"
-			alias artisan="php$version artisan"
-		else
-			echo "empty PHP version for composer.json: '$need' -> '$version'"
-		fi
-	fi
+        if [ -n "$version" ]; then
+            alias php="php$version"
+            alias artisan="php$version artisan"
+        else
+            echo "empty PHP version for composer.json: '$need' -> '$version'"
+        fi
+    fi
 fi
 
 unset color_prompt
 
 start() {
-	if [[ ! $(command -v figlet) ]]; then
-		figlet() {
-			shift
-			echo "$@"
-		}
-	fi
-	if [[ ! $(command -v fortune) ]]; then
-		fortune() {
-			echo "Fortune"
-		}
-	fi
+    if [[ ! $(command -v figlet) ]]; then
+        figlet() {
+            cat
+        }
+    fi
+    if [[ ! $(command -v fortune) ]]; then
+        fortune() {
+            echo "Fortune"
+        }
+    fi
 
-	local number
-	case $(tty) in
-	/dev/tty*)
-		TTY=$(tty)
-		export TTY
-		function row() {
-			# quotes important
-			printf "%-20s %-20s %-20s %-20s\n" "$@"
-		}
-		if [ -z "$1" ]; then
-			while :; do
-				echo
-				echo
-				neofetch --backend w3m --size 500px
-				echo
+    local number
+    case $(tty) in
+    /dev/tty*)
+        TTY=$(tty)
+        export TTY
+        function row() {
+            # quotes important
+            printf "%-20s %-20s %-20s %-20s\n" "$@"
+        }
+        if [ -z "$1" ]; then
+            while :; do
+                echo
+                echo
+                neofetch --backend w3m --size 500px
+                echo
 
-				# -W wide (space between letters)
-				# -c center
-				figlet -c "Welcome, $USER"
+                # -W wide (space between letters)
+                # -c center
+                figlet -c "Welcome, $USER"
 
-				echo
-				fortune
-				echo
+                echo
+                fortune
+                echo
 
-				row "0: startx i3" "1: startx dwm" "2: startx kitty" "3: startx gvim"
-				row "4: hyprland"
-				row "5: tty" "6: fbterm-bi" "7: fbterm-bi tmux" "8: fbsc"
-				read -ep "select starter: " number
-				[[ $number =~ ^[[:digit:]]+$ ]] || continue
-				((((number = (10#$number)) <= 8) && number >= 0)) || continue
-				break
-			done
-		else
-			number="$1"
-		fi
-		case $number in
-		0) exec startx ;;
-		1) startx ~/.xinitrc-dwm ;;
-		2) startx ~/.xinitrc-kitty ;;
-		3) startx ~/.xinitrc-gvim ;;
-		4) exec Hyprland ;;
-		5) ;;
-		6) fbterm-bi &> /tmp/fbterm-bi ;;
-		7) fbterm-bi tmux &> /tmp/fbterm-bi ;;
-		8) fbsc ;;
-		esac
-		;;
-	esac
+                row "0: startx i3" "1: startx dwm" "2: startx kitty" "3: startx gvim"
+                row "4: hyprland"
+                row "5: tty" "6: fbterm-bi" "7: fbterm-bi tmux" "8: fbsc"
+                read -ep "select starter: " number
+                [[ $number =~ ^[[:digit:]]+$ ]] || continue
+                ((((number = (10#$number)) <= 8) && number >= 0)) || continue
+                break
+            done
+        else
+            number="$1"
+        fi
+        case $number in
+        0) exec startx ;;
+        1) startx ~/.xinitrc-dwm ;;
+        2) startx ~/.xinitrc-kitty ;;
+        3) startx ~/.xinitrc-gvim ;;
+        4) exec Hyprland ;;
+        5) ;;
+        6) fbterm-bi &>/tmp/fbterm-bi ;;
+        7) fbterm-bi tmux &>/tmp/fbterm-bi ;;
+        8) fbsc ;;
+        esac
+        ;;
+    esac
 }
 
 # should be latest action
