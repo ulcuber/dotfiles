@@ -142,7 +142,8 @@ unset color_prompt
 start() {
     if [[ ! $(command -v figlet) ]]; then
         figlet() {
-            cat
+            shift
+            echo "$@"
         }
     fi
     if [[ ! $(command -v fortune) ]]; then
@@ -193,8 +194,8 @@ start() {
         3) startx ~/.xinitrc-gvim ;;
         4) exec Hyprland ;;
         5) ;;
-        6) fbterm-bi &>/tmp/fbterm-bi ;;
-        7) fbterm-bi tmux &>/tmp/fbterm-bi ;;
+        6) fbterm-bi ;;
+        7) fbterm-bi tmux ;;
         8) fbsc ;;
         esac
         ;;
