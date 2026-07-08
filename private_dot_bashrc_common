@@ -32,13 +32,15 @@ xterm-color | *-256color | fbterm)
     ;;
 esac
 
-if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-    # We have color support; assume it's compliant with Ecma-48
-    # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-    # a case would tend to support setf rather than setaf.)
-    color_prompt=yes
-else
-    color_prompt=
+if [[ -z "$color_prompt" ]]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+        # We have color support; assume it's compliant with Ecma-48
+        # (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+        # a case would tend to support setf rather than setaf.)
+        color_prompt=yes
+    else
+        color_prompt=
+    fi
 fi
 
 if [ -f ~/.bash_aliases ]; then
@@ -93,7 +95,7 @@ if [ "$USER" != "root" ]; then
                     free -h | head -n2 | tail -n1 | tr -s " " | cut -d " " -f7
                 }
                 PS1='${exit_char} [\A|$(mem)'
-                if [[ -n $(ls /sys/class/power_supply) ]]; then
+                if [[ -d /sys/class/power_supply && -r /sys/class/power_supply/BAT* ]]; then
                     PS1+='|$(battery)'
                 fi
                 PS1+='] ${debian_chroot:+$debian_chroot }${CHEZMOI:+chezmoi }\u@\h \[\033[01;34m\]\w\[\033[00m\]${branch}\n\$ '
