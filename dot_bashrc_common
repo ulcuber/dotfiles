@@ -74,8 +74,11 @@ if [ "$USER" != "root" ]; then
     if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
         debian_chroot=$(cat /etc/debian_chroot)
     fi
-    if [[ "${debian_chroot}" == "chroot" ]]; then
-        debian_chroot="$debian_chroot->$(grep -Po "(?<=^ID=)'?\w+" /etc/os-release | tr -d "'")"
+    OS=$(grep -Po "(?<=^ID=)'?\w+" /etc/os-release | tr -d "'")
+    if [[ "$debian_chroot" =~ $OS\+*$ ]]; then
+        debian_chroot="$debian_chroot+"
+    else
+        debian_chroot="$debian_chroot->$OS"
     fi
     case "$TERM" in
     screen-256color | tmux-256color)
