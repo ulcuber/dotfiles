@@ -18,7 +18,7 @@
 #define COLOR_BG_ALT_ARGB #ddffe8f0
 
 ! ── Normal Colors ──
-#define COLOR_BLACK   #4a3a4a
+#define COLOR_BLACK   #a783a7
 #define COLOR_RED     COLOR_PINK
 #define COLOR_GREEN   COLOR_GOLD
 #define COLOR_YELLOW  COLOR_GOLD

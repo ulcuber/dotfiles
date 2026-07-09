@@ -92,9 +92,12 @@ You might want **Main/F12 Boot Menu/[Enabled]**
 
 ## Or
 
-Flip the laptop and hold paperclip in a pinhole with a battery icon for 15-30 seconds, or more than 30 seconds
+- Flip the laptop and hold paperclip in a pinhole with a battery icon for 15-30 seconds, or more than 30 seconds
+- Wait for 5 minutes to remove residual energy
 
 # Install some packages
+
+## Artix
 
 Add needed groups:
 
@@ -102,8 +105,6 @@ Add needed groups:
 usermod -aG video $USER
 usermod -aG audio $USER
 ```
-
-## Artix
 
 ### Intel
 
@@ -261,7 +262,7 @@ For other Python packages check repository Makefiles. Most of them provide `make
 
 # GRUB
 
-For distinctive multiple kernel from other distros edit `/etc/grub.d/30_os-prober` around `menuentry`:
+For distinctive kernels from other distros edit `/etc/grub.d/30_os-prober` around `menuentry`:
 
 ```bash
 title="${LLABEL} $LKERNEL $onstr"
