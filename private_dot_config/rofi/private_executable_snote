@@ -8,5 +8,7 @@ text=$(rofi -dmenu \
     -hide-scrollbar)
 
 if [ -n "$text" ]; then
-    snote "$@" "$text"
+    snote "$@" "$text" &
+    # save memory on running bash instance
+    detach
 fi

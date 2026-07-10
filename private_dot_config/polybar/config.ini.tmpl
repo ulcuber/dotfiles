@@ -144,6 +144,18 @@ separator =
 font-0 = "ComicShannsMono Nerd Font:style=Bold:size=22;6"
 modules-center = time
 
+[bar/binary-time]
+inherit = bar/free
+width = 137pt
+offset-x = 100%:-136pt
+height = 8pt
+border = 0
+radius-bottom-right = 0.0
+label-empty-background = ${colors.background-empty}
+separator =
+font-0 = "ComicShannsMono Nerd Font:style=Bold:size=20;15"
+modules-center = binary-time
+
 [bar/battery]
 inherit = bar/free
 width = 50pt
@@ -292,6 +304,11 @@ interval = 60
 type = custom/script
 exec = TZ=Europe/Moscow date +"MSC: %H:%M"
 interval = 60
+
+[module/binary-time]
+type = custom/script
+exec = ~/.config/polybar/binary_clock
+tail = true
 
 [module/music]
 type = custom/script

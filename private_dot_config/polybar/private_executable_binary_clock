@@ -1,0 +1,33 @@
+#!/usr/bin/env -S python3 -u
+
+import time
+
+ON = "▀"
+OFF = "▔"
+
+COLOR_ON = "%{F#dd5a3d5c}"
+COLOR_OFF = "%{F#ddff7b9c}"
+RESET = "%{F-}"
+
+def get_bits(n, width=6) -> list:
+    """Return 6-bit binary as list of 1/0, MSB first"""
+    return [(n >> i) & 1 for i in range(width-1, -1, -1)]
+
+def to_polybar(bits: list) -> str:
+    output = ""
+    for bit in bits:
+        if bit == 1:
+            output += COLOR_ON + ON
+        else:
+            output += COLOR_OFF + OFF
+    return output
+
+if __name__ == "__main__":
+    while True:
+        now = time.localtime()
+        h, m = now.tm_hour, now.tm_min
+
+        output = to_polybar(get_bits(h, 5)) + RESET + "-" + to_polybar(get_bits(m)) + RESET
+
+        print(output)
+        time.sleep(60)
