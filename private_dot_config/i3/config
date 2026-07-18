@@ -410,7 +410,8 @@ mode "bars" {
 	bindsym m exec --no-startup-id polybar music, mode "default"
 	bindsym t exec --no-startup-id ~/.config/polybar/toggle-top, mode "default"
 	bindsym d exec --no-startup-id ~/.config/polybar/toggle-datetime, mode "default"
-	bindsym s exec --no-startup-id ~/.config/polybar/toggle-free, mode "default"
+	bindsym s exec --no-startup-id ~/.config/polybar/toggle-small, mode "default"
+	bindsym f exec --no-startup-id ~/.config/polybar/toggle-free, mode "default"
 
 	# scale,fill,tile
 	bindsym b exec ~/.config/i3/background

@@ -102,6 +102,18 @@ border-bottom-size = 3pt
 radius-bottom-left = 0
 modules-center = pulseaudio
 
+[bar/sound-flat]
+inherit = bar/free
+width = 114pt
+height = 8pt
+foreground = ${colors.primary}
+label-empty-background = ${colors.background-empty}
+separator =
+border = 0
+radius-bottom-left = 0
+font-0 = "ComicShannsMono Nerd Font:style=Bold:size=20;15"
+modules-left = pulseaudio-wide
+
 [bar/i3]
 inherit = bar/free
 width = 300pt
@@ -113,6 +125,18 @@ border-right-size = 3pt
 border-bottom-size = 3pt
 modules-left = output
 modules-center = i3
+
+[bar/i3-flat]
+inherit = bar/free
+width = 300pt
+# minus half of width
+offset-x = 50%:-150pt
+height = 3pt
+line-size = 3pt
+border = 0
+font-0 = "ComicShannsMono Nerd Font:style=Bold:size=16;15"
+modules-left = output
+modules-center = i3-flat
 
 [bar/i3-hdmi]
 inherit = bar/i3
@@ -239,6 +263,21 @@ label-volume = %percentage%
 label-volume-foreground = ${colors.primary}
 label-muted = "🔇"
 label-muted-foreground = ${colors.disabled}
+
+[module/pulseaudio-wide]
+type = internal/pulseaudio
+use-ui-max = false
+format-volume = <bar-volume>
+bar-volume-width = 10
+bar-volume-gradient = false
+bar-volume-indicator = █
+bar-volume-indicator-foreground = ${colors.foreground}
+bar-volume-fill = █
+bar-volume-empty = ▔
+bar-volume-empty-foreground = ${colors.background-alt}
+bar-volume-foreground-0 = ${colors.secondary}
+bar-volume-foreground-1 = ${colors.primary}
+bar-volume-foreground-2 = ${colors.urgent}
 
 [module/xkeyboard]
 type = internal/xkeyboard
@@ -370,6 +409,23 @@ label-visible = %name%
 label-visible-underline = ${colors.secondary}
 label-visible-padding = 1
 label-urgent = %name%
+label-urgent-background = ${colors.urgent}
+label-urgent-padding = 1
+
+[module/i3-flat]
+type = internal/i3
+index-sort = true
+format = <label-state> <label-mode>
+label-focused = ▀
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.primary}
+label-focused-padding = 1
+label-unfocused = ▀
+label-unfocused-padding = 1
+label-visible = ▀
+label-visible-underline = ${colors.secondary}
+label-visible-padding = 1
+label-urgent = ▀
 label-urgent-background = ${colors.urgent}
 label-urgent-padding = 1
 
