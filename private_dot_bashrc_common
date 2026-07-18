@@ -119,7 +119,7 @@ if [ "$USER" != "root" ]; then
     esac
 
     if [[ -f composer.json ]]; then
-        need=$(grep --perl-regexp --only-matching '(?<="php": "(\^|~))\d+\.\d+' composer.json)
+        need=$(sed -n 's/.*"php":\s*"\([^"]*\)".*/\1/p' composer.json | sed -E 's/.*\b([0-9]+\.[0-9]+)(\.\*)?.*/\1/')
         if [ -z "$need" ]; then
             echo "Cannot find PHP version in composer.json"
         fi
