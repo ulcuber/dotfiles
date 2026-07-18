@@ -150,6 +150,7 @@ nnoremap <Leader>td :term php-xdebug ./artisan test --no-coverage %<CR><C-w>T
 vnoremap <Leader>td "1y:execute 'term php-xdebug ./artisan test --no-coverage --filter ' . shellescape(trim(@1)) . ' ' . expand('%')<CR><C-w>T
 nnoremap <Leader>tg :exe "tab term glow " . escape(expand('%'), ' ')<CR>
 nnoremap <Leader>tm :term make<CR><C-w>T
+nnoremap <Leader>tc :term cargo test<CR><C-w>T
 " tnoremap <silent><C-`>
 endif
 
@@ -915,6 +916,8 @@ function! SetTransparency()
         hi Folded ctermbg=NONE guibg=NONE
         hi FoldColumn ctermbg=NONE guibg=NONE
     endif
+    highlight ShowTrailingWhitespace ctermbg=red guibg=red
+    highlight JumpLine guibg=yellow ctermbg=yellow gui=bold
 endfunction
 
 augroup colorset
@@ -924,14 +927,10 @@ augroup colorset
         \ | call lightline#disable() | call lightline#enable()
         \ | call one#highlight('Comment', '707070', '', g:one_allow_italics == 1 && 'italic' || '')
         \ | call one#highlight('vimLineComment', '707070', '', g:one_allow_italics == 1 && 'italic' || '')
-        \ | highlight ShowTrailingWhitespace ctermbg=red guibg=red
-        \ | highlight JumpLine guibg=yellow ctermbg=yellow gui=bold
         \ | highlight TabLineSel ctermfg=Green ctermbg=LightGreen
         \ | if has('gui_running') | set background=light | endif
     autocmd ColorScheme codedark
         \ | call lightline#disable() | call lightline#enable()
-        \ | highlight ShowTrailingWhitespace ctermbg=red guibg=red
-        \ | highlight JumpLine guibg=yellow ctermbg=yellow gui=bold
         \ | highlight DiffText ctermbg=black
         \ | highlight CursorLine ctermbg=none gui=underline cterm=underline
         \ | if has('gui_running') | set background=dark | endif
