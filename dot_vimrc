@@ -958,6 +958,30 @@ function! SafeSaveAndClose()
     SClose
 endfunction
 
+let g:overlay_job = 0
+function! LabelOverlay(text)
+    if type(g:overlay_job) == v:t_job
+        call job_stop(g:overlay_job, 'term')
+        let g:overlay_job = 0
+    endif
+
+    if empty(a:text)
+        return
+    endif
+
+    let l:x_pos = string(1900 - strlen(a:text) * 25)
+    let l:y_pos = string(50)
+
+    let l:cmd = ['snote', '-x', l:x_pos, '-y', l:y_pos, a:text]
+
+    let g:overlay_job = job_start(l:cmd)
+endfunction
+
+" augroup BufferName
+"     autocmd!
+"     autocmd BufEnter * call LabelOverlay(bufname("%"))
+" augroup END
+
 " Post plugins settings
 
 " status line
