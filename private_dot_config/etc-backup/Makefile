@@ -15,6 +15,7 @@ FILES := \
 	X11/xorg.conf.d/00-keyboard.conf \
 	X11/xorg.conf.d/40-libinput.conf \
 	mysql/mysql.d/90-user.cnf \
+	my.cnf.d/90-user.cnf \
 	portage/make.conf
 
 .PHONY: backup install clean list push pull
