@@ -2,6 +2,7 @@
 filetype plugin indent on " use the file type plugins
 syntax on                 " Syntax highlighting
 " Syntax * syn match ErrorMsg '\%120v.\+'
+
 " " Enable markdown code block syntax highlighting
 let g:markdown_fenced_languages = [
   \ 'php',
@@ -9,8 +10,11 @@ let g:markdown_fenced_languages = [
   \ 'css',
   \ 'sql',
   \ 'json',
-  \ 'bash'
+  \ 'bash',
+  \ 'env',
+  \ 'rust',
   \ ]
+let g:markdown_minlines = 1000
 
 highlight ShowTrailingWhitespace ctermbg=Red guibg=Red
 highlight JumpLine guibg=yellow ctermbg=yellow gui=bold
