@@ -3,7 +3,6 @@
 ! theme specific colors
 #define COLOR_SATURATED_PINK  #ff6b9c
 #define COLOR_PINK            #ff7b9c
-#define COLOR_LIGHT_PINK      #ffb8d0
 #define COLOR_VERY_LIGHT_PINK #ffd4e8
 #define COLOR_GOLD            #e8c97a
 #define COLOR_LIGHT_GOLD      #f5d98a
@@ -22,7 +21,7 @@
 #define COLOR_RED     COLOR_PINK
 #define COLOR_GREEN   COLOR_GOLD
 #define COLOR_YELLOW  COLOR_GOLD
-#define COLOR_BLUE    COLOR_LIGHT_PINK
+#define COLOR_BLUE    #696da1
 #define COLOR_MAGENTA COLOR_LAVENDER
 #define COLOR_CYAN    COLOR_SATURATED_PINK
 #define COLOR_WHITE   #ffffff
