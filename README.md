@@ -454,10 +454,10 @@ sudo nginx -t
 sudo vim /etc/hosts
 ```
 
-# Redis
+# Redis/Valkey
 
 ```bash
-sudo pacman -S valkey redis-openrc
+sudo pacman -S valkey valkey-openrc
 ```
 
 `sudo vim /etc/valkey/valkey.conf`:
@@ -472,12 +472,10 @@ sudo mkdir /run/valkey
 sudo chown valkey:wheel /run/valkey
 ```
 
-`sudo vim /etc/init.d/redis`: `redis` to `valkey`
-
 `sudo vim /etc/php/conf.d/redis.ini`
 
 ```bash
-sudo rc-service redis start
+sudo rc-service valkey start
 ```
 
 # Xhprof
@@ -487,11 +485,17 @@ See: <https://gist.github.com/ulcuber/ea20e10fa961721afb94e7552ec9992b>
 # Runlevels
 
 ```bash
-sudo rc-update -s add default mysql
-sudo rc-update add php-fpm mysql
-sudo rc-update add mysql mysql
-sudo rc-update add redis mysql
-sudo rc-update add nginx mysql
+sudo rc-update -s add default lempv
+sudo rc-update add nginx lempv
+sudo rc-update add mysql lempv
+sudo rc-update add php-fpm lempv
+sudo rc-update add valkey lempv
+
+sudo rc-update -s add default leppv
+sudo rc-update add nginx leppv
+sudo rc-update add postgres leppv
+sudo rc-update add php-fpm leppv
+sudo rc-update add valkey leppv
 ```
 
 # Node
