@@ -413,8 +413,8 @@ mode "bars" {
 	bindsym s exec --no-startup-id ~/.config/polybar/toggle-small, mode "default"
 	bindsym f exec --no-startup-id ~/.config/polybar/toggle-free, mode "default"
 
-	# scale,fill,tile
 	bindsym b exec ~/.config/i3/background
+	bindsym v exec ~/.config/i3/video_background
 }
 
 # emulate mouse

@@ -126,7 +126,7 @@ sudo pacman -S intel-compute-runtime
 sudo pacman -S noto-fonts-emoji noto-fonts-cjk otf-comicshanns-nerd
 sudo pacman -S git figlet fortune-mod bash-completion jq yazi ncdu ouch w3m imagemagick rsync fzf
 # xorg. Includes i3 keybinds. acpilight -> xbacklight but not xrandr
-sudo pacman -S xorg-server xorg-xinit i3-wm polybar rofi picom feh scrot xdotool kitty xclip gvim acpilight playerctl xsettingsd xorg-xev
+sudo pacman -S xorg-server xorg-xinit i3-wm polybar rofi picom feh scrot xdotool kitty xclip gvim acpilight playerctl xsettingsd xorg-xev xorg-xkill
 # web browser
 sudo pacman -S ungoogled-chromium
 # or
