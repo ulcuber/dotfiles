@@ -13,9 +13,6 @@
 #define COLOR_BG #f5ebf0
 #define COLOR_BG_ALT #ffe8f0
 
-#define COLOR_BG_ARGB #ddf5ebf0
-#define COLOR_BG_ALT_ARGB #ddffe8f0
-
 ! ── Normal Colors ──
 #define COLOR_BLACK   #a783a7
 #define COLOR_RED     COLOR_PINK
@@ -41,9 +38,12 @@
 *.selection_foreground: COLOR_BG
 *.selection_background: COLOR_FG
 
-*.background_argb:       COLOR_BG_ARGB
-*.background_alt_argb:   COLOR_BG_ALT_ARGB
+! ── Polybar specific ──
+*.background_argb:       #ddf5ebf0
+*.background_alt_argb:   #ddffe8f0
 *.background_empty_argb: #00ffffff
+*.border_argb:           #ddffffff
+*.primary_argb:          #aaff7b9c
 
 *.cursor:      COLOR_PINK
 *.cursorColor: COLOR_PINK
