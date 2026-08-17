@@ -4,8 +4,10 @@ THEME=$(cat ~/.config/xsettingsd/theme)
 WALLPAPERS_DIR="$HOME/storage/Pictures/wallpapers/$THEME"
 
 if [[ -d "$WALLPAPERS_DIR" ]]; then
-	feh --randomize --bg-fill --no-fehbg "$WALLPAPERS_DIR"
+	feh --randomize --bg-fill --no-fehbg "$WALLPAPERS_DIR" &
 else
 	WALLPAPERS_DIR="$HOME/storage/Pictures/wallpapers"
-	feh --randomize --bg-fill --no-fehbg --recursive "$WALLPAPERS_DIR"
+	feh --randomize --bg-fill --no-fehbg --recursive "$WALLPAPERS_DIR" &
 fi
+
+disown

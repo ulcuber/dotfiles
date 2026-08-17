@@ -1,0 +1,26 @@
+#!/bin/bash
+
+THEME=$(cat ~/.config/xsettingsd/theme)
+WALLPAPERS_DIR="$HOME/storage/Videos/video-wallpapers/optimized/$THEME"
+
+if [[ ! -d "$WALLPAPERS_DIR" ]]; then
+	WALLPAPERS_DIR="$HOME/storage/Videos/video-wallpapers/optimized"
+fi
+
+WALLPAPER=$(find "$WALLPAPERS_DIR" -maxdepth 1 -type f | shuf -n1)
+
+pkill xwinwrap
+pkill mpv
+sleep 0.5
+
+xwinwrap -ni -s -nf -b -fs -ov -fdt -o 1 -- \
+        mpv --no-audio --loop --no-osc --no-input-default-bindings --no-window-dragging --really-quiet --no-terminal \
+        --profile=fast --hwdec=auto-safe --vo=gpu \
+        --dither=no --deband=no --framedrop=vo --cache=no --correct-downscaling=no \
+        --demuxer-readahead-secs=0 \
+        --vd-lavc-skipframe=default --vd-lavc-threads=1 --vd-lavc-fast=yes\
+        --wid=%WID \
+        --title="video-wallpaper" --x11-name="video-wallpaper" \
+        "$WALLPAPER" &
+
+disown
