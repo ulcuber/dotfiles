@@ -2,4 +2,8 @@
 
 cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
 
-ln -sf "themes/$1" theme
+THEME_PATH="themes/$1"
+if [[ ! -d "$THEME_PATH" ]]; then
+    THEME_PATH="themes/default"
+fi
+ln -sf -T "$THEME_PATH" theme

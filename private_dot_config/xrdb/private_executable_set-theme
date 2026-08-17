@@ -2,5 +2,9 @@
 
 cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
 
-cat ".Xresources" "themes/$1" > .Xresources-light
-cat ".Xresources" "themes/$1-dark" > .Xresources-dark
+THEME_PATH="themes/$1"
+if [[ ! -f "$THEME_PATH" ]]; then
+    THEME_PATH="themes/default"
+fi
+cat ".Xresources" "$THEME_PATH" > .Xresources-light
+cat ".Xresources" "$THEME_PATH-dark" > .Xresources-dark

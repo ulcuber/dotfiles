@@ -1,33 +1,44 @@
 #!/usr/bin/env -S python3 -u
 
 import time
+import subprocess
 
 ON = "▀"
 OFF = "▔"
 
-COLOR_ON = "%{F#dd5a3d5c}"
-COLOR_OFF = "%{F#ddff7b9c}"
 RESET = "%{F-}"
+
+def command(cmd: list, fatal: bool = False):
+    result = subprocess.run(
+        cmd,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    return result.stdout.strip()
 
 def get_bits(n, width=6) -> list:
     """Return 6-bit binary as list of 1/0, MSB first"""
     return [(n >> i) & 1 for i in range(width-1, -1, -1)]
 
-def to_polybar(bits: list) -> str:
+def to_polybar(bits: list, color_on: str, color_off: str) -> str:
     output = ""
     for bit in bits:
         if bit == 1:
-            output += COLOR_ON + ON
+            output += color_on + ON
         else:
-            output += COLOR_OFF + OFF
+            output += color_off + OFF
     return output
 
 if __name__ == "__main__":
+    color_on = "%{F" + command(["xrdb", "-get", "*.primary_argb"]) + "}"
+    color_off = "%{F" + command(["xrdb", "-get", "*.foreground"]) + "}"
+
     while True:
         now = time.localtime()
         h, m = now.tm_hour, now.tm_min
 
-        output = to_polybar(get_bits(h, 5)) + RESET + "-" + to_polybar(get_bits(m)) + RESET
+        output = to_polybar(get_bits(h, 5), color_on, color_off) + RESET + "-" + to_polybar(get_bits(m), color_on, color_off) + RESET
 
         print(output)
         time.sleep(60)

@@ -2,5 +2,9 @@
 
 cd "$( dirname "${BASH_SOURCE[0]}" )"
 
-cat ".fbtermrc" "themes/$1" > .fbtermrc-light
-cat ".fbtermrc" "themes/$1-dark" > .fbtermrc-dark
+THEME_PATH="themes/$1"
+if [[ ! -f "$THEME_PATH" ]]; then
+    THEME_PATH="themes/default"
+fi
+cat ".fbtermrc" "$THEME_PATH" > .fbtermrc-light
+cat ".fbtermrc" "$THEME_PATH-dark" > .fbtermrc-dark

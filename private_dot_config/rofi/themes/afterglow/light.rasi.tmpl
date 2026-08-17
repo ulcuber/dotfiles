@@ -1,0 +1,116 @@
+/* vim: set filetype=rasi : */
+/**
+ * Afterglow light theme for keyboard
+ */
+
+* {
+    // NOTE: RGBA
+    foreground: #202020;
+    background: #d0d0d088;
+    background-alt: #d2d2d2cc;
+    primary: #38782388;
+    secondary: #6c99ba88;
+    alert: #ff547088;
+    disabled: #22222288;
+
+    border: 0;
+    padding: 0;
+    background-color: transparent;
+    text-color: @foreground;
+    font: "Comic Neue Light 24";
+}
+window {
+    background-color: @background;
+    location: center;
+    anchor: center;
+    border-radius: 1em;
+}
+mainbox {
+    //
+}
+message {
+    padding: 0.1em;
+    border: 1px dash 0px dash ;
+    border-color: @disabled;
+}
+textbox normal {
+    padding: 0.1em;
+}
+listview {
+    fixed-height: 1;
+    padding: 0.1em;
+    reverse: false;
+    columns: 1;
+    lines: {{ .rofi_lines }};
+}
+element {
+    padding: 0.5em;
+    border-radius: 1em;
+    highlight: bold;
+    children: [ element-icon, element-text ];
+}
+element-icon {
+  size: 1em;
+}
+element-text {
+    text-color: inherit;
+}
+element normal.normal {
+    //
+}
+element normal.urgent {
+    text-color: @alert;
+}
+element normal.active {
+    text-color: @secondary;
+}
+element selected.normal {
+    background-color: @primary;
+}
+element selected.urgent {
+    background-color: @alert;
+    text-color: @disabled;
+}
+element selected.active {
+    background-color: @secondary;
+}
+element alternate.normal {
+    //
+}
+element alternate.urgent {
+    text-color: @alert;
+}
+element alternate.active {
+    text-color: @secondary;
+}
+scrollbar {
+    //
+}
+inputbar {
+    padding: 0.5em 1em;
+    foreground-color: @foreground;
+    background-color: @background-alt;
+    index: 0;
+}
+inputbar normal {
+    //
+}
+prompt {
+    text-color: @disabled;
+    margin: 0 0.5em 0 0;
+}
+mode-switcher {
+    padding: 0.5em 1em;
+    background-color: @background;
+    index: 10;
+}
+button selected {
+    text-color: @primary;
+}
+error-message {
+    padding: 1em;
+    background-color: @alert;
+}
+element, element-text, element-icon, button {
+    cursor: pointer;
+}

@@ -124,7 +124,7 @@ sudo pacman -S intel-compute-runtime
 ```bash
 # fonts. You may want for PS1 return icons. And the last is needed for polybar
 sudo pacman -S noto-fonts-emoji noto-fonts-cjk otf-comicshanns-nerd
-sudo pacman -S git figlet fortune-mod bash-completion jq yazi ncdu ouch w3m imagemagick rsync fzf
+sudo pacman -S git figlet fortune-mod bash-completion jq yazi ncdu ouch w3m imagemagick rsync fzf less
 # xorg. Includes i3 keybinds. acpilight -> xbacklight but not xrandr
 sudo pacman -S xorg-server xorg-xinit i3-wm polybar rofi picom feh scrot xdotool kitty xclip gvim acpilight playerctl xsettingsd xorg-xev
 # web browser

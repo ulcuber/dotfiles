@@ -2,6 +2,10 @@
 
 cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
 
-ln -sf "themes/$1.conf" no-preference-theme.auto.conf
-ln -sf "themes/$1.conf" light-theme.auto.conf
-ln -sf "themes/$1-dark.conf" dark-theme.auto.conf
+THEME_PATH="themes/$1"
+if [[ ! -f "$THEME_PATH.conf" ]]; then
+    THEME_PATH="themes/default"
+fi
+ln -sf -T "$THEME_PATH.conf" no-preference-theme.auto.conf
+ln -sf -T "$THEME_PATH.conf" light-theme.auto.conf
+ln -sf -T "$THEME_PATH-dark.conf" dark-theme.auto.conf

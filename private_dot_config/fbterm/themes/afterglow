@@ -1,8 +1,8 @@
-color-background=d0d0d0
 color-foreground=202020
-color-0=5a5a5a
+color-background=d0d0d0
+color-0=151515
 color-1=ff5470
-color-2=97a470
+color-2=387823
 color-3=e5b566
 color-4=3090a0
 color-5=b1769e
@@ -15,4 +15,4 @@ color-11=e5b566
 color-12=3090a0
 color-13=b1769e
 color-14=30a0a0
-color-15=ffffff
+color-15=b5b5a5

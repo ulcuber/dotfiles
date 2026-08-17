@@ -2,8 +2,12 @@
 
 cd "$( dirname "${BASH_SOURCE[0]}" )" || exit
 
-ln -sf "themes/$1" .xsettingsd-light
-ln -sf "themes/$1-dark" .xsettingsd-dark
+THEME_PATH="themes/$1"
+if [[ ! -f "$THEME_PATH" ]]; then
+    THEME_PATH="themes/default"
+fi
+ln -sf -T "$THEME_PATH" .xsettingsd-light
+ln -sf -T "$THEME_PATH-dark" .xsettingsd-dark
 
 echo "$1" > theme
 
