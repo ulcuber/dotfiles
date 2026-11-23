@@ -1,0 +1,28 @@
+# vim:ft=conf
+
+# adjusted for 256 colors
+
+# sets up colors for foreground and background
+color-96=5a3d5c
+color-231=f5ebf0
+
+color-foreground=96
+color-background=231
+
+color-0=a783a7
+color-1=a01e1c
+color-2=537054
+color-3=db9c70
+color-4=ac8b9d
+color-5=98777d
+color-6=c67e50
+color-7=fffffe
+
+color-8=7a5d7c
+color-9=c92e21
+color-10=9ec78e
+color-11=e5934a
+color-12=a4879d
+color-13=7f626d
+color-14=b68c9e
+color-15=ffffff

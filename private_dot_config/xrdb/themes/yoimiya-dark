@@ -1,0 +1,67 @@
+Xft.dark: 1
+
+! NOTE: macro replaced everywhere
+
+#define COLOR_FG #f5ebf0
+#define COLOR_BG #5a3d5c
+#define COLOR_BG_ALT #7a5d7c
+
+! ── Normal Colors ──
+#define COLOR_BLACK   #4a3a4a
+#define COLOR_RED     #a01e1c
+#define COLOR_GREEN   #537054
+#define COLOR_YELLOW  #db9c70
+#define COLOR_BLUE    #ac8b9d
+#define COLOR_MAGENTA #98777d
+#define COLOR_CYAN    #c67e50
+#define COLOR_WHITE   #000011
+
+! ── Bright Colors ──
+#define COLOR_BRIGHT_BLACK   #7a5d7c
+#define COLOR_BRIGHT_RED     #c92e21
+#define COLOR_BRIGHT_GREEN   #9ec78e
+#define COLOR_BRIGHT_YELLOW  #e5934a
+#define COLOR_BRIGHT_BLUE    #a4879d
+#define COLOR_BRIGHT_MAGENTA #7f626d
+#define COLOR_BRIGHT_CYAN    #b68c9e
+#define COLOR_BRIGHT_WHITE   #000000
+
+*.foreground:           COLOR_FG
+*.background:           COLOR_BG
+*.selection_foreground: COLOR_BG
+*.selection_background: COLOR_FG
+
+! ── Polybar specific ──
+*.background_argb:       #aa5a3d5c
+*.background_alt_argb:   #dd7a5d7c
+*.background_empty_argb: #00000000
+*.border_argb:           #aa000000
+*.primary_argb:          #aac7b9ff
+
+*.cursor:      #d27c3b
+*.cursorColor: #d27c3b
+
+! ── Formatting Colors ──
+*.colorBD: #d27c3b !bold
+*.colorUL: #782912 !underline
+*.colorIT: #a2849e !italic
+
+! ── Normal Colors ──
+*.color0:  COLOR_BLACK
+*.color1:  COLOR_RED
+*.color2:  COLOR_GREEN
+*.color3:  COLOR_YELLOW
+*.color4:  COLOR_BLUE
+*.color5:  COLOR_MAGENTA
+*.color6:  COLOR_CYAN
+*.color7:  COLOR_WHITE
+
+! ── Bright Colors ──
+*.color8:  COLOR_BRIGHT_BLACK
+*.color9:  COLOR_BRIGHT_RED
+*.color10: COLOR_BRIGHT_GREEN
+*.color11: COLOR_BRIGHT_YELLOW
+*.color12: COLOR_BRIGHT_BLUE
+*.color13: COLOR_BRIGHT_MAGENTA
+*.color14: COLOR_BRIGHT_CYAN
+*.color15: COLOR_BRIGHT_WHITE
