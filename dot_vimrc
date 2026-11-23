@@ -593,6 +593,7 @@ let g:ale_fixers = {
     \ 'c': ['astyle', 'clang-format'],
     \ 'cpp': ['astyle', 'clang-format'],
     \ 'rust': ['rustfmt'],
+    \ 'go': ['gofmt'],
     \ 'python': ['ruff'],
     \ 'markdown': ['textlint'],
     \ 'html': ['html-beautify'],

@@ -12,7 +12,7 @@
   tab  q    w    e    r    t            y    u    i    o    p    [    ]    \
   caps a    s    d    f    g            h    j    k    l    ;    '    ret
   lsft z    x    c    v                 b    n    m    ,    .    up   rsft
-  lctl lmet lalt spc                    spc      ralt rmet  left down right /
+  lctl lmet lalt spc                             ralt rmet  left down right /
 )
 
 (defalias
@@ -56,68 +56,68 @@
   tab  q    w    e    r    t            y    u    i    o    p    [    ]    \
   @ces a    s    d    f    g            h    j    k    l    ;    '    ret
   lsft z    x    c    v                 b    n    m    ,    .    /    rsft
-  lctl lmet @tlt spc                    spc      ralt rmet  left down right /
+  lctl lmet @tlt spc                             ralt rmet  left down right /
 )
 (deflayer mirror
   grv  1    2    3    4    5    6       7    8    9    0    -    =    bspc
   tab  p    o    i    u    y            t    r    e    w    q    [    ]    \
   @nml ;    l    k    j    h            g    f    d    s    a    '    ret
   lsft /    .    ,    m                 n    b    v    c    x    z    rsft
-  lctl lmet @mlt spc                    spc      ralt rmet  left down right /
+  lctl lmet @mlt spc                             ralt rmet  left down right /
 )
 (deflayer symbols
   grv  1    2    3    4    5    6       7    8    9    0    -    =    bspc
   tab  @pnv @pom @eq  @fn  @th          y    `    ^    %    +    [    ]    \
   caps !    @    =    $    del          bspc \_   *   \(    \)   &    print
   lsft @emp #    @eqq @are              b    @pnm -    rmet @ar  \    rsft
-  lctl lmet lalt ralt                   ralt      ralt rmet left down right /
+  lctl lmet lalt ralt                             ralt rmet left down right /
 )
 (deflayer symbols-mirror
   grv  1    2    3    4    5    6       7    8    9    0    -    =    bspc
   tab  @pnv @pom @eq  @fn  @th          y    `    ^    %    +    [    ]    \
   caps !    @    =    $    del          bspc \_   *   \(    \)   &    print
   lsft @emp #    @eqq @are              b    @pnm -    rmet @ar  \    rsft
-  lctl lmet lalt ralt                   ralt      ralt rmet left down right /
+  lctl lmet lalt ralt                             ralt rmet left down right /
 )
 (deflayer numbers
   grv  1    2    3    4    5    6       7    8    9    0    -    =    bspc
   tab  q    w    @eq  r    t            y    u    ^    %    @add [    ]    \
   @nml 1    2    3    4    5            6    7    8    9    0    -    ret
   lsft z    x    c    v                 @mul n    @sub ,    .    @div rsft
-  lctl lmet @sym spc                    spc      ralt  rmet left down right /
+  lctl lmet @sym spc                             ralt  rmet left down right /
 )
 (deflayer oh-numbers
   grv  1    2    3    4    5    6       7    8    9    0    -    =    bspc
   tab  6    7    8    9    0            y    u    ^    %    @add [    ]    \
   @nml 1    2    3    4    5            6    7    8    9    0    -    ret
   lsft z    x    bspc v                 @mul n    @sub ,    .    @div rsft
-  lctl lmet @sym spc                    spc      ralt  rmet left down right /
+  lctl lmet @sym spc                             ralt  rmet left down right /
 )
 (deflayer functional
   grv  1    2    3    4    5    6       7    8    9    0    -    =    bspc
   tab  q    w    e    r    t            y    u    i    o    p    [    ]    \
   @nml f1   f2   f3   f4   f5           f6   f7   f8   f9   f10  f11  f12
   lsft z    x    c    v                 b    n    -    ,    .    /    rsft
-  lctl lmet lalt spc                    spc       ralt rmet left down right /
+  lctl lmet lalt spc                              ralt rmet left down right /
 )
 (deflayer navigation
   grv  1    2       3    4    5    6         7      8    9    0     -    =    bspc
   tab  q    C-right esc  r    t              y      C-z  @nml o     pgup [    ]    \
   @nml a    s       d    home g              left   down up   right end  '    ret
   lsft z    del     c    v                   C-left pgdn m    ,     .    C-f  rsft
-  lctl lmet lalt spc                         spc         ralt rmet  left down right /
+  lctl lmet lalt spc                                     ralt rmet  left down right /
 )
 (deflayer words
   grv  1    2    3    4    5    6       7    8    9    0    -    =    bspc
   tab  @mcq w    e    @mcr t            y    u    i    o    @mcp [    ]    \
   @nml a    s    d    @mcf g            h    j    k    l    ;    '    ret
   lsft z    @pmr @mcc @mcv              b    @mcn m    ,    .    /    rsft
-  lctl @num lalt @nav                   spc       ralt rmet left down right /
+  lctl @num lalt @nav                             ralt rmet left down right /
 )
 (deflayer empty
   grv  1    2    3    4    5    6       7    8    9    0    -    =    bspc
   tab  q    w    e    r    t            y    u    i    o    p    [    ]    \
   @nml a    s    d    f    g            h    j    k    l    ;    '    ret
   lsft z    x    c    v                 b    n    m    ,    .    /    rsft
-  lctl lmet lalt spc                    spc       ralt rmet left down right /
+  lctl lmet lalt spc                              ralt rmet left down right /
 )
