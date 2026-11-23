@@ -166,7 +166,7 @@ Might be good for AMD to use `amd-pstate-ut`
 ### Sound
 
 ```bash
-sudo pacman -S pipewire-openrc pipewire-pulse-openrc wireplumber-openrc bluez-openrc bluez-utils sof-firmware pavucontrol
+sudo pacman -S --needed pipewire-openrc pipewire-pulse-openrc wireplumber-openrc bluez-openrc bluez-utils sof-firmware pavucontrol
 sudo rc-update add bluetoothd default
 sudo rc-service bluetoothd start
 
@@ -519,7 +519,7 @@ curl -fsSL https://bun.sh/install | bash
 You may want a workaround for vim ALE:
 
 ```bash
-ln -sf ~/.nvm/versions/node/v24.16.0/bin/node ~/.local/bin/node
+ln -sf ~/.nvm/versions/node/v24.22.1/bin/node ~/.local/bin/node
 ```
 
 ### Bun globals
